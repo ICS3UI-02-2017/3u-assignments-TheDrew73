@@ -86,9 +86,9 @@ public class RobotExample {
     }
 }
 /**questions
- * countThingsInBackpack();
- * frontIsClear();
- * isBesideThing();
+ * countThingsInBackpack()
+ * frontIsClear()
+ * isBesideThing()
  * 
  * if(Condition){
  * }
