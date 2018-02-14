@@ -52,10 +52,11 @@ public class ThreadpracticeA1Q5 {
     new Wall (townsburg, 2,3, Direction.NORTH);
     new Wall (townsburg, 3,3, Direction.EAST);
     new Wall (townsburg, 3,3, Direction.SOUTH);
-    
+   
     //add thread
     new Thread(){
         public void run(){
+    //make bob pick up the things
     bob.turnAround();
     bob.move();
     bob.turnRight();
@@ -67,7 +68,7 @@ public class ThreadpracticeA1Q5 {
     }
     }.start();
     
-    //make the Robots pick up the things
+    //make andy pick up the things
     andy.move();            
     andy.pickThing();      
     andy.turnLeft();
