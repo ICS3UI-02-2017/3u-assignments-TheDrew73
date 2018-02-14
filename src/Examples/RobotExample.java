@@ -85,3 +85,13 @@ public class RobotExample {
   boop.turnAround();
     }
 }
+/**questions
+ * countThingsInBackpack();
+ * frontIsClear();
+ * isBesideThing();
+ * 
+ * if(Condition){
+ * }
+ * while(Condition){
+ * } Will repeat.
+ */
