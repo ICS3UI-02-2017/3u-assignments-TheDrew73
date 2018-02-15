@@ -1,0 +1,21 @@
+1.
+a) this.getAvenue() > 0          = True
+b) this.getAvenue() <= 5         = True
+c) this.getStreet() != 1         = True
+d) !(this.getStreet() == 1)      = True
+e) this.frontIsClear()           = False
+f) !this.frontIsClear()          = True
+g) this.frontIsClear() == false  = True
+
+2.
+Both statements behave the same way, this is because, for the first statement;
+if karel can pick up a thing he will turn right. And if he cannot pick up a 
+thing, he will turn left. And for the second statement; if karel cannot pick up
+something then he will turn left, and if he can he will turn right. Thus in both \
+statements if karel can pick up a thing he will turn right, and if he cannot
+he will turn left.
+
+
+
+
+
