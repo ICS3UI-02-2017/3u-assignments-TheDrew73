@@ -43,20 +43,22 @@ public class A2Q1 {
   new Thing (townsburg,1,10);
   new Thing (townsburg,1,11);
   
-  
+  //make andy move to the things
   andy.move();
-  
+  //while andy can pick a thing the next if statments will activate
   while(andy.canPickThing()){
   
-  //is there something to pick up?
+  //is there something to pick up? If yes then andy will pick the thing then move
   if(andy.canPickThing()){
   andy.pickThing();
   andy.move();
-  
+  //if the number of things in andy's backpack = 7 he will move 3 spots
   if(andy.countThingsInBackpack()==7){
   andy.move(3);
  
-  
+/** because andy moved three spots he landed on a space with no things, thus he 
+*stopped moving
+*/
   } 
   }
   
