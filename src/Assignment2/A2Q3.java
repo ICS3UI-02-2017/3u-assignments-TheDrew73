@@ -19,7 +19,7 @@ public class A2Q3 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       //Create a city for the Robot      
+        //Create a city for the Robot      
         City townsburg = new City();
 
         //Put a Robot in Townsburg
@@ -27,20 +27,24 @@ public class A2Q3 {
 
         //Set the color of the Robot
         andy.setColor(Color.CYAN);
-                
+
         andy.setLabel("A");
-        
-        while(andy.getAvenue()!=0){
+
+        while (andy.getAvenue() != 0) {
+            andy.move();
             
-        if(andy.getAvenue()!=0){
-        andy.move();
-        andy.getAvenue();
-    }
-        while(andy.getStreet()!=0){
-        andy.move();
-        andy.getStreet();
+           if (andy.getAvenue() == 0) {
+                andy.turnRight();
+                
+            }
+        }
+        while (andy.getStreet() != 0) {
         
-}
-}
-}
+            andy.move();
+            if (andy.getStreet() == 0) {
+                andy.turnRight();
+                
+            } 
+        }
+    }
 }
