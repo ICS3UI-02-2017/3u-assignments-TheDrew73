@@ -58,8 +58,31 @@ public class A2Q4 {
         new Wall (townsburg, 2,3, Direction.NORTH);
         new Wall (townsburg, 2,3, Direction.EAST);
         
-        
-        
-        
-    }
+     while(andy.getStreet()==2)  { 
+       andy.move();
+       andy.turnRight();
+       andy.move(2);
+       andy.turnRight();
+       andy.move(2);
+       andy.turnRight();
+       andy.move();
+       andy.turnLeft();
+
+}
+
+     while(andy.getAvenue()==2)  {
+     
+       andy.move();
+       andy.turnLeft();
+       andy.move(1);
+       andy.turnRight();
+       andy.move(2);
+       andy.turnRight();
+       andy.move(2);
+       andy.turnRight();
+       
+     
+}
+
+}
 }
