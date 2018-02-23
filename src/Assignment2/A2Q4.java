@@ -28,7 +28,7 @@ public class A2Q4 {
         //Put a Robot in Townsburg
         RobotSE andy = new RobotSE(townsburg, 3, 1, Direction.NORTH);
 
-        //Set the color of the Robot
+        //set the color of the Robot
         andy.setColor(Color.CYAN);
 
         andy.setLabel("A");
