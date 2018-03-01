@@ -19,26 +19,29 @@ public class A4Q2 {
       
         
       // use a scanner to read info
-        Scanner input = new Scanner(System.in);
+         Scanner input = new Scanner(System.in);
         
+         //opening line to the user
          System.out.println("Please enter the measurement in inches you wish to convert.");
-       
-        
          
-         double conversion = input.nextInt();
+         //setting the variables
+         double conversion = input.nextDouble();
          double number = conversion * 2.54;
          
+         //if the user tries to get smart...
           if(conversion <= 0) {
-            System.out.println("Don't you have anything better to do?");
-               System.out.println("try again...");
+               System.out.println("Try again...");
+           conversion = input.nextInt();
+           number = conversion * 2.54;
            
-        } else {
-         
+        } 
+         //final statement that will give the user the conversion info
          System.out.println( conversion + " inches is the same as " + number + " cm ");
          
           
         
         
-    }
+    
+          
 }
 }
