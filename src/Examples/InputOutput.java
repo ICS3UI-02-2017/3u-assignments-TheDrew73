@@ -47,6 +47,7 @@ public class InputOutput {
         System.out.println("");
         System.out.println("");
         
+        
         // use a scanner to read info
         Scanner input = new Scanner(System.in);
         
