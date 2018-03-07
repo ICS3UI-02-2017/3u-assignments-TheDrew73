@@ -18,91 +18,74 @@ public class A4Q7 {
     public static void main(String[] args) {
         // use a scanner to read info
         Scanner input = new Scanner(System.in);
-
-        for (int gameBoard = 1; gameBoard <= 100;) {
-
-           
-                
-            int[] gameBoards = new int[12];
-
-            System.out.println("Enter sum of dice:");
-            int roll1 = input.nextInt();
-            gameBoards[0] = roll1 + gameBoard;
-            System.out.println("You are now on square " + gameBoards[0]);
-
-            System.out.println("Enter sum of dice:");
-            int roll2 = input.nextInt();
-            gameBoards[1] = roll2 + gameBoards[0];
-            System.out.println("You are now on square " + gameBoards[1]);
-
-            System.out.println("Enter sum of dice:");
-            int roll3 = input.nextInt();
-            gameBoards[2] = roll3 + gameBoards[1];
-            System.out.println("You are now on square " + gameBoards[2]);
-
-            System.out.println("Enter sum of dice:");
-            int roll4 = input.nextInt();
-            gameBoards[3] = roll4 + gameBoards[2];
-            System.out.println("You are now on square " + gameBoards[3]);
-
-            System.out.println("Enter sum of dice:");
-            int roll5 = input.nextInt();
-            gameBoards[4] = roll5 + gameBoards[3];
-            System.out.println("You are now on square " + gameBoards[4]);
-
-            System.out.println("Enter sum of dice:");
-            int roll6 = input.nextInt();
-            gameBoards[5] = roll6 + gameBoards[4];
-            System.out.println("You are now on square " + gameBoards[5]);
-
-            System.out.println("Enter sum of dice:");
-            int roll7 = input.nextInt();
-            gameBoards[6] = roll7 + gameBoards[5];
-            System.out.println("You are now on square " + gameBoards[6]);
-
-            System.out.println("Enter sum of dice:");
-            int roll8 = input.nextInt();
-            gameBoards[7] = roll8 + gameBoards[6];
-            System.out.println("You are now on square " + gameBoards[7]);
-
-            System.out.println("Enter sum of dice:");
-            int roll9 = input.nextInt();
-            gameBoards[8] = roll9 + gameBoards[7];
-            System.out.println("You are now on square " + gameBoards[8]);
+        
+        //set variable position equal to one
+        int position = 1;
+        
+        /*while position is less than or equal to 100, the user will be asked to input
+         * their dice roll, and will be moved accrodingly
+         */
+        while(position <= 100){
+            System.out.println("Enter sum of Dice:");
+          int roll = input.nextInt();
+          position = roll+position;
+            System.out.println("You are now on square " + position);
             
-            if(gameBoards[8] == 100){
-                System.out.println("You Win!");
-            }
-            
-            System.out.println("Enter sum of dice:");
-            int roll10 = input.nextInt();
-            gameBoards[9] = roll10 + gameBoards[8];
-            System.out.println("You are now on square " + gameBoards[9]);
-
-            if(gameBoards[9] == 100){
-                System.out.println("You Win!");
-            }
-            
-            System.out.println("Enter sum of dice:");
-            int roll11 = input.nextInt();
-            gameBoards[10] = roll11 + gameBoards[9];
-            System.out.println("You are now on square " + gameBoards[10]);
-
-            if(gameBoards[10] == 100){
-                System.out.println("You Win!");
-            }
-            
-            System.out.println("Enter sum of dice:");
-            int roll12 = input.nextInt();
-            gameBoards[11] = roll12 + gameBoards[10];
-            System.out.println("You are now on square " + gameBoards[11]);
-
-            if(gameBoards[11] == 100){
-                System.out.println("You Win!");
-            }
-
-
+            //if the user tries to move more than 12 spaces, they get a game over
+             if(roll >=13){
+                System.out.println("You Lose!");
+                System.exit(0);
+    } 
+            //if the user tries to move less than 2 spaces, they get a game over
+            if(roll <=1){
+                System.out.println("You Lose!");
+                System.exit(0);
+    } 
+            //if the postion of the user is higher than 100 they must roll again
+             if(position >= 101){
+                 position = position - roll;
+               System.out.println("Roll again");
         }
-
+            //if the user is on the 100th square they win
+           if(position == 100){
+               System.out.println("You win!");
+        }
+           //The user hits a ladder if the are on square 9
+           if(position == 9){
+               position = 34;
+               System.out.println("Ladder!");
+               System.out.println("you are now on square 34");
     }
+           //The user hits a ladder if the are on square 40
+           if(position == 40){
+               position = 64;
+               System.out.println("Ladder!");
+               System.out.println("you are now on square 64");
+    }
+           //The user hits a snake if the are on square 54
+           if(position == 54){
+               position = 19;
+               System.out.println("Snake!");
+               System.out.println("you are now on square 19");
+    }
+           //The user hits a ladder if the are on square 67
+           if(position == 67){
+               position = 86;
+               System.out.println("Ladder!");
+               System.out.println("you are now on square 86");
+    }
+           //The user hits a snake if the are on square 90
+           if(position == 90){
+               position = 48;
+               System.out.println("Snake!");
+               System.out.println("you are now on square 48");
+    }
+           //The user hits a snake if the are on square 99
+           if(position == 99){
+               position = 77;
+               System.out.println("Snake!");
+               System.out.println("you are now on square 77");
+    }
+}
+}
 }
