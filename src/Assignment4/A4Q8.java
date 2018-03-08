@@ -39,9 +39,16 @@ public class A4Q8 extends javax.swing.JFrame {
         NameTextArea.setEditable(false);
         NameTextArea.setColumns(20);
         NameTextArea.setRows(5);
+        NameTextArea.setAutoscrolls(false);
         jScrollPane1.setViewportView(NameTextArea);
+        NameTextArea.getAccessibleContext().setAccessibleParent(null);
 
         NametextButton.setText("Say Hello!");
+        NametextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NametextButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,14 +84,15 @@ public class A4Q8 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void outputButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-       //asks for the name that was typed in
+    private void NametextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NametextButtonActionPerformed
+         //asks for the name that was typed in
         String name = NametextField.getText();
        
         //say hello to the user
-        
+        NameTextArea.setText("Hello " + name + "!");
+    }//GEN-LAST:event_NametextButtonActionPerformed
+
     
-    }                                            
     /**
      * @param args the command line arguments
      */
