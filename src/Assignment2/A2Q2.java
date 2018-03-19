@@ -35,7 +35,7 @@ public class A2Q2 {
 
         //create a line of walls
         for (int i = 1; i <= 8; i = i + 1) {
-        new Wall(townsburg, 4, i, Direction.SOUTH);
+            new Wall(townsburg, 4, i, Direction.SOUTH);
         }
         //create the rest of the walls
         new Wall(townsburg, 4, 2, Direction.EAST);
@@ -47,21 +47,21 @@ public class A2Q2 {
         new Thing(townsburg, 4, 8);
 
         //while andy cannot pick a thing he will follow the if statements
-        while(!andy.canPickThing()) {
+        while (!andy.canPickThing()) {
 
-        //while the front is not clear andy will follow the provided instructions
-        if(!andy.frontIsClear()) {
-        andy.turnLeft();
-        andy.move();
-        andy.turnRight();
-        andy.move();
-        andy.turnRight();
-        andy.move();
-        andy.turnLeft();
-        }else{
-        //if there is no wall andy will move
-        andy.move();
-        }
+            //while the front is not clear andy will follow the provided instructions
+            if (!andy.frontIsClear()) {
+                andy.turnLeft();
+                andy.move();
+                andy.turnRight();
+                andy.move();
+                andy.turnRight();
+                andy.move();
+                andy.turnLeft();
+            } else {
+                //if there is no wall andy will move
+                andy.move();
+            }
 
         }
 
