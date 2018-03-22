@@ -16,21 +16,21 @@ public class UbbiDubbiTranslator {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+
         Scanner input = new Scanner(System.in);
         //repeat the translator
         while (true) {
-            
+
             //get the word to translate
             System.out.println("Enter a word to translate");
             String startWord = input.nextLine();
-            
+
             //sanitize the input
             startWord = startWord.toLowerCase();
 
             //walk down the word looking for the vowel
             int length = startWord.length();
-            
+
             //create an empty string
             String complete = "";
 
@@ -43,19 +43,20 @@ public class UbbiDubbiTranslator {
                         || startWord.charAt(i) == 'i'
                         || startWord.charAt(i) == 'o'
                         || startWord.charAt(i) == 'u') {
-                    
+
                     //"ub" will be placed in front of any vowel
                     complete += "ub";
                 }
                 //adds the word that the user put in, to the empty string
                 complete += startWord.charAt(i);
+
                 /*
                  * because the original word was put into the empty string, all 
                  * of the vowels had "ub" added in front of them.
                  */
-                
-                
-            }           
+
+
+            }
             //tell the user their translated word
             System.out.println(startWord + " in Ubbi Dubbi is " + complete);
 
