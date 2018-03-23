@@ -34,22 +34,29 @@ public class UbbiDubbiTranslator {
             //create an empty string
             String complete = "";
 
+            int vowel = 0;
+            int conste = 1;
+            
+            
             //use a loop to go through the characters
             for (int i = 0; i < length; i++) {
 
                 //is the character at position "i" a vowel?
-                if (startWord.charAt(i) == 'a'
+               if (startWord.charAt(i) == 'a'
                         || startWord.charAt(i) == 'e'
                         || startWord.charAt(i) == 'i'
                         || startWord.charAt(i) == 'o'
                         || startWord.charAt(i) == 'u') {
-
+               
+             
+                   
                     //"ub" will be placed in front of any vowel
                     complete += "ub";
-                }
+                
+               }
                 //adds the word that the user put in, to the empty string
                 complete += startWord.charAt(i);
-
+               
                 /*
                  * because the original word was put into the empty string, all 
                  * of the vowels had "ub" added in front of them.
@@ -61,5 +68,7 @@ public class UbbiDubbiTranslator {
             System.out.println(startWord + " in Ubbi Dubbi is " + complete);
 
         }
+        
     }
-}
+    }
+
