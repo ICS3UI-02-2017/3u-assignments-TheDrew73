@@ -49,7 +49,6 @@ public class UbbiDubbiTranslator {
 
                     if (startWord.contains("oo")) {
                         flag = true;
-                        
                     } 
 
                     //"ub" will be placed in front of any vowel
