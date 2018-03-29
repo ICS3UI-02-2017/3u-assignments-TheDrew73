@@ -52,7 +52,7 @@ public class A3Q1 {
         }
         //andy will turn left
         andy.turnLeft();
-        
+
         //andy will repeat the numberOfMoves command 7 times
         repeat = 0;
         while (repeat < 7) {
