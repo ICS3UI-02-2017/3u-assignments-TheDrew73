@@ -85,14 +85,13 @@ public class A4Q8 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void NametextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NametextButtonActionPerformed
-         //asks for the name that was typed in
+        //asks for the name that was typed in
         String name = NametextField.getText();
-       
+
         //say hello to the user
         NameTextArea.setText("Hello " + name + "!");
     }//GEN-LAST:event_NametextButtonActionPerformed
 
-    
     /**
      * @param args the command line arguments
      */
@@ -125,9 +124,8 @@ public class A4Q8 extends javax.swing.JFrame {
             public void run() {
                 new A4Q8().setVisible(true);
             }
-            
         });
-            
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea NameTextArea;
@@ -136,6 +134,4 @@ public class A4Q8 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    
 }
-
