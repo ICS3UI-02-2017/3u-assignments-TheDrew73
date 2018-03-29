@@ -34,8 +34,7 @@ public class UbbiDubbiTranslator {
             //create an empty string
             String complete = "";
 
-            int vowel = 0;
-            int conste = 1;
+            boolean flag = false;
 
 
             //use a loop to go through the characters
@@ -48,41 +47,26 @@ public class UbbiDubbiTranslator {
                         || startWord.charAt(i) == 'o'
                         || startWord.charAt(i) == 'u') {
 
+                    if (startWord.contains("oo")) {
+                        flag = true;
+                        
+                    } 
+
                     //"ub" will be placed in front of any vowel
                     complete += "ub";
 
-                
+                }
                 //adds the word that the user put in, to the empty string
                 complete += startWord.charAt(i);
-                }
-                /*
-                 * because the original word was put into the empty string, all 
-                 * of the vowels had "ub" added in front of them.
-                 */
-                if (startWord.charAt(i + 1) == 'a') {
-                    complete += startWord.charAt(i + 1);
-                } else {
-                    if (startWord.charAt(i + 1) == 'e') {
-                        complete += startWord.charAt(i + 1);
-                    }
-                }
-                if (startWord.charAt(i + 1) == 'i') {
-                    complete += startWord.charAt(i + 1);
-                } else {
-                    if (startWord.charAt(i + 1) == 'o') {
-                        complete += startWord.charAt(i + 1);
-                    }
-                }
-                if (startWord.charAt(i + 1) == 'u') {
-                    complete += startWord.charAt(i + 1);
-                } else {
             }
-                //adds the word that the user put in, to the empty string
-                complete += startWord.charAt(i);
-            
-        }
-            //tell the user their translated word
+
+            /*
+             * because the original word was put into the empty string, all 
+             * of the vowels had "ub" added in front of them.
+             */
+
             System.out.println(startWord + " in Ubbi Dubbi is " + complete);
+        }
+
     }
-}
 }
