@@ -50,7 +50,7 @@ public class A3Q3 {
             }
             //but if andy only has 10 things in his backpack...
             if (andy.countThingsInBackpack() <= 10) {
-                
+
                 //he will repeat this section of code 2 times
                 repeat = 0;
                 while (repeat < 2) {
@@ -58,9 +58,10 @@ public class A3Q3 {
                     andy.turnLeft();
                     andy.move();
                 }
-                /**then he will stop if he has 0 things in his backpack, 
-                *but he will put 5 things in a line if he has more than 0 things
-                */
+                /**
+                 * then he will stop if he has 0 things in his backpack, but he
+                 * will put 5 things in a line if he has more than 0 things
+                 */
                 putThing = 0;
                 while (putThing < 5) {
                     if (andy.countThingsInBackpack() == 0) {
