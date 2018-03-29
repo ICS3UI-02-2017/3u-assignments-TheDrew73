@@ -16,16 +16,16 @@ public class A4Q1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-       // use a scanner to read info
+
+        // use a scanner to read info
         Scanner input = new Scanner(System.in);
-        
-         System.out.println("Please enter your name.");
-         
+
+        System.out.println("Please enter your name.");
+
         //make a string
         String name = input.nextLine();
-        
+
         //say hello
-        System.out.println("Hello " + name + " How are you today? " );
+        System.out.println("Hello " + name + " How are you today? ");
     }
 }
