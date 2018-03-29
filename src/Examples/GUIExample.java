@@ -109,18 +109,18 @@ public class GUIExample extends javax.swing.JFrame {
 
     //method for when a button is pressed
     private void outputButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputButtonActionPerformed
-       //asks for the name that was typed in
+        //asks for the name that was typed in
         String name = NameTextField.getText();
-        
+
         //figure out the age of the user
         String yearBorn = YearBornText.getText();
         //convert to integer / double
         int yearBorn2 = Integer.parseInt(yearBorn);
         int age = 2018 - yearBorn2;
-        
+
         //say hello to the user
         outputText.setText("Hello " + name + ", You are approximatly " + age);
-        
+
     }//GEN-LAST:event_outputButtonActionPerformed
 
     /**
