@@ -50,33 +50,32 @@ public class ForLoops {
         }
 
         andy.turnAround();
-        
+
         //use a loop to move
         for (int count = 0; count < 5; count++) {
             andy.move();
 
-            
-        int x = 10;
-        x = x + 5; // adds 5
-        x += 5; //adds 5
-        
-        x -= 10; // subtract 10 shortcut
-        x = x - 10;
-        
-        x *= 2; //multiply by 2
-        x = x * 2;
-        
-        x /= 4; // divide by 4 
-        x = x / 4;
-        
-        int remainder = 5 % 2 ;
-        int quotient = 5 / 2;
-         
-        //both must be true
-       if(andy.frontIsClear()&& andy.canPickThing()){
-        
+
+            int x = 10;
+            x = x + 5; // adds 5
+            x += 5; //adds 5
+
+            x -= 10; // subtract 10 shortcut
+            x = x - 10;
+
+            x *= 2; //multiply by 2
+            x = x * 2;
+
+            x /= 4; // divide by 4 
+            x = x / 4;
+
+            int remainder = 5 % 2;
+            int quotient = 5 / 2;
+
+            //both must be true
+            if (andy.frontIsClear() && andy.canPickThing()) {
+            }
+
         }
-      
-}
     }
 }
