@@ -47,15 +47,19 @@ public class UbbiDubbiTranslator {
                         || startWord.charAt(i) == 'o'
                         || startWord.charAt(i) == 'u') {
 
+                    //if the boolean statement is false...
                     if (flag == false) {
-                        complete += "ub";
+                        
                         //"ub" will be placed in front of any vowel
-
+                        complete += "ub";
+                        
                     }
+                    //otherwise the boolean statement is equal to true
                     flag = true;
                     
-                } else {
                     
+                } else {
+                    //otherwise it will be set to false
                     flag = false;
                 }
                 //adds the vowels that the user put in, to the empty string
@@ -68,6 +72,7 @@ public class UbbiDubbiTranslator {
              * of the vowels had "ub" added in front of them.
              */
 
+            //tells the user their translated word
             System.out.println(startWord + " in Ubbi Dubbi is " + complete);
         }
 
