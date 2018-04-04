@@ -39,14 +39,6 @@ public class UbbiDubbiTranslator {
 
             //use a loop to go through the characters
             for (int i = 0; i < length; i++) {
-
-                
-                 if (startWord.contains("oo")) {
-                flag = true;
-                
-            } else {
-                flag = false;
-                 }
                 
                 //is the character at position "i" a vowel?
                 if (startWord.charAt(i) == 'a'
@@ -55,17 +47,20 @@ public class UbbiDubbiTranslator {
                         || startWord.charAt(i) == 'o'
                         || startWord.charAt(i) == 'u') {
                 
-                     
-                    
-                    //"ub" will be placed in front of any vowel
+                    if(flag == false){
                     complete += "ub";
-                    
+                    //"ub" will be placed in front of any vowel
+ 
                 }   
+                    flag = true;
+                } else {
+                    flag = false;
+                }
                 //adds the vowels that the user put in, to the empty string
                 complete += startWord.charAt(i);
-           
+             
                 } 
-          
+            
             /*
              * because the original word was put into the empty string, all 
              * of the vowels had "ub" added in front of them.
