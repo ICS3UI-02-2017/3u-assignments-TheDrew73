@@ -21,12 +21,17 @@ public class ArrayExample {
 
         // make an array to store expenses
         double[] expenses = new double[6];
-
+        
+        //array to store expenses names
+        String[] names = {"food", "DJ", "Hall Rental", "Decorations", "Staff", "Misc."};
+        
         //let the user know to get the costs
         System.out.println("PLease enter costs for Prom");
 
         //use a for loop for input
         for (int i = 0; i < expenses.length; i++) {
+            System.out.println("How much does " + names[i] + " cost?");
+            String costNames = names[i];
             expenses[i] = input.nextDouble();
         }
         //adding all of the expenses
@@ -44,6 +49,6 @@ public class ArrayExample {
 
         double tickets = Math.ceil(sum / 35);
 
-        System.out.println("Need to sell " + tickets + "tickets.");
+        System.out.println("Need to sell " + tickets + " tickets.");
     }
 }
