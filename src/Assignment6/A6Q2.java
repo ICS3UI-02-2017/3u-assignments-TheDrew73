@@ -50,7 +50,7 @@ public class A6Q2 {
                 System.out.println(heights[i] + " is above average height!");
             }
 
-             //if one of the heights entered is under 5'10 then they are below average height
+            //if one of the heights entered is under 5'10 then they are below average height
             if (heights[i] < 5.10) {
                 System.out.println(heights[i] + " is below average height...");
             }
