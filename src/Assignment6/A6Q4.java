@@ -23,10 +23,10 @@ public class A6Q4 {
         System.out.println("please enter the 10 marks.");
 
         //creates an array for the two integers
-        double[] marks = new double[10];
+        int[] marks = new int[10];
 
         for (int i = 0; i < marks.length; i++) {
-            marks[i] = input.nextDouble();
+            marks[i] = input.nextInt();
 
     }
         if (marks[0] > marks[1]){
