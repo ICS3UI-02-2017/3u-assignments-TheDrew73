@@ -22,7 +22,7 @@ public class A6Q1 {
 
         //ask the user how many students are in the class
         System.out.println("How many students are in the class?");
-        
+
         //set variable "students" to zero
         int students = 0;
 
@@ -30,11 +30,11 @@ public class A6Q1 {
          *entered in by the user, the double array will create that amount of number
          * arrays
          */
-        
-         for (int i = 0; i == students;) {
+
+        for (int i = 0; i == students;) {
             students = input.nextInt();
         }
-        
+
         double[] percents = new double[students];
 
         //asks the user to put in the marks of the students
@@ -49,12 +49,12 @@ public class A6Q1 {
         //set two new variables equal to zero
         double sum = 0;
         double average = 0;
-        
+
         //will add each number in the array into a single variable
-        for (int i = 0; i < percents.length; i++) {            
+        for (int i = 0; i < percents.length; i++) {
             average = average + percents[i];
         }
-        
+
         //calculates the average
         sum = average / students;
 
