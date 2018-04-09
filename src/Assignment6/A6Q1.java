@@ -17,38 +17,48 @@ public class A6Q1 {
      */
     public static void main(String[] args) {
 
+        //creates a scanner
         Scanner input = new Scanner(System.in);
 
-        double[] percents = new double[6];
-
-        double students = 0;
-
+        //ask the user how many students are in the class
         System.out.println("How many students are in the class?");
+        
+        //set variable "students" to zero
+        int students = 0;
 
-        for (int i = 0; i == students;) {
-            students = input.nextDouble();
+        /*set i equal to zero and when i is equal to the amount of students 
+         *entered in by the user, the double array will create that amount of number
+         * arrays
+         */
+        
+         for (int i = 0; i == students;) {
+            students = input.nextInt();
         }
+        
+        double[] percents = new double[students];
 
+        //asks the user to put in the marks of the students
         System.out.println("Enter the marks");
 
+        //places the numbers entered by the user into an array
         for (int i = 0; i < percents.length; i++) {
             percents[i] = input.nextDouble();
 
         }
 
-        //adding all of the expenses
+        //set two new variables equal to zero
         double sum = 0;
         double average = 0;
-
-        for (int i = 0; i < percents.length; i++) {
-
-            //get the expense
+        
+        //will add each number in the array into a single variable
+        for (int i = 0; i < percents.length; i++) {            
             average = average + percents[i];
-
         }
         
+        //calculates the average
         sum = average / students;
 
+        //tell the user the class average
         System.out.println("The class average is " + sum);
     }
 }
