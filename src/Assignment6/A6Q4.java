@@ -19,18 +19,28 @@ public class A6Q4 {
         //creates a scanner
         Scanner input = new Scanner(System.in);
 
+        int i = 0;
+        int j = 0;
+        int flip = 0;
+        
         //ask the user for 10 marks
         System.out.println("please enter the 10 marks.");
 
         //creates an array for the two integers
         int[] marks = new int[10];
 
-        for (int i = 0; i < marks.length; i++) {
+        for (i = 0; i < marks.length; i++) {
             marks[i] = input.nextInt();
-
+            
+        for (j = 0; j > marks[i]; j++)    {
+            if(marks[j] > marks[i]) {
+                
+                
+               
+            }
+        }
     }
-        if (marks[0] > marks[1]){
-            System.out.println("" + marks[1] + marks[0]);
-    }
+        
+            System.out.println("The marks from lowest to highest are " + marks[j]);
 }
 }
