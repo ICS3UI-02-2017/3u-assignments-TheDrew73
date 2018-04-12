@@ -19,25 +19,42 @@ public class A6Q4 {
         //creates a scanner
         Scanner input = new Scanner(System.in);
 
-        int i = 0;
-        int j = 0;
-        int flip = 0;
+        //set integer x to 0
+        int x = 0;
+        //set integer y to 0
+        int y = 0;
+        //set integer sort to 0
+        int sort = 0;
 
         //ask the user for 10 marks
         System.out.println("please enter the 10 marks.");
 
-        //creates an array for the two integers
+        //creates an array for the ten integers
         int[] marks = new int[10];
 
-        for (i = 0; i < marks.length; i++) {
+        //saves the numbers that the user typed in, into an array
+        for (int i = 0; i < marks.length; i++) {
             marks[i] = input.nextInt();
-
-            for (j = 0; j > marks[i]; j++) {
-                if (marks[j] > marks[i]) {
-                }
-            }
         }
+        //creates two variables that run through the array and keep track of all the numbers
+        for (x = 0; x < marks.length; x++) {
+            for (y = 0; y < marks.length; y++) {
+                /*if a number in the first array is smaller than a number in the second
+                 * then switch the two numbers around
+                 */
+                if (marks[x] < marks[y]) {
+                    sort = marks[x];
+                    marks[x] = marks[y];
+                    marks[y] = sort;
+                }
 
-        System.out.println("The marks from lowest to highest are " + marks[j]);
+            }
+
+        }
+        //tell the user the numbers in order of lowest to highest
+        System.out.println("The marks from lowest to highest are ");
+        for (x = 0; x < 10; x++) {
+            System.out.println(marks[x]);
+        }
     }
 }
