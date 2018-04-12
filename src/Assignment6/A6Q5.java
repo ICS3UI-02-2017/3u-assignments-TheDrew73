@@ -63,11 +63,13 @@ public class A6Q5 {
         if (number % 2 == 1) {
             int odd = number / 2;
             System.out.println(marks[number]);
-        }
+            
+        } else {
 
-        if (number % 2 == 0) {
-            int even = number / 2;
-            System.out.println(marks[number]);
+            if (number % 2 == 0) {
+                int even = number / 2;
+                System.out.println(marks[number]);
+            }
         }
     }
 }
