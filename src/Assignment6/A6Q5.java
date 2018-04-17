@@ -27,13 +27,12 @@ public class A6Q5 {
         //set integer sort to 0
         int sort = 0;
 
-        //ask the user for 10 marks
+        //ask the user for the number of marks
         System.out.println("please enter the number of marks.");
 
-        for (int i = 0; i == number;) {
-            number = input.nextInt();
-        }
-        //creates an array for the ten integers
+        number = input.nextInt();
+        
+        //creates an array for the integers
         int[] marks = new int[number];
 
         //saves the numbers that the user typed in, into an array
@@ -62,14 +61,14 @@ public class A6Q5 {
         System.out.println("The media of this set of marks is");
         if (number % 2 == 1) {
             int odd = number / 2;
-            System.out.println(marks[number]);
+            System.out.println(odd);
             
-        } else {
-
-            if (number % 2 == 0) {
-                int even = number / 2;
-                System.out.println(marks[number]);
-            }
-        }
+//        } else {
+//
+//            if (number % 2 == 0) {
+//                int even = number / 2;
+//                System.out.println(marks[number]);
+//            }
+       }
     }
 }
