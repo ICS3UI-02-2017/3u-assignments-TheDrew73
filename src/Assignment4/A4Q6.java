@@ -36,7 +36,7 @@ public class A4Q6 {
                 System.out.println("You are speeding and your fine is $100.");
             }
         }
-        //if the speed of the car is 21-230mph more than the speed limit, tell the user their fine is $270
+        //if the speed of the car is 21-30mph more than the speed limit, tell the user their fine is $270
         for (int fine2 = 21; fine2 <= 30; fine2++) {
             if (car == limit + fine2) {
                 System.out.println("You are speeding and your fine is $270.");
