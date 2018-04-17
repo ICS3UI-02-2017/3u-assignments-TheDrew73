@@ -29,12 +29,12 @@ public class A6Q5 {
 
         //ask the user for the number of marks
         System.out.println("please enter the number of marks.");
-
         number = input.nextInt();
-        
+
         //creates an array for the integers
         int[] marks = new int[number];
 
+        System.out.println("please enter the class marks.");
         //saves the numbers that the user typed in, into an array
         for (int i = 0; i < marks.length; i++) {
             marks[i] = input.nextInt();
@@ -62,13 +62,13 @@ public class A6Q5 {
         if (number % 2 == 1) {
             int odd = number / 2;
             System.out.println(odd);
-            
-//        } else {
-//
-//            if (number % 2 == 0) {
-//                int even = number / 2;
-//                System.out.println(marks[number]);
-//            }
-       }
+
+        } else {
+
+            if (number % 2 == 2) {
+                int even = number / 2;
+                System.out.println(even);
+            }
+        }
     }
 }
