@@ -29,9 +29,8 @@ public class A6Q2 {
          *entered in by the user, the double array will create that amount of number
          * arrays
          */
-        for (int i = 0; i == people;) {
-            people = input.nextInt();
-        }
+        
+        people = input.nextInt();
 
         double[] heights = new double[people];
 
