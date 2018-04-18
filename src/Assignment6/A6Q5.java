@@ -26,7 +26,7 @@ public class A6Q5 {
         int y = 0;
         //set integer sort to 0
         int sort = 0;
-
+        
         //ask the user for the number of marks
         System.out.println("please enter the number of marks.");
         number = input.nextInt();
@@ -54,21 +54,19 @@ public class A6Q5 {
         }
         //tell the user the numbers in order of lowest to highest
         System.out.println("The marks from lowest to highest are ");
-        for (x = 0; x < 10; x++) {
+        for (x = 0; x < number; x++) {
             System.out.println(marks[x]);
         }
 
-        System.out.println("The media of this set of marks is");
+
+        
         if (number % 2 == 1) {
             int odd = number / 2;
-            System.out.println(odd);
-
+            System.out.println("The media of this set of marks is " + odd);
         } else {
-
-            if (number % 2 == 2) {
                 int even = number / 2;
-                System.out.println(even);
-            }
+                System.out.println("The media of this set of marks is " + even);
+            
         }
     }
 }
