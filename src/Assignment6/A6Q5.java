@@ -59,13 +59,14 @@ public class A6Q5 {
         }
 
 
-        
+        //if the number of marks is odd take the middle number of the marks and output i to the user
         if (number % 2 == 1) {
             int odd = number / 2;
-            System.out.println("The media of this set of marks is " + odd);
+            System.out.println("The medium of this set of marks is " + marks[odd]);
         } else {
+            //otherwise if the number is even, then output the media to the user
                 int even = number / 2;
-                System.out.println("The media of this set of marks is " + even);
+                System.out.println("The media of this set of marks is " + marks[even-1] + ", " + marks[even]);
             
         }
     }
