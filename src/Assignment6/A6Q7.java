@@ -20,27 +20,18 @@ public class A6Q7 {
         Scanner input = new Scanner(System.in);
         
        
-        int[] notPrime = new int[1000];        
-        int[] flag = new int[1000];
+        boolean[] flag = new boolean[999];  
+        
+        for (int i = 0; i < flag.length; i++) {
+           flag[i] = true;
+            
+        }
+        
+        
+        int[] prime = new int[999];
         
         boolean primeNums = true;
-        
-        
-            
-        
-        
-        
-        
-//        for(i = 2; i < 1000; i++){
-//          
-//        }
-        
-            
-//        for (int i = 2; i < prime.length; i++) {
-//            primeNums = true;          
-//        }
-        
-        
+
         
     }
 }
