@@ -19,32 +19,18 @@ public class A6Q7 {
         //creates a scanner
         Scanner input = new Scanner(System.in);
 
+        int j = 0;
+        
         int i = 2;
 
-        int[] prime = new int[999];
+        int[] prime = new int [999];
 
         boolean[] flag = new boolean[999];
 
+        
+        
         for (i = 2; i <= flag.length; i++) {
-            flag[i] = true;
-
+            
         }
-
-//        if (i + 2 > i){
-//            i = prime[i];
-//            flag[i] = true;
-//        } else {
-//            flag[i] = false;
-//        }
-//        
-//        
-//      System.out.println(flag[i]);
-
-
-
-
-//        boolean primeNums = true;
-
-
     }
 }
