@@ -14,6 +14,8 @@ public class A7Q1 {
 
     public static void circleArea() {
 
+        double area = 0;
+        
         //creates a scanner
         Scanner input = new Scanner(System.in);
         
@@ -22,7 +24,7 @@ public class A7Q1 {
         
         //calculates the area of the circle and outputs it to the user
         double radius = input.nextInt();
-        double area = 3.14159*radius*radius;
+        area = 3.14159*Math.pow(area, 2);
         Math.ceil(area);
         System.out.println("The area of the circle is " + area);
     }
