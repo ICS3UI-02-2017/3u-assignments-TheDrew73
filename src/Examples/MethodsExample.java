@@ -10,13 +10,23 @@ package Examples;
  */
 public class MethodsExample {
 
+    public static void countdown() {
+        
+            for(int i = 10; i > 0; i--){
+                System.out.println(i);
+            }
+        }  
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       
+       countdown();
+        
     }
 }
+
+
 
 
         	
