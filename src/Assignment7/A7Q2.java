@@ -27,7 +27,7 @@ public class A7Q2 {
 
         for (int gradeC = 60; gradeC <= 69; gradeC++) {
             if (grade == gradeC) {
-                System.out.println("Your grade is a c");
+                System.out.println("Your grade is a C");
             }
         }
 
