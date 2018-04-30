@@ -12,21 +12,12 @@ import java.util.Scanner;
  */
 public class A7Q1 {
 
-    public static void circleArea() {
+    public static double circleArea(double radius) {
 
-        double area = 0;
-        
-        //creates a scanner
-        Scanner input = new Scanner(System.in);
-        
-        //asks the user for the radius
-        System.out.println("Please enter the radius.");
-        
-        //calculates the area of the circle and outputs it to the user
-        double radius = input.nextInt();
-        area = 3.14159*Math.pow(area, 2);
+        //calculates the area of the circle
+        double area = 3.14159*Math.pow(radius, 2);
         Math.ceil(area);
-        System.out.println("The area of the circle is " + area);
+        return area;
     }
             
             
@@ -34,6 +25,17 @@ public class A7Q1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        circleArea();
+         double area = 0;
+        
+        //creates a scanner
+        Scanner input = new Scanner(System.in);
+        
+        //asks the user for the radius
+        System.out.println("Please enter the radius.");
+        
+        //outputs the area of the circle to the user
+        double radius = input.nextInt();
+        area = circleArea(radius);
+        System.out.println("The area of the circle is " + area);
     }
 }
