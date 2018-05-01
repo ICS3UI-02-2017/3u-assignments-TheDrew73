@@ -13,21 +13,21 @@ import java.util.Scanner;
 public class A7Q4 {
 
     public static double compoundInterest(double initial) {
-        
-        
+
         
         
         return initial;
     }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-         //creates a scanner
+        //creates a scanner
         Scanner input = new Scanner(System.in);
-        
+
         System.out.println("Please enter your initial amount.");
-         double last = input.nextDouble();
-         
+        double last = input.nextDouble();
+
     }
 }
