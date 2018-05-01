@@ -12,11 +12,11 @@ import java.util.Scanner;
  */
 public class A7Q4 {
 
-    public static double compoundInterest(double initial) {
+    public static double compoundInterest(double initialValue) {
 
         
         
-        return initial;
+        return initialValue;
     }
 
     /**
@@ -27,7 +27,7 @@ public class A7Q4 {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Please enter your initial amount.");
-        double last = input.nextDouble();
+        double lastValue = input.nextDouble();
 
     }
 }
