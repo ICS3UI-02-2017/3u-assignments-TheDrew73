@@ -10,7 +10,7 @@ package Assignment7;
  */
 public class A7Q6 {
 
-    public static double lastDigit(double lastDig) {
+    public static int lastDigit(int lastDig) {
    
         //finds the last digit
         lastDig = lastDig % 10;
