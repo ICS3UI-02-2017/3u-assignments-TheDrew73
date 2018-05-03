@@ -11,17 +11,21 @@ package Assignment7;
 public class A7Q6 {
 
     public static double lastDigit(double lastDig) {
+   
+        //finds the last digit
+        lastDig = lastDig % 10;
         
-
-        
-        
+        //outputs the last diget 
+        System.out.println(lastDig);
+   
         return lastDig;
     }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        lastDigit(3573);
+        //is the number
+        lastDigit(4576);
         
         
     }
