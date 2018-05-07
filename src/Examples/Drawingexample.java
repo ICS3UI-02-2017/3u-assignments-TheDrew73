@@ -39,6 +39,7 @@ public class Drawingexample extends JComponent implements ActionListener {
 
     // YOUR GAME VARIABLES WOULD GO HERE
     
+    Color Plurple = new Color(0, 104, 19);
 
 
     // GAME VARIABLES END HERE    
@@ -84,8 +85,49 @@ public class Drawingexample extends JComponent implements ActionListener {
 
         // GAME DRAWING GOES HERE
         
+        g.setColor(Plurple);
+        
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        
+        //set colour
+        g.setColor(Color.black);
+        
+        //draw a filled i rectangle
+        //(x, y, width, height)
+        g.fillRect(100, 75, 150, 50);
 		
-		
+        //draw a filled i rectangle
+        //(x, y, width, height)
+        g.fillRect(500, 75, 150, 50);
+        
+        g.setColor(Color.red);
+        
+        //draw anything that is an "oval"
+        //(x, y, width, height)
+	g.fillOval(100, 75, 150, 50);
+        
+        //draw anything that is an "oval"
+        //(x, y, width, height)
+	g.fillOval(500, 75, 150, 50);
+        
+        //draw an arc
+        //(x, y, width, height, start angle, finish angle)
+        g.fillArc(150, 350, 450, 100, 180, 180);
+        
+        g.setColor(Color.black);
+        
+        g.fillOval(150, 75, 50, 50);
+        
+        g.fillOval(550, 75, 50, 50);
+        
+        //create a triangle
+        int[] triangleX = {375, 250, 500};
+        
+        int[] triangleY = {200, 300, 300};
+        
+        //array of x, array of y, # of points
+        g.fillPolygon (triangleX, triangleY, 3);
+        
         // GAME DRAWING ENDS HERE
     }
 
