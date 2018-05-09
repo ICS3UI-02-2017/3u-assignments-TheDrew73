@@ -89,68 +89,75 @@ public class A8Q1 extends JComponent implements ActionListener {
 		
         g.setColor(Color.WHITE);
         
-        g.fillRect(25, 12, WIDTH - 50, HEIGHT - 25);
+        g.fillOval(175, 0, 450, 450);
+        
+        int[] PolyX = {200, 350, 450, 600};
+        int[] PolyY = {300, 550, 550, 300};
+        
+        g.fillPolygon (PolyX, PolyY, 4);
+        
+        g.fillArc(275, 375, 150, 200, 150, 160);
+        
+        g.translate(525, 375);
+        g2d.scale(-1,1);
+        g.fillArc(0, 0, 150, 200, 150, 160);
+        g2d.scale(-1,1);
+        g.translate(-525, -375);
         
         //set colour
         g.setColor(Color.black);
         
         //draw a filled i rectangle
         //(x, y, width, height)
-        g.fillOval(112, 81, 175, 75);
+        g.fillOval(212, 181, 125, 50);
 		
         //draw a filled i rectangle
         //(x, y, width, height)
-        g.fillOval(512, 81, 175, 75);
-        
-        g.fillRect(125, 62, 150, 5);
-        
-        g.fillRect(525, 62, 150, 5);
-        
-        g.drawArc(125, 112, 150, 100, 180, 180);
-        
-        g.drawArc(525, 112, 150, 100, 180, 180);
+        g.fillOval(463, 181, 125, 50);
 
-        g.drawLine(400, 62, 400, 355);
+       g.drawLine(400, 200, 400, 375);
         
-        g.drawLine(400, 62, 475, 275);
-        
-        g.drawLine(400, 62, 325, 275);
-        
-        g.drawLine(325, 275, 275, 275);
-        
-        g.drawLine(475, 275, 525, 275);
-        
-        g.drawArc(275, 175, 150, 200, 180, 130);
-        
-        g.translate(525, 175);
-  
-        g.drawArc(0, 0, 150, 200, 180, 130);
-        g.translate(-525, -175);
+        g.drawArc(325, 275, 150, 100, 180, 180);
         
         g.setColor(Color.red);
         
-        //draw anything that is an "oval"
-        //(x, y, width, height)
-	g.fillOval(125, 87, 150, 50);
+        /**
+         * cos@ = x/r => x = x. + r * cos@
+         * sin@ = y/r => y = y. + r * sin@
+         * Math.cos();
+         * Math.sin();
+         * Math.toRadians();
+         */
+        
+           int x = 0;
+           int y = 0;
+        
+        for (int i = 5000; i > 0; i--) {
+           
+
+        }
         
         //draw anything that is an "oval"
         //(x, y, width, height)
-	g.fillOval(525, 87, 150, 50);
+	g.fillOval(250, 180, 50, 50);
+        
+        //draw anything that is an "oval"
+        //(x, y, width, height)
+	g.fillOval(500, 180, 50, 50);
         
         //draw an arc
         //(x, y, width, height, start angle, finish angle)
-        g.fillArc(175, 425, 450, 100, 180, 180);
+        g.fillArc(335, 375, 125, 100, 180, 180);
         
         g.setColor(Color.black);
         
-        g.fillOval(175, 87, 50, 50);
+        g.fillOval(262, 190, 25, 25);
         
-        g.fillOval(575, 87, 50, 50);
+        g.fillOval(512, 190, 25, 25);
         
-        g.drawOval(50, 250, 150, 150);
+        g.drawOval(150, 250, 150, 150);
         
-        
-        g.drawOval(585, 250, 150, 150);
+        g.drawOval(500, 250, 150, 150);
         
         // GAME DRAWING ENDS HERE
     }
