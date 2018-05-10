@@ -24,30 +24,27 @@ public class A8Q1 extends JComponent implements ActionListener {
     // Height and Width of our game
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
-
     //Title of the window
     String title = "My Game";
-
     // sets the framerate and delay for our game
     // this calculates the number of milliseconds per frame
     // you just need to select an approproate framerate
     int desiredFPS = 60;
     int desiredTime = Math.round((1000 / desiredFPS));
-    
     // timer used to run the game loop
     // this is what keeps our time running smoothly :)
     Timer gameTimer;
 
     // YOUR GAME VARIABLES WOULD GO HERE
     
-
-
-    // GAME VARIABLES END HERE    
-
+    Color shading = new Color(244, 244, 244);
+    Color tV = new Color (0, 22, 58);
+    Color brown = new Color (38, 26, 0);
     
+    // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
     // You will learn more about this in Grade 12 :)
-    public A8Q1(){
+    public A8Q1() {
         // creates a windows to show my game
         JFrame frame = new JFrame(title);
 
@@ -69,8 +66,8 @@ public class A8Q1 extends JComponent implements ActionListener {
         this.addMouseMotionListener(m);
         this.addMouseWheelListener(m);
         this.addMouseListener(m);
-        
-        gameTimer = new Timer(desiredTime,this);
+
+        gameTimer = new Timer(desiredTime, this);
         gameTimer.setRepeats(true);
         gameTimer.start();
     }
@@ -80,85 +77,128 @@ public class A8Q1 extends JComponent implements ActionListener {
     // NOTE: This is already double buffered!(helps with framerate/speed)
     @Override
     public void paintComponent(Graphics g) {
-        Graphics2D g2d = (Graphics2D)g;
-        
+        Graphics2D g2d = (Graphics2D) g;
+
         // always clear the screen first!
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         // GAME DRAWING GOES HERE
-		
+
+        g.setColor(brown);
+        
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        
+        g.setColor(Color.BLACK);
+        
+        g.fillRoundRect(37, 10, 725, 560, 90, 90);
+        
+        g.setColor(tV);
+        
+        g.fillRoundRect(50, 15, 700, 550, 90, 90);
+        
+        
         g.setColor(Color.WHITE);
-        
+
+        g.fillOval(150, 250, 150, 150);
+
+        g.fillOval(500, 250, 150, 150);
+
         g.fillOval(175, 0, 450, 450);
-        
+
         int[] PolyX = {200, 350, 450, 600};
         int[] PolyY = {300, 550, 550, 300};
-        
-        g.fillPolygon (PolyX, PolyY, 4);
-        
+
+        g.fillPolygon(PolyX, PolyY, 4);
+
         g.fillArc(275, 375, 150, 200, 150, 160);
-        
+
         g.translate(525, 375);
-        g2d.scale(-1,1);
+        g2d.scale(-1, 1);
         g.fillArc(0, 0, 150, 200, 150, 160);
-        g2d.scale(-1,1);
+        g2d.scale(-1, 1);
         g.translate(-525, -375);
+
+//        g.setColor(shading);
+//        
+//        int[] shade1_0 = {400, 400, 615, 615};
+//        int[] shade1_1 = {0, 25, 175, 150};
+//        
+//        g.fillPolygon(shade1_0, shade1_1, 4);
+//        
+//        g.fillArc(400, 125, 250, 100, 0, 180);
         
         //set colour
         g.setColor(Color.black);
-        
+
         //draw a filled i rectangle
         //(x, y, width, height)
         g.fillOval(212, 181, 125, 50);
-		
+
         //draw a filled i rectangle
         //(x, y, width, height)
         g.fillOval(463, 181, 125, 50);
 
-       g.drawLine(400, 200, 400, 375);
-        
-        g.drawArc(325, 275, 150, 100, 180, 180);
-        
-        g.setColor(Color.red);
-        
-        /**
-         * cos@ = x/r => x = x. + r * cos@
-         * sin@ = y/r => y = y. + r * sin@
-         * Math.cos();
-         * Math.sin();
-         * Math.toRadians();
-         */
-        
-           int x = 0;
-           int y = 0;
-        
-        for (int i = 5000; i > 0; i--) {
-           
+        g.drawLine(400, 200, 400, 375);
 
+        g.drawArc(325, 275, 150, 100, 180, 180);
+
+        g.setColor(Color.red);
+
+        /**
+         * cos@ = x/r => x = x. + r * cos@ sin@ = y/r => y = y. + r * sin@
+         * Math.cos(); Math.sin(); Math.toRadians();
+         */
+        int prevX = 225;
+        int prevY = 325;
+        double a = 0;
+        double r = 0;
+
+        while (r <= 75) {
+            r += 0.3;
+            int x = (int) (225 + r * Math.cos(a));
+            int y = (int) (325 + r * Math.sin(a));
+            g.drawLine(prevX, prevY, x, y);
+            prevX = x;
+            prevY = y;
+            a += 0.1;
         }
-        
+
+        int prevX2 = 575;
+        int prevY2 = 325;
+        double a2 = 0;
+        double r2 = 0;
+        while (r2 <= 75) {
+            r2 += 0.3;
+            int x2 = (int) (575 + r2 * Math.cos(a2));
+            int y2 = (int) (325 + r2 * Math.sin(a2));
+            g.drawLine(prevX2, prevY2, x2, y2);
+            prevX2 = x2;
+            prevY2 = y2;
+            a2 += 0.1;
+        }
+
         //draw anything that is an "oval"
         //(x, y, width, height)
-	g.fillOval(250, 180, 50, 50);
-        
+        g.fillOval(250, 180, 50, 50);
+
         //draw anything that is an "oval"
         //(x, y, width, height)
-	g.fillOval(500, 180, 50, 50);
-        
+        g.fillOval(500, 180, 50, 50);
+
         //draw an arc
         //(x, y, width, height, start angle, finish angle)
         g.fillArc(335, 375, 125, 100, 180, 180);
-        
+
         g.setColor(Color.black);
-        
+
         g.fillOval(262, 190, 25, 25);
-        
+
         g.fillOval(512, 190, 25, 25);
-        
+
         g.drawOval(150, 250, 150, 150);
-        
+
         g.drawOval(500, 250, 150, 150);
-        
+
         // GAME DRAWING ENDS HERE
     }
 
@@ -166,13 +206,11 @@ public class A8Q1 extends JComponent implements ActionListener {
     // This is run before the game loop begins!
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
-
     }
 
     // The main game loop
     // In here is where all the logic for my game will go
     public void gameLoop() {
-        
     }
 
     // Used to implement any of the Mouse Actions
@@ -181,25 +219,21 @@ public class A8Q1 extends JComponent implements ActionListener {
         // if a mouse button has been pressed down
         @Override
         public void mousePressed(MouseEvent e) {
-
         }
 
         // if a mouse button has been released
         @Override
         public void mouseReleased(MouseEvent e) {
-
         }
 
         // if the scroll wheel has been moved
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-
         }
 
         // if the mouse has moved positions
         @Override
         public void mouseMoved(MouseEvent e) {
-
         }
     }
 
@@ -209,13 +243,11 @@ public class A8Q1 extends JComponent implements ActionListener {
         // if a key has been pressed down
         @Override
         public void keyPressed(KeyEvent e) {
-
         }
 
         // if a key has been released
         @Override
         public void keyReleased(KeyEvent e) {
-
         }
     }
 
@@ -234,4 +266,3 @@ public class A8Q1 extends JComponent implements ActionListener {
         A8Q1 game = new A8Q1();
     }
 }
-
