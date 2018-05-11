@@ -140,7 +140,8 @@ public class A8Q1 extends JComponent implements ActionListener {
         g.setColor(Color.red);
 
         /**
-         * cos@ = x/r => x = x. + r * cos@ sin@ = y/r => y = y. + r * sin@
+         * cos@ = x/r => x = x. + r * cos@ 
+         * sin@ = y/r => y = y. + r * sin@
          * Math.cos(); Math.sin(); Math.toRadians();
          */
         int prevX = 225;
