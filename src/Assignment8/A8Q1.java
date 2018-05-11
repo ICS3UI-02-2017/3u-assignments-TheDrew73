@@ -34,13 +34,13 @@ public class A8Q1 extends JComponent implements ActionListener {
     // timer used to run the game loop
     // this is what keeps our time running smoothly :)
     Timer gameTimer;
-
     // YOUR GAME VARIABLES WOULD GO HERE
     
+    //custom colors
     Color shading = new Color(244, 244, 244);
-    Color tV = new Color (0, 22, 58);
-    Color brown = new Color (38, 26, 0);
-    
+    Color tV = new Color(0, 22, 58);
+    Color brown = new Color(38, 26, 0);
+
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
     // You will learn more about this in Grade 12 :)
@@ -84,30 +84,29 @@ public class A8Q1 extends JComponent implements ActionListener {
 
         // GAME DRAWING GOES HERE
 
+        //create tv background
         g.setColor(brown);
-        
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        
         g.setColor(Color.BLACK);
-        
         g.fillRoundRect(37, 10, 725, 560, 90, 90);
-        
         g.setColor(tV);
-        
         g.fillRoundRect(50, 15, 700, 550, 90, 90);
         
-        
+        g.setColor(Color.BLACK);
+        for (int i = 17; i < 563; i = i + 12) {
+            g.drawLine(50, i, 750, i);
+        }
+
+        //create the basic shapes in the face
         g.setColor(Color.WHITE);
-
+        g.fillOval(170, 150, 50, 100);
+        g.fillOval(580, 150, 50, 100);
         g.fillOval(150, 250, 150, 150);
-
         g.fillOval(500, 250, 150, 150);
-
         g.fillOval(175, 0, 450, 450);
-
+        
         int[] PolyX = {200, 350, 450, 600};
         int[] PolyY = {300, 550, 550, 300};
-
         g.fillPolygon(PolyX, PolyY, 4);
 
         g.fillArc(275, 375, 150, 200, 150, 160);
@@ -118,30 +117,26 @@ public class A8Q1 extends JComponent implements ActionListener {
         g2d.scale(-1, 1);
         g.translate(-525, -375);
 
-//        g.setColor(shading);
-//        
-//        int[] shade1_0 = {400, 400, 615, 615};
-//        int[] shade1_1 = {0, 25, 175, 150};
-//        
-//        g.fillPolygon(shade1_0, shade1_1, 4);
-//        
-//        g.fillArc(400, 125, 250, 100, 0, 180);
-        
-        //set colour
+        //drawing minor details
         g.setColor(Color.black);
+        g.drawArc(200, 125, 150, 50, 0, 180);
+        g.drawArc(450, 125, 150, 50, 0, 180);
+        g.drawLine(350, 473, 320, 566);
+        g.drawLine(450, 473, 480, 566);
+        g.drawLine(350, 473, 350, 450);
 
         //draw a filled i rectangle
         //(x, y, width, height)
-        g.fillOval(212, 181, 125, 50);
+        g.fillOval(212, 156, 125, 75);
 
         //draw a filled i rectangle
         //(x, y, width, height)
-        g.fillOval(463, 181, 125, 50);
+        g.fillOval(463, 156, 125, 75);
 
         g.drawLine(400, 200, 400, 375);
-
         g.drawArc(325, 275, 150, 100, 180, 180);
 
+        //create the spirals
         g.setColor(Color.red);
 
         /**
@@ -177,26 +172,33 @@ public class A8Q1 extends JComponent implements ActionListener {
             a2 += 0.1;
         }
 
+        //eyes and the mouth
         //draw anything that is an "oval"
         //(x, y, width, height)
-        g.fillOval(250, 180, 50, 50);
+        g.fillOval(250, 165, 50, 50);
 
         //draw anything that is an "oval"
         //(x, y, width, height)
-        g.fillOval(500, 180, 50, 50);
+        g.fillOval(500, 165, 50, 50);
 
-        //draw an arc
-        //(x, y, width, height, start angle, finish angle)
-        g.fillArc(335, 375, 125, 100, 180, 180);
+        g.fillRect(350, 435, 100, 25);
 
+        int[] mouthCorner1X = {300, 350, 350};
+        int[] mouthCorner1Y = {400, 435, 475};
+        int[] mouthCorner2X = {500, 450, 450};
+        int[] mouthCorner2Y = {400, 435, 475};
+
+        g.fillPolygon(mouthCorner2X, mouthCorner2Y, 3);
+        g.fillPolygon(mouthCorner1X, mouthCorner1Y, 3);
+
+        //eyes and more minor details
         g.setColor(Color.black);
-
-        g.fillOval(262, 190, 25, 25);
-
-        g.fillOval(512, 190, 25, 25);
-
+        g.drawLine(350, 473, 350, 450);
+        g.drawLine(350, 450, 450, 450);
+        g.drawLine(450, 473, 450, 450);
+        g.fillOval(262, 180, 25, 25);
+        g.fillOval(512, 180, 25, 25);
         g.drawOval(150, 250, 150, 150);
-
         g.drawOval(500, 250, 150, 150);
 
         // GAME DRAWING ENDS HERE
