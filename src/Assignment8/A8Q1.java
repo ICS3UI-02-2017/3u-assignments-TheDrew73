@@ -40,6 +40,13 @@ public class A8Q1 extends JComponent implements ActionListener {
     Color shading = new Color(244, 244, 244);
     Color tV = new Color(0, 22, 58);
     Color brown = new Color(38, 26, 0);
+    
+    int eyesVib = 250;
+    
+    int eyesVib2 = 500;
+    
+    int mouseX = 0;
+    int mouseY = 0;
 
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
@@ -176,11 +183,11 @@ public class A8Q1 extends JComponent implements ActionListener {
         //eyes and the mouth
         //draw anything that is an "oval"
         //(x, y, width, height)
-        g.fillOval(250, 165, 50, 50);
+        g.fillOval(eyesVib, 165, 50, 50);
 
         //draw anything that is an "oval"
         //(x, y, width, height)
-        g.fillOval(500, 165, 50, 50);
+        g.fillOval(eyesVib2, 165, 50, 50);
 
         g.fillRect(350, 435, 100, 25);
 
@@ -197,8 +204,15 @@ public class A8Q1 extends JComponent implements ActionListener {
         g.drawLine(350, 473, 350, 450);
         g.drawLine(350, 450, 450, 450);
         g.drawLine(450, 473, 450, 450);
-        g.fillOval(262, 180, 25, 25);
-        g.fillOval(512, 180, 25, 25);
+        
+        double angle = Math.atan2(mouseX, mouseY);
+        double y4 = 25 * Math.sin(angle);
+        double x4 = 25 * Math.cos(angle);
+        int x_1 = (int)(mouseX + x4);
+        int y_1 = (int)(mouseY + y4);
+        
+        g.fillOval(mouseX, mouseY, 25, 25);
+        g.fillOval(mouseX, mouseY, 25, 25);
         g.drawOval(150, 250, 150, 150);
         g.drawOval(500, 250, 150, 150);
 
@@ -214,6 +228,16 @@ public class A8Q1 extends JComponent implements ActionListener {
     // The main game loop
     // In here is where all the logic for my game will go
     public void gameLoop() {
+        
+        eyesVib = eyesVib + 3;
+        if(eyesVib > 255){
+            eyesVib = 250;
+        }
+        
+        eyesVib2 = eyesVib2 + 3;
+        if(eyesVib2 > 505){
+            eyesVib2 = 500;
+        }
     }
 
     // Used to implement any of the Mouse Actions
@@ -237,6 +261,9 @@ public class A8Q1 extends JComponent implements ActionListener {
         // if the mouse has moved positions
         @Override
         public void mouseMoved(MouseEvent e) {
+            //set the mouse location
+            mouseX = e.getX();
+            mouseY = e.getY();
         }
     }
 
