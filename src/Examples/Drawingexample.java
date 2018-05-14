@@ -41,6 +41,11 @@ public class Drawingexample extends JComponent implements ActionListener {
     
     Color Plurple = new Color(0, 104, 19);
 
+    boolean moveUp = false;
+    boolean moveDown = false;
+    
+    int Y = 75;
+    int X = 100;
 
     // GAME VARIABLES END HERE    
 
@@ -94,7 +99,7 @@ public class Drawingexample extends JComponent implements ActionListener {
         
         //draw a filled i rectangle
         //(x, y, width, height)
-        g.fillRect(100, 75, 150, 50);
+        g.fillRect(X, Y, 150, 50);
 		
         //draw a filled i rectangle
         //(x, y, width, height)
@@ -142,6 +147,11 @@ public class Drawingexample extends JComponent implements ActionListener {
     // In here is where all the logic for my game will go
     public void gameLoop() {
         
+        if(moveUp){
+            Y = Y - 3;
+        }else if(moveDown){
+            Y = Y + 3;
+        }
     }
 
     // Used to implement any of the Mouse Actions
@@ -178,13 +188,29 @@ public class Drawingexample extends JComponent implements ActionListener {
         // if a key has been pressed down
         @Override
         public void keyPressed(KeyEvent e) {
-
+            //get the keyCode
+            int keyCode = e.getKeyCode();
+            //which key ios eing pressed
+            if(keyCode == KeyEvent.VK_W) {
+                moveUp = true;
+            }
+            if(keyCode == KeyEvent.VK_S) {
+                moveDown = true;
+            }
         }
 
         // if a key has been released
         @Override
         public void keyReleased(KeyEvent e) {
-
+            //get the keyCode
+            int keyCode = e.getKeyCode();
+            //which key ios eing pressed
+            if(keyCode == KeyEvent.VK_W) {
+                moveUp = false;
+            }
+            if(keyCode == KeyEvent.VK_S) {
+                moveDown = false;
+            }
         }
     }
 
