@@ -205,14 +205,21 @@ public class A8Q1 extends JComponent implements ActionListener {
         g.drawLine(350, 450, 450, 450);
         g.drawLine(450, 473, 450, 450);
         
-        double angle = Math.atan2(mouseX, mouseY);
-        double y4 = 25 * Math.sin(angle);
-        double x4 = 25 * Math.cos(angle);
-        int x_1 = (int)(mouseX + x4);
-        int y_1 = (int)(mouseY + y4);
+        //make the pupils follow the movement of the mouse
+        double angle = Math.atan2(mouseY-175, mouseX-265);
+        double y4 = 15 * Math.sin(angle);
+        double x4 = 15 * Math.cos(angle);
+        int x_1 = (int)(265 + x4);
+        int y_1 = (int)(175 + y4);
         
-        g.fillOval(mouseX, mouseY, 25, 25);
-        g.fillOval(mouseX, mouseY, 25, 25);
+        double angle2 = Math.atan2(mouseY-175, mouseX-515);
+        double y5 = 15 * Math.sin(angle2);
+        double x5 = 15 * Math.cos(angle2);
+        int x_2 = (int)(515 + x5);
+        int y_2 = (int)(175 + y5);
+        
+        g.fillOval(x_1, y_1, 25, 25);
+        g.fillOval(x_2, y_2, 25, 25);
         g.drawOval(150, 250, 150, 150);
         g.drawOval(500, 250, 150, 150);
 
@@ -238,6 +245,7 @@ public class A8Q1 extends JComponent implements ActionListener {
         if(eyesVib2 > 505){
             eyesVib2 = 500;
         }
+        
     }
 
     // Used to implement any of the Mouse Actions
