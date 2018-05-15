@@ -23,8 +23,8 @@ import javax.swing.Timer;
 public class dayBreak extends JComponent implements ActionListener {
 
     // Height and Width of our game
-    static final int WIDTH = 800;
-    static final int HEIGHT = 600;
+    static final int WIDTH = 1000;
+    static final int HEIGHT = 800;
 
     //Title of the window
     String title = "My Game";
@@ -41,7 +41,7 @@ public class dayBreak extends JComponent implements ActionListener {
 
     // YOUR GAME VARIABLES WOULD GO HERE
     
-   
+   Color skyBox = new Color(186, 212, 255);
 
     // GAME VARIABLES END HERE    
 
@@ -85,6 +85,10 @@ public class dayBreak extends JComponent implements ActionListener {
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         // GAME DRAWING GOES HERE
+        
+        g.setColor(skyBox);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        
         
        
         // GAME DRAWING ENDS HERE
