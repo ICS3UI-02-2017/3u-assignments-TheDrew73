@@ -46,13 +46,20 @@ public class dayBreak extends JComponent implements ActionListener {
     
    Color skyBox = new Color(79, 182, 255);
    
-   BufferedImage bgSheet = loadImage("Stage1 back1.png");
+   BufferedImage bgSheet = loadImage("Stage1 back1");
    BufferedImage[] background = new BufferedImage[8];
    
+   BufferedImage bg2Sheet = loadImage("stage2 back2.png");
+   BufferedImage[] background2 = new BufferedImage[60];
+   
    int bgFrame = 0;
+   int bg2Frame =0;
    
    long lastBGChange = 0;
+   long lastBG2Change = 0;
+   
    int bgDelay = 83;
+   int bg2Delay = 83;
    
 
     // GAME VARIABLES END HERE    
@@ -110,7 +117,7 @@ public class dayBreak extends JComponent implements ActionListener {
         
         g.setColor(skyBox);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        g.drawImage(background[bgFrame], 0, HEIGHT/2,null);
+        g.drawImage(background[bgFrame], 0, HEIGHT/2 + 46,null);
         
        
         // GAME DRAWING ENDS HERE
@@ -131,7 +138,17 @@ public class dayBreak extends JComponent implements ActionListener {
                 i++;
             }
         }
-
+        
+        int width2 = bg2Sheet.getWidth()/5;
+        int height2 = bg2Sheet.getHeight()/12;
+        int j = 0;
+        for (int row = 0; row < 5; row++) {
+            for (int col = 0; col < 12; col++) {
+                background2[i] = bg2Sheet.getSubimage(col*width2, row*height2, width, height);
+                i++;
+            }
+            
+        }
     }
 
     // The main game loop
@@ -140,6 +157,11 @@ public class dayBreak extends JComponent implements ActionListener {
         if(System.currentTimeMillis() > lastBGChange + bgDelay){
             bgFrame = (bgFrame + 1) % background.length;
             lastBGChange = System.currentTimeMillis();
+        }
+        
+        if(System.currentTimeMillis() > lastBG2Change + bg2Delay){
+            bg2Frame = (bg2Frame + 1) % background2.length;
+            lastBG2Change = System.currentTimeMillis();
         }
         
     }
