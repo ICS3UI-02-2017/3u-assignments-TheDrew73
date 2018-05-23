@@ -14,6 +14,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 /**
@@ -41,7 +44,16 @@ public class dayBreak extends JComponent implements ActionListener {
 
     // YOUR GAME VARIABLES WOULD GO HERE
     
-   Color skyBox = new Color(186, 212, 255);
+   Color skyBox = new Color(79, 182, 255);
+   
+   BufferedImage bgSheet = loadImage("Stage1 back1.png");
+   BufferedImage[] background = new BufferedImage[8];
+   
+   int bgFrame = 0;
+   
+   long lastBGChange = 0;
+   int bgDelay = 83;
+   
 
     // GAME VARIABLES END HERE    
 
@@ -70,10 +82,20 @@ public class dayBreak extends JComponent implements ActionListener {
         this.addMouseMotionListener(m);
         this.addMouseWheelListener(m);
         this.addMouseListener(m);
-        
+        preSetup();
         gameTimer = new Timer(desiredTime,this);
         gameTimer.setRepeats(true);
         gameTimer.start();
+    }
+    
+    BufferedImage loadImage(String file){
+        BufferedImage img = null;
+        try{
+            img = ImageIO.read(new File(file));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return img;
     }
 
     // drawing of the game happens in here
@@ -88,7 +110,7 @@ public class dayBreak extends JComponent implements ActionListener {
         
         g.setColor(skyBox);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        
+        g.drawImage(background[bgFrame], 0, HEIGHT/2,null);
         
        
         // GAME DRAWING ENDS HERE
@@ -98,12 +120,27 @@ public class dayBreak extends JComponent implements ActionListener {
     // This is run before the game loop begins!
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
+        
+        // splitting up the image spritesheet
+        int width = bgSheet.getWidth()/2;
+        int height = bgSheet.getHeight()/4;
+        int i = 0;
+        for(int row = 0; row < 4; row++){
+            for(int col = 0; col < 2; col++){
+                background[i] = bgSheet.getSubimage(col*width, row*height, width, height);
+                i++;
+            }
+        }
 
     }
 
     // The main game loop
     // In here is where all the logic for my game will go
     public void gameLoop() {
+        if(System.currentTimeMillis() > lastBGChange + bgDelay){
+            bgFrame = (bgFrame + 1) % background.length;
+            lastBGChange = System.currentTimeMillis();
+        }
         
     }
 
@@ -153,7 +190,7 @@ public class dayBreak extends JComponent implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        preSetup();
+        
         gameLoop();
         repaint();
     }
