@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,43 +25,43 @@ public class PongGameExample extends JComponent implements ActionListener {
     // Height and Width of our game
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
-
     //Title of the window
     String title = "My Game";
-
     // sets the framerate and delay for our game
     // this calculates the number of milliseconds per frame
     // you just need to select an approproate framerate
     int desiredFPS = 60;
     int desiredTime = Math.round((1000 / desiredFPS));
-    
     // timer used to run the game loop
     // this is what keeps our time running smoothly :)
     Timer gameTimer;
-
+    
     // YOUR GAME VARIABLES WOULD GO HERE
+    
     //rectangle x, y, Width, Height
-    Rectangle paddle1 = new Rectangle(50,250,25,100);
-    Rectangle paddle2 = new Rectangle(725,250,25,100);
-    
-    Rectangle ball = new Rectangle(395,295,10,10);
-    
+    Rectangle paddle1 = new Rectangle(50, 250, 25, 100);
+    Rectangle paddle2 = new Rectangle(725, 250, 25, 100);
+    Rectangle ball = new Rectangle(395, 295, 10, 10);
     int ballAngle = 45;
     int ballSpeed = 5;
-    
     boolean paddle1Up = false;
     boolean paddle1Down = false;
     boolean paddle2Up = false;
     boolean paddle2Down = false;
-    
     int paddleSpeed = 4;
     
-    // GAME VARIABLES END HERE    
+    //player scores
+    int score1 = 0;
+    int score2 = 0;
+    
+    //create a new font
+    Font biggerFont = new Font("arial", Font.BOLD, 36);
 
+    // GAME VARIABLES END HERE    
     
     // Constructor to create the Frame and place the panel in
     // You will learn more about this in Grade 12 :)
-    public PongGameExample(){
+    public PongGameExample() {
         // creates a windows to show my game
         JFrame frame = new JFrame(title);
 
@@ -82,8 +83,8 @@ public class PongGameExample extends JComponent implements ActionListener {
         this.addMouseMotionListener(m);
         this.addMouseWheelListener(m);
         this.addMouseListener(m);
-        
-        gameTimer = new Timer(desiredTime,this);
+
+        gameTimer = new Timer(desiredTime, this);
         gameTimer.setRepeats(true);
         gameTimer.start();
     }
@@ -97,15 +98,22 @@ public class PongGameExample extends JComponent implements ActionListener {
         g.clearRect(0, 0, WIDTH, HEIGHT);
 
         // GAME DRAWING GOES HERE
-        
-	g.setColor(Color.BLACK);
+
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        
+
         g.setColor(Color.WHITE);
         g.fillRect(paddle1.x, paddle1.y, paddle1.width, paddle1.height);
         g.fillRect(paddle2.x, paddle2.y, paddle2.width, paddle2.height);
+        
+        g.setFont(biggerFont);
+        
+        g.drawString(" " + score1, WIDTH/2 -150, 50);
+        g.drawString(" " + score2, WIDTH/2 +150, 50);
+        
         g.fillRect(ball.x, ball.y, ball.width, ball.height);
-		
+        
+        
         // GAME DRAWING ENDS HERE
     }
 
@@ -113,7 +121,6 @@ public class PongGameExample extends JComponent implements ActionListener {
     // This is run before the game loop begins!
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
-
     }
 
     // The main game loop
@@ -127,32 +134,70 @@ public class PongGameExample extends JComponent implements ActionListener {
 
     private void moveBall() {
         double newAngle = Math.toRadians(ballAngle);
-        double moveX = (int)ballSpeed*Math.cos(newAngle);
-        double moveY = (int)ballSpeed*Math.sin(newAngle);
-        
-        ball.x = ball.x + (int)moveX;
-        ball.y = ball.y + (int)moveY;
+        double moveX = (int) ballSpeed * Math.cos(newAngle);
+        double moveY = (int) ballSpeed * Math.sin(newAngle);
+
+        ball.x = ball.x + (int) moveX;
+        ball.y = ball.y + (int) moveY;
     }
 
     private void movePaddles() {
-        if(paddle1Up){
+        if (paddle1Up) {
             paddle1.y = paddle1.y - paddleSpeed;
-        }else if(paddle1Down){
+        } else if (paddle1Down) {
             paddle1.y = paddle1.y + paddleSpeed;
-        }       
-        if(paddle1Up){
+        }
+        
+        if(paddle1.y < 0){
+            paddle1.y = 0;
+        }else if(paddle1.y + paddle1.height > HEIGHT){
+            paddle1.y = HEIGHT - paddle1.height;
+        }
+        
+        if(paddle2.y < 0){
+            paddle2.y = 0;
+        }else if(paddle2.y + paddle2.height > HEIGHT){
+            paddle2.y = HEIGHT - paddle2.height;
+        }
+        
+        if (paddle2Up) {
             paddle2.y = paddle2.y - paddleSpeed;
-        }else if(paddle1Down){
+        } else if (paddle2Down) {
             paddle2.y = paddle2.y + paddleSpeed;
-        }       
+        }
     }
 
     private void checkForCollision() {
-        
+        //collision with walls
+        if (ball.y < 0) {
+            ballAngle = ballAngle * -1;
+        }
+        if (ball.y + ball.height > HEIGHT) {
+            ballAngle = ballAngle * -1;
+        }
+
+        //collision with paddles
+        if (ball.intersects(paddle1)) {
+            ballAngle = (180 + ballAngle * -1) % 360;
+        }
+        if (ball.intersects(paddle2)) {
+            ballAngle = (180 + ballAngle * -1) % 360;
+        }
     }
 
     private void checkForGoal() {
-        
+        //ball off left hand side
+        if(ball.x < 0){
+            score2++;
+            ball.x = WIDTH/2 - ball.width/2;
+            ball.y = HEIGHT/2 - ball.height/2;
+        }
+        //ball off right hand side
+        if(ball.x > 800){
+            score1++;
+            ball.x = WIDTH/2 - ball.width/2;
+            ball.y = HEIGHT/2 - ball.height/2;
+        }
     }
 
     // Used to implement any of the Mouse Actions
@@ -161,25 +206,21 @@ public class PongGameExample extends JComponent implements ActionListener {
         // if a mouse button has been pressed down
         @Override
         public void mousePressed(MouseEvent e) {
-
         }
 
         // if a mouse button has been released
         @Override
         public void mouseReleased(MouseEvent e) {
-
         }
 
         // if the scroll wheel has been moved
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
-
         }
 
         // if the mouse has moved positions
         @Override
         public void mouseMoved(MouseEvent e) {
-
         }
     }
 
@@ -190,33 +231,32 @@ public class PongGameExample extends JComponent implements ActionListener {
         @Override
         public void keyPressed(KeyEvent e) {
             int keyCode = e.getKeyCode();
-            if(keyCode == KeyEvent.VK_W){
+            if (keyCode == KeyEvent.VK_W) {
                 paddle1Up = true;
-            }else if(keyCode == KeyEvent.VK_S){
+            } else if (keyCode == KeyEvent.VK_S) {
                 paddle1Down = true;
             }
-            
-            if(keyCode == KeyEvent.VK_UP){
+
+            if (keyCode == KeyEvent.VK_UP) {
                 paddle2Up = true;
-            }else if(keyCode == KeyEvent.VK_DOWN){
+            } else if (keyCode == KeyEvent.VK_DOWN) {
                 paddle2Down = true;
             }
-            
         }
 
         // if a key has been released
         @Override
         public void keyReleased(KeyEvent e) {
             int keyCode = e.getKeyCode();
-            if(keyCode == KeyEvent.VK_W){
+            if (keyCode == KeyEvent.VK_W) {
                 paddle1Up = false;
-            }else if(keyCode == KeyEvent.VK_S){
+            } else if (keyCode == KeyEvent.VK_S) {
                 paddle1Down = false;
             }
-            
-            if(keyCode == KeyEvent.VK_UP){
+
+            if (keyCode == KeyEvent.VK_UP) {
                 paddle2Up = false;
-            }else if(keyCode == KeyEvent.VK_DOWN){
+            } else if (keyCode == KeyEvent.VK_DOWN) {
                 paddle2Down = false;
             }
         }
@@ -237,4 +277,3 @@ public class PongGameExample extends JComponent implements ActionListener {
         PongGameExample game = new PongGameExample();
     }
 }
-
