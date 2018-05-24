@@ -37,17 +37,25 @@ public class dayBreak extends JComponent implements ActionListener {
     // this is what keeps our time running smoothly :)
     Timer gameTimer;
     // YOUR GAME VARIABLES WOULD GO HERE
+    
     Color skyBox = new Color(79, 182, 255);
+    
     BufferedImage bgSheet = loadImage("Stage1 back1.png");
     BufferedImage[] background = new BufferedImage[8];
+    
     BufferedImage bg2Sheet = loadImage("1481561777kul.png");
     BufferedImage[] background2 = new BufferedImage[60];
+    
     int bgFrame = 0;
     int bg2Frame = 0;
+    
     long lastBGChange = 0;
     long lastBG2Change = 0;
+    
     int bgDelay = 83;
     int bg2Delay = 41;
+    
+  
 
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
@@ -131,7 +139,6 @@ public class dayBreak extends JComponent implements ActionListener {
         for (int row = 0; row < 12; row++) {
             for (int col = 0; col < 5; col++) {
                 background2[i] = bg2Sheet.getSubimage(col * width2, row * height2, width2, height2);
-
                 i++;
             }
         }
@@ -157,6 +164,7 @@ public class dayBreak extends JComponent implements ActionListener {
         // if a mouse button has been pressed down
         @Override
         public void mousePressed(MouseEvent e) {
+            
         }
 
         // if a mouse button has been released
@@ -181,6 +189,7 @@ public class dayBreak extends JComponent implements ActionListener {
         // if a key has been pressed down
         @Override
         public void keyPressed(KeyEvent e) {
+            
         }
 
         // if a key has been released
