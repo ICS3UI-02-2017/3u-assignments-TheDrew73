@@ -40,20 +40,28 @@ public class dayBreak extends JComponent implements ActionListener {
     
     Color skyBox = new Color(79, 182, 255);
     
+    //backgrounds
     BufferedImage bgSheet = loadImage("Stage1 back1.png");
     BufferedImage[] background = new BufferedImage[8];
-    
     BufferedImage bg2Sheet = loadImage("1481561777kul.png");
     BufferedImage[] background2 = new BufferedImage[60];
     
+    //enemies
+    BufferedImage enemy1 = loadImage("Bat 5.png");
+    BufferedImage[] bat5 = new BufferedImage[4];
+    
+    
     int bgFrame = 0;
     int bg2Frame = 0;
+    int bat5Frame = 0;
     
     long lastBGChange = 0;
     long lastBG2Change = 0;
+    long lastBat5Change = 0;
     
     int bgDelay = 83;
     int bg2Delay = 41;
+    int bat5Delay = 62;
     
   
 
@@ -110,8 +118,13 @@ public class dayBreak extends JComponent implements ActionListener {
 
         g.setColor(skyBox);
         g.fillRect(0, 0, WIDTH, HEIGHT);
+        
+        //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         g.drawImage(background2[bg2Frame], 0, 0, null);
+        
+        //enemies
+        g.drawImage(bat5[bat5Frame], 350, 650, null);
 
 
         // GAME DRAWING ENDS HERE
@@ -122,6 +135,7 @@ public class dayBreak extends JComponent implements ActionListener {
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
 
+        //backgrounds
         // splitting up the image spritesheet
         int width = bgSheet.getWidth() / 2;
         int height = bgSheet.getHeight() / 4;
@@ -142,10 +156,22 @@ public class dayBreak extends JComponent implements ActionListener {
                 i++;
             }
         }
+        //enemies
+        int widthbat5 = enemy1.getWidth() / 2;
+        int heightbat5 = enemy1.getHeight() / 2;
+        i = 0;
+        for (int row = 0; row < 2; row++) {
+            for (int col = 0; col < 2; col++) {
+                bat5[i] = enemy1.getSubimage(col * widthbat5, row * heightbat5, widthbat5, heightbat5);
+                i++;
+            }
+        }
     }
 
     // The main game loop
     // In here is where all the logic for my game will go
+    
+    //backgrounds
     public void gameLoop() {
         if (System.currentTimeMillis() > lastBGChange + bgDelay) {
             bgFrame = (bgFrame + 1) % background.length;
@@ -155,6 +181,12 @@ public class dayBreak extends JComponent implements ActionListener {
         if (System.currentTimeMillis() > lastBG2Change + bg2Delay) {
             bg2Frame = (bg2Frame + 1) % background2.length;
             lastBG2Change = System.currentTimeMillis();
+        }
+        
+        //enemies
+        if (System.currentTimeMillis() > lastBat5Change + bat5Delay) {
+            bat5Frame = (bat5Frame + 1) % bat5.length;
+            lastBat5Change = System.currentTimeMillis();
         }
     }
 
