@@ -110,7 +110,7 @@ public class dayBreak extends JComponent implements ActionListener {
         
         g.setColor(skyBox);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        g.drawImage(background[bgFrame], 0, HEIGHT/2,null);
+        g.drawImage(background[bgFrame], 0, HEIGHT/2-75,null);
         
        
         // GAME DRAWING ENDS HERE
