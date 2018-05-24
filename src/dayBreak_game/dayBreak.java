@@ -41,27 +41,67 @@ public class dayBreak extends JComponent implements ActionListener {
     Color skyBox = new Color(79, 182, 255);
 
     //backgrounds
-    BufferedImage bgSheet = loadImage("Stage1 back1");
+    BufferedImage bgSheet = loadImage("Stage1 back1.png");
     BufferedImage[] background = new BufferedImage[8];
-
     BufferedImage bg2Sheet = loadImage("stage2 back2.png");
     BufferedImage[] background2 = new BufferedImage[60];
 
-    //enemies
-    BufferedImage enemy1 = loadImage("Bat 1.png");
+    //ground enemies
+    BufferedImage enemy1 = loadImage("Bat 1");
     BufferedImage[] bat1 = new BufferedImage[4];
-
+    BufferedImage enemy2 = loadImage("soldier 1");
+    BufferedImage[] soldier1 = new BufferedImage[2];
+    BufferedImage enemy3 = loadImage("Alien 1");
+    BufferedImage[] alien1 = new BufferedImage[3];
+    BufferedImage enemy4 = loadImage("Robot1");
+    BufferedImage[] robot1 = new BufferedImage[14];
+    BufferedImage enemy5 = loadImage("soldier 1 attack");
+    BufferedImage[] soldieratk1 = new BufferedImage[5];
+    BufferedImage enemy6 = loadImage("soldier 1 walk");
+    BufferedImage[] soldierwk1 = new BufferedImage[10];
+    BufferedImage enemy7 = loadImage("Robot1 attack");
+    BufferedImage[] robotatk1 = new BufferedImage[16];
+    
+    //bosses
+    BufferedImage boss1 = loadImage("Gronk");
+    BufferedImage[] gronk = new BufferedImage[2];
+    
+    //backgrounds
     int bgFrame = 0;
     int bg2Frame = 0;
-    int bat1Frame = 0;
-
     long lastBGChange = 0;
     long lastBG2Change = 0;
-    long lastBat1Change = 0;
-
     int bgDelay = 83;
-    int bg2Delay = 83;
+    int bg2Delay = 41;
+    
+    //ground enemies
+    int bat1Frame = 0;
+    int soldier1Frame = 0;
+    int soldieratk1Frame = 0;
+    int soldierwk1Frame = 0;
+    int alien1Frame = 0;
+    int robot1Frame = 0;
+    int robotatk1Frame = 0;
+    long lastBat1Change = 0;
+    long lastsoldier1Change = 0;
+    long lastsoldieratk1Change = 0;
+    long lastsoldierwk1Change = 0;
+    long lastAlien1Change = 0;
+    long lastRobot1Change = 0;
+    long lastRobotatk1Change = 0;
     int bat1Delay = 62;
+    int soldier1Delay = 100;
+    int soldieratk1Delay = 95;
+    int soldierwk1Delay = 795;
+    int alien1Delay = 120;
+    int robot1Delay = 95;
+    int robotatk1Delay = 100;
+    
+    
+    //bosses
+    int gronkFrame = 0;
+    long lastGronkChange = 0;
+    int gronkDelay = 250;
 
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
@@ -120,8 +160,17 @@ public class dayBreak extends JComponent implements ActionListener {
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         g.drawImage(background2[bg2Frame], 0, 0, null);
 
-        //enemies
-        g.drawImage(bat1[bat1Frame], 350, 650, null);
+        //ground enemies
+        g.drawImage(bat1[bat1Frame], 0, 0, null);
+        g.drawImage(soldier1[soldier1Frame], 35, 0, null);
+        g.drawImage(alien1[alien1Frame], 70, 0, null);
+        g.drawImage(robot1[robot1Frame], 105, 0, null);
+        g.drawImage(soldieratk1[soldieratk1Frame], 140, 0, null);
+        g.drawImage(soldierwk1[soldierwk1Frame], 175, 0, null);
+        g.drawImage(robotatk1[robotatk1Frame], 210, 0, null);
+        
+        //bosses
+        g.drawImage(gronk[gronkFrame], 250, 0, null);
 
         // GAME DRAWING ENDS HERE
     }
@@ -150,18 +199,86 @@ public class dayBreak extends JComponent implements ActionListener {
                 background2[i] = bg2Sheet.getSubimage(col * width2, row * height2, width, height);
                 i++;
             }
+        }
 
-            //enemies
+        
+            //ground enemies
             int widthbat1 = enemy1.getWidth() / 2;
             int heightbat1 = enemy1.getHeight() / 2;
             i = 0;
-            for (row = 0; row < 2; row++) {
+            for (int row = 0; row < 2; row++) {
                 for (int col = 0; col < 2; col++) {
                     bat1[i] = enemy1.getSubimage(col * widthbat1, row * heightbat1, widthbat1, heightbat1);
                     i++;
                 }
             }
-        }
+            int widthsoldier1 = enemy2.getWidth() / 1;
+            int heightsoldier1 = enemy2.getHeight() / 2;
+            i = 0;
+            for (int row = 0; row < 2; row++) {
+                for (int col = 0; col < 1; col++) {
+                    soldier1[i] = enemy2.getSubimage(col * widthsoldier1, row * heightsoldier1, widthsoldier1, heightsoldier1);
+                    i++;
+                }
+            }
+            int widthAlien1 = enemy3.getWidth() / 2;
+            int heightAlien1 = enemy3.getHeight() / 2;
+            i = 0;
+            for (int row = 0; row < 2; row++) {
+                for (int col = 0; col < 2; col++) {
+                    alien1[i] = enemy3.getSubimage(col * widthAlien1, row * heightAlien1, widthAlien1, heightAlien1);
+                    i++;
+                }
+            }
+            int widthRobot1 = enemy4.getWidth() / 4;
+            int heightRobot1 = enemy4.getHeight() / 4;
+            i = 0;
+            for (int row = 0; row < 4; row++) {
+                for (int col = 0; col < 4; col++) {
+                    robot1[i] = enemy4.getSubimage(col * widthRobot1, row * heightRobot1, widthRobot1, heightRobot1);
+                    i++;
+                }
+            }
+            int widthSoldieratk1 = enemy5.getWidth() / 2;
+            int heightSoldieratk1 = enemy5.getHeight() / 3;
+            i = 0;
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 2; col++) {
+                    soldieratk1[i] = enemy5.getSubimage(col * widthSoldieratk1, row * heightSoldieratk1, widthSoldieratk1, heightSoldieratk1);
+                    i++;
+                }
+            }
+            int widthSoldierwk1 = enemy6.getWidth() / 3;
+            int heightSoldierwk1 = enemy6.getHeight() / 4;
+            i = 0;
+            for (int row = 0; row < 4; row++) {
+                for (int col = 0; col < 3; col++) {
+                    soldierwk1[i] = enemy6.getSubimage(col * widthSoldierwk1, row * heightSoldierwk1, widthSoldierwk1, heightSoldierwk1);
+                    i++;
+                }
+            }
+            int widthRobotatk1 = enemy7.getWidth() / 4;
+            int heightRobotatk1 = enemy7.getHeight() / 4;
+            i = 0;
+            for (int row = 0; row < 4; row++) {
+                for (int col = 0; col < 4; col++) {
+                    robotatk1[i] = enemy7.getSubimage(col * widthRobotatk1, row * heightRobotatk1, widthRobotatk1, heightRobotatk1);
+                    i++;
+                }
+            }
+            
+            
+            //bosses
+            int widthGronk = boss1.getWidth() / 1;
+            int heightGronk = boss1.getHeight() / 2;
+            i = 0;
+            for (int row = 0; row < 2; row++) {
+                for (int col = 0; col < 1; col++) {
+                    gronk[i] = boss1.getSubimage(col * widthGronk, row * heightGronk, widthGronk, heightGronk);
+                    i++;
+                }
+            }
+            
     }
         // The main game loop
         // In here is where all the logic for my game will go
@@ -173,18 +290,48 @@ public class dayBreak extends JComponent implements ActionListener {
             bgFrame = (bgFrame + 1) % background.length;
             lastBGChange = System.currentTimeMillis();
         }
-
         if (System.currentTimeMillis() > lastBG2Change + bg2Delay) {
             bg2Frame = (bg2Frame + 1) % background2.length;
             lastBG2Change = System.currentTimeMillis();
         }
 
-        //enemies
+        
+        //ground enemies
         if (System.currentTimeMillis() > lastBat1Change + bat1Delay) {
             bat1Frame = (bat1Frame + 1) % bat1.length;
             lastBat1Change = System.currentTimeMillis();
         }
-
+        if (System.currentTimeMillis() > lastsoldier1Change + soldier1Delay) {
+            soldier1Frame = (soldier1Frame + 1) % soldier1.length;
+            lastsoldier1Change = System.currentTimeMillis();
+        }
+        if (System.currentTimeMillis() > lastAlien1Change + alien1Delay) {
+            alien1Frame = (alien1Frame + 1) % alien1.length;
+            lastAlien1Change = System.currentTimeMillis();
+        }
+        if (System.currentTimeMillis() > lastRobot1Change + robot1Delay) {
+            robot1Frame = (robot1Frame + 1) % robot1.length;
+            lastRobot1Change = System.currentTimeMillis();
+        }
+         if (System.currentTimeMillis() > lastsoldieratk1Change + soldieratk1Delay) {
+            soldieratk1Frame = (soldieratk1Frame + 1) % soldieratk1.length;
+            lastsoldieratk1Change = System.currentTimeMillis();
+        }
+         if (System.currentTimeMillis() > lastsoldierwk1Change + soldierwk1Delay) {
+            soldierwk1Frame = (soldierwk1Frame + 1) % soldierwk1.length;
+            lastsoldierwk1Change = System.currentTimeMillis();
+        }
+         if (System.currentTimeMillis() > lastRobotatk1Change + robotatk1Delay) {
+            robotatk1Frame = (robotatk1Frame + 1) % robotatk1.length;
+            lastRobotatk1Change = System.currentTimeMillis();
+        }
+         
+         
+         //bosses
+         if (System.currentTimeMillis() > lastGronkChange + gronkDelay) {
+            gronkFrame = (gronkFrame + 1) % gronk.length;
+            lastGronkChange = System.currentTimeMillis();
+        }
     }
 
     // Used to implement any of the Mouse Actions
