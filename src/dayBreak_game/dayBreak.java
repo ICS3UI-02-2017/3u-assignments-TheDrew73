@@ -47,23 +47,23 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage[] background2 = new BufferedImage[60];
 
     //ground enemies
-    BufferedImage enemy1 = loadImage("Bat 1");
+    BufferedImage enemy1 = loadImage("Bat 1.png");
     BufferedImage[] bat1 = new BufferedImage[4];
-    BufferedImage enemy2 = loadImage("soldier 1");
+    BufferedImage enemy2 = loadImage("soldier 1.png");
     BufferedImage[] soldier1 = new BufferedImage[2];
-    BufferedImage enemy3 = loadImage("Alien 1");
-    BufferedImage[] alien1 = new BufferedImage[3];
-    BufferedImage enemy4 = loadImage("Robot1");
-    BufferedImage[] robot1 = new BufferedImage[14];
-    BufferedImage enemy5 = loadImage("soldier 1 attack");
-    BufferedImage[] soldieratk1 = new BufferedImage[5];
-    BufferedImage enemy6 = loadImage("soldier 1 walk");
-    BufferedImage[] soldierwk1 = new BufferedImage[10];
-    BufferedImage enemy7 = loadImage("Robot1 attack");
+    BufferedImage enemy3 = loadImage("Alien 1.png");
+    BufferedImage[] alien1 = new BufferedImage[4];
+    BufferedImage enemy4 = loadImage("Robot1.png");
+    BufferedImage[] robot1 = new BufferedImage[16];
+    BufferedImage enemy5 = loadImage("soldier 1 attack.png");
+    BufferedImage[] soldieratk1 = new BufferedImage[6];
+    BufferedImage enemy6 = loadImage("soldier 1 walk.png");
+    BufferedImage[] soldierwk1 = new BufferedImage[12];
+    BufferedImage enemy7 = loadImage("Robot1 attack.png");
     BufferedImage[] robotatk1 = new BufferedImage[16];
     
     //bosses
-    BufferedImage boss1 = loadImage("Gronk");
+    BufferedImage boss1 = loadImage("Gronk.png");
     BufferedImage[] gronk = new BufferedImage[2];
     
     //backgrounds
@@ -191,12 +191,13 @@ public class dayBreak extends JComponent implements ActionListener {
                 i++;
             }
         }
+        
         int width2 = bg2Sheet.getWidth() / 5;
         int height2 = bg2Sheet.getHeight() / 12;
-        int j = 0;
-        for (int row = 0; row < 5; row++) {
-            for (int col = 0; col < 12; col++) {
-                background2[i] = bg2Sheet.getSubimage(col * width2, row * height2, width, height);
+        i = 0;
+        for (int row = 0; row < 12; row++) {
+            for (int col = 0; col < 5; col++) {
+                background2[i] = bg2Sheet.getSubimage(col * width2, row * height2, width2, height2);
                 i++;
             }
         }
