@@ -246,17 +246,15 @@ public class dayBreak extends JComponent implements ActionListener {
 
     @Override
             public int getX(){
-                return this.x;
+                return x;
             }
             
     @Override
             public int getY(){
-                return this.y;
+                return y;
             }
             
-        
-    
-    
+
     // This method is used to do any pre-setup you might need to do
     // This is run before the game loop begins!
     public void preSetup() {
