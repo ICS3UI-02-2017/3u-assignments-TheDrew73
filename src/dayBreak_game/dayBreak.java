@@ -38,9 +38,12 @@ public class dayBreak extends JComponent implements ActionListener {
     // this is what keeps our time running smoothly :)
     Timer gameTimer;
     // YOUR GAME VARIABLES WOULD GO HERE
+    
+    
     Color skyBox = new Color(79, 182, 223);
+    
     //main character
-    BufferedImage main1 = loadImage("Main Character stance.png");
+    BufferedImage main1 = loadImage("Main Character Stance.png");
     BufferedImage[] mainStance = new BufferedImage[10];
     BufferedImage main1OtherWay = loadImage("Main Character confused clone.png");
     BufferedImage[] mainStance2 = new BufferedImage[10];
@@ -53,11 +56,13 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage main2jmp = loadImage("Main Character jumping clone.png");
     BufferedImage[] mainJump2 = new BufferedImage[15];
     Rectangle main1Rect = new Rectangle(35, 660, 128, 128);
+    
     //backgrounds
     BufferedImage bgSheet = loadImage("Stage1 back1.png");
     BufferedImage[] background = new BufferedImage[8];
     BufferedImage bg2Sheet = loadImage("stage2 back2.png");
     BufferedImage[] background2 = new BufferedImage[60];
+    
     //ground enemies
     BufferedImage enemy1 = loadImage("Bat 1.png");
     BufferedImage[] bat1 = new BufferedImage[4];
@@ -73,9 +78,11 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage[] soldierwk1 = new BufferedImage[10];
     BufferedImage enemy7 = loadImage("Robot1 attack.png");
     BufferedImage[] robotatk1 = new BufferedImage[16];
+    
     //bosses
     BufferedImage boss1 = loadImage("Gronk.png");
     BufferedImage[] gronk = new BufferedImage[2];
+    
     //main character
     boolean mainRight = false;
     boolean mainLeft = false;
@@ -99,6 +106,7 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainJump1Delay = 50;
     int mainJump2Delay = 50;
     int mainWalkSpeed = 5;
+    
     //backgrounds
     int bgFrame = 0;
     int bg2Frame = 0;
@@ -106,6 +114,7 @@ public class dayBreak extends JComponent implements ActionListener {
     long lastBG2Change = 0;
     int bgDelay = 83;
     int bg2Delay = 41;
+    
     //ground enemies
     int bat1Frame = 0;
     int soldier1Frame = 0;
@@ -128,6 +137,7 @@ public class dayBreak extends JComponent implements ActionListener {
     int alien1Delay = 120;
     int robot1Delay = 95;
     int robotatk1Delay = 100;
+    
     //bosses
     int gronkFrame = 0;
     long lastGronkChange = 0;
@@ -202,11 +212,8 @@ public class dayBreak extends JComponent implements ActionListener {
         } else {
             g.drawImage(mainStance2[mainStance2Frame], main1Rect.x, main1Rect.y, null);
         }
-
-        if (mainJump == true) {
-            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x, main1Rect.y, null);
-        } 
         }
+       
 
         //ground enemies
         g.drawImage(bat1[bat1Frame], 0, 0, null);
@@ -223,11 +230,39 @@ public class dayBreak extends JComponent implements ActionListener {
         // GAME DRAWING ENDS HERE
     }
 
+     private int x, y;
+     
+     public void Camera(float x, float y){
+            this.x = (int) x;
+            this.y = (int) y;
+     }
+     
+            public void setX(float x){
+                this.x = (int) x;
+            }
+            public void setY(float y){
+                this.y = (int) y;
+            }
+
+    @Override
+            public int getX(){
+                return this.x;
+            }
+            
+    @Override
+            public int getY(){
+                return this.y;
+            }
+            
+        
+    
+    
     // This method is used to do any pre-setup you might need to do
     // This is run before the game loop begins!
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
-
+        
+        
         //main character
         int widthMainStance = main1.getWidth() / 3;
         int heightMainStance = main1.getHeight() / 4;
@@ -506,7 +541,7 @@ public class dayBreak extends JComponent implements ActionListener {
         }
 
         if (mainJump) {
-            main1Rect.y = main1Rect.y + mainWalkSpeed;
+            main1Rect.y = main1Rect.y - 7;
         }
 
         if (main1Rect.y < 0) {
