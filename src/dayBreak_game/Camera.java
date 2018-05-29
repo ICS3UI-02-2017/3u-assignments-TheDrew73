@@ -29,4 +29,5 @@ public class Camera {
     public float getY(){
         return y;    
     }
+    
 }
