@@ -53,7 +53,7 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage[] mainJump1 = new BufferedImage[15];
     BufferedImage main2jmp = loadImage("Main Character jumping clone.png");
     BufferedImage[] mainJump2 = new BufferedImage[15];
-    Rectangle main1Rect = new Rectangle(35, 660, 128, 128);
+    Rectangle main1Rect = new Rectangle(0, 675, 128, 128);
     
     //backgrounds
     BufferedImage bgSheet = loadImage("Stage1 back1.png");
@@ -80,6 +80,10 @@ public class dayBreak extends JComponent implements ActionListener {
     //bosses
     BufferedImage boss1 = loadImage("Gronk.png");
     BufferedImage[] gronk = new BufferedImage[2];
+    
+    //projectiles
+    BufferedImage mainBullet1 = loadImage("main bullet.png");
+    BufferedImage[] MB = new BufferedImage[1];
     
     //main character
     boolean mainRight = false;
@@ -142,6 +146,14 @@ public class dayBreak extends JComponent implements ActionListener {
     long lastGronkChange = 0;
     int gronkDelay = 250;
     
+    //projectiles
+    boolean Bfired = false;
+    int mainBulletFrame = 0;
+    long lastMainBulletChange = 0;
+    int mainBulletDelay = 0;
+    int mainBulletSpeed = 1;
+    Rectangle mainBFired = new Rectangle(0 + main1Rect.width, main1Rect.y + 80, 6, 3);
+    
     
     
     Camera cam = new Camera(0,0);
@@ -149,8 +161,7 @@ public class dayBreak extends JComponent implements ActionListener {
     // platyer y - camera y
     int newCamPositX = 0;
     int newCamPositY = 0;
-    //        newCamPositX = (int)(main1Rect.x - cam.x);
-    //        newCamPositY = (int)(main1Rect.y - cam.y);
+   
 
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
@@ -212,32 +223,38 @@ public class dayBreak extends JComponent implements ActionListener {
 
         //main Character
         if (mainJump == true) {
-            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x, main1Rect.y, null);
+            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
         } else {
         if (mainLeft == true) {
-            g.drawImage(mainWalk[mainWalk1Frame], main1Rect.x, main1Rect.y, null);
+            g.drawImage(mainWalk[mainWalk1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
         } else if (mainRight == true) {
-            g.drawImage(mainWalk2[mainWalk2Frame], main1Rect.x, main1Rect.y, null);
+            g.drawImage(mainWalk2[mainWalk2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
         } else {
-            g.drawImage(mainStance2[mainStance2Frame], main1Rect.x, main1Rect.y, null);
+            g.drawImage(mainStance2[mainStance2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
         }
 
         if (mainJump == true) {
-            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x, main1Rect.y, null);
+            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
         } 
+        }
+        
+        for (int i = 0; i < 100; i++) {
+        if(Bfired == true){
+            g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(),  mainBFired.y, null);
+        }
         }
 
         //ground enemies
-        g.drawImage(bat1[bat1Frame], 0, 0, null);
-        g.drawImage(soldier1[soldier1Frame], 35, 0, null);
-        g.drawImage(alien1[alien1Frame], 70, 0, null);
-        g.drawImage(robot1[robot1Frame], 105, 0, null);
-        g.drawImage(soldieratk1[soldieratk1Frame], 140, 0, null);
-        g.drawImage(soldierwk1[soldierwk1Frame], 175, 0, null);
-        g.drawImage(robotatk1[robotatk1Frame], 210, 0, null);
+        g.drawImage(bat1[bat1Frame], 0 - cam.getX(), 0, null);
+        g.drawImage(soldier1[soldier1Frame], 35 - cam.getX(), 0, null);
+        g.drawImage(alien1[alien1Frame], 70 - cam.getX(), 0, null);
+        g.drawImage(robot1[robot1Frame], 105 - cam.getX(), 0, null);
+        g.drawImage(soldieratk1[soldieratk1Frame], 140 - cam.getX(), 0, null);
+        g.drawImage(soldierwk1[soldierwk1Frame], 175 - cam.getX(), 0, null);
+        g.drawImage(robotatk1[robotatk1Frame], 210 - cam.getX(), 0, null);
 
         //bosses
-        g.drawImage(gronk[gronkFrame], 650, 575, null);
+        g.drawImage(gronk[gronkFrame], 650 - cam.getX(), 575, null);
 
         // GAME DRAWING ENDS HERE
     }
@@ -435,14 +452,28 @@ public class dayBreak extends JComponent implements ActionListener {
                 i++;
             }
         }
+        
+        //projectiles
+        int widthMB = mainBullet1.getWidth() / 1;
+        int heightMB = mainBullet1.getHeight() / 1;
+        i = 0;
+        for (int row = 0; row < 1; row++) {
+            for (int col = 0; col < 1; col++) {
+                MB[i] = mainBullet1.getSubimage(col * widthMB, row * heightMB, widthMB, heightMB);
+                i++;
+            }
+        }
 
     }
     // The main game loop
     // In here is where all the logic for my game will go
 
     public void gameLoop() {
+        
+        cam.x = main1Rect.x - WIDTH/2;
 
         movePlayer();
+        bulletFired();
 
         //main character
         if (System.currentTimeMillis() > lastMainStanceChange + mainStanceDelay) {
@@ -518,6 +549,13 @@ public class dayBreak extends JComponent implements ActionListener {
             gronkFrame = (gronkFrame + 1) % gronk.length;
             lastGronkChange = System.currentTimeMillis();
         }
+        
+        
+        //projectiles
+        if (System.currentTimeMillis() > lastMainBulletChange + mainBulletDelay) {
+            mainBulletFrame = (mainBulletFrame + 1) % MB.length;
+            lastMainBulletChange = System.currentTimeMillis();
+        }
     }
 
     private void movePlayer() {
@@ -535,9 +573,20 @@ public class dayBreak extends JComponent implements ActionListener {
 
         if (main1Rect.y < 0) {
             main1Rect.y = 0;
-        } else if (main1Rect.y + main1Rect.height > HEIGHT + 50) {
+        } else if (main1Rect.y + main1Rect.height > HEIGHT) {
             main1Rect.y = HEIGHT - main1Rect.height;
         }
+    }
+    
+    private void bulletFired() {
+        if (Bfired){
+            mainBFired.x = mainBFired.x + mainBulletSpeed;
+        }
+//        if(mainBFired.x < cam.getX()){
+//            break;
+//        }else if(mainBFired.x > cam.getX()){
+//            break;
+//        }
     }
 
     // Used to implement any of the Mouse Actions
@@ -580,8 +629,11 @@ public class dayBreak extends JComponent implements ActionListener {
                 mainJump = true;
             } 
             if (keyCode == KeyEvent.VK_W) {
-                mainFall = true;
+                mainFall = false;
             } 
+            if(keyCode == KeyEvent.VK_SPACE) {
+                Bfired = true;
+            }
         }
 
         // if a key has been released
@@ -599,6 +651,7 @@ public class dayBreak extends JComponent implements ActionListener {
             if (keyCode == KeyEvent.VK_W) {
                 mainFall = true;
             }
+            
         }
     }
 
