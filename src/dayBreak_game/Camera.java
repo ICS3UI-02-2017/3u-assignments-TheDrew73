@@ -10,7 +10,7 @@ package dayBreak_game;
  */
 public class Camera {
 
-    private float x, y;
+    protected float x, y;
     
     public Camera(float x, float y){
         this.x = x;
@@ -23,11 +23,11 @@ public class Camera {
         this.y = y;
     }
     
-    public float getX(){
-        return x;
+    public int getX(){
+        return (int)x;
     }
-    public float getY(){
-        return y;    
+    public int getY(){
+        return (int)y;    
     }
     
 }
