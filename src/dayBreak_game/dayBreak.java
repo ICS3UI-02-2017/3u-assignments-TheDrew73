@@ -147,13 +147,13 @@ public class dayBreak extends JComponent implements ActionListener {
     int gronkDelay = 250;
     
     //projectiles
+    boolean BfiredLeft = false;
     boolean Bfired = false;
     int mainBulletFrame = 0;
     long lastMainBulletChange = 0;
     int mainBulletDelay = 0;
     int mainBulletSpeed = 1;
-    Rectangle mainBFired = new Rectangle(0 + main1Rect.width, main1Rect.y + 80, 6, 3);
-    
+    Rectangle mainBFired = new Rectangle(0,0,6,3);
     
     
     Camera cam = new Camera(0,0);
@@ -220,6 +220,12 @@ public class dayBreak extends JComponent implements ActionListener {
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
+        
+        
+        if(Bfired == true){
+            g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(),  mainBFired.y, null);
+        }
+        
 
         //main Character
         if (mainJump == true) {
@@ -237,12 +243,7 @@ public class dayBreak extends JComponent implements ActionListener {
             g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
         } 
         }
-        
-        for (int i = 0; i < 100; i++) {
-        if(Bfired == true){
-            g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(),  mainBFired.y, null);
-        }
-        }
+       
 
         //ground enemies
         g.drawImage(bat1[bat1Frame], 0 - cam.getX(), 0, null);
@@ -265,7 +266,7 @@ public class dayBreak extends JComponent implements ActionListener {
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
 
-
+        
         
         //main character
         int widthMainStance = main1.getWidth() / 3;
@@ -474,7 +475,7 @@ public class dayBreak extends JComponent implements ActionListener {
 
         movePlayer();
         bulletFired();
-
+        
         //main character
         if (System.currentTimeMillis() > lastMainStanceChange + mainStanceDelay) {
             mainStanceFrame = (mainStanceFrame + 1) % mainStance.length;
@@ -563,6 +564,7 @@ public class dayBreak extends JComponent implements ActionListener {
             main1Rect.x = main1Rect.x + mainWalkSpeed;
         } else if (mainLeft) {
             main1Rect.x = main1Rect.x - mainWalkSpeed;
+            
         }
 
         if (mainJump) {
@@ -581,7 +583,8 @@ public class dayBreak extends JComponent implements ActionListener {
     private void bulletFired() {
         if (Bfired){
             mainBFired.x = mainBFired.x + mainBulletSpeed;
-        }
+        } 
+
 //        if(mainBFired.x < cam.getX()){
 //            break;
 //        }else if(mainBFired.x > cam.getX()){
@@ -632,9 +635,14 @@ public class dayBreak extends JComponent implements ActionListener {
                 mainFall = false;
             } 
             if(keyCode == KeyEvent.VK_SPACE) {
-                Bfired = true;
+                Bfired = true; 
+                if(Bfired == true){
+                    mainBFired.x = main1Rect.x + 120;
+                    mainBFired.y = main1Rect.y + 80;
+                }
             }
-        }
+        }     
+        
 
         // if a key has been released
         @Override
