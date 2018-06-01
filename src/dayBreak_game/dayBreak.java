@@ -80,6 +80,7 @@ public class dayBreak extends JComponent implements ActionListener {
     //bosses
     BufferedImage boss1 = loadImage("Gronk.png");
     BufferedImage[] gronk = new BufferedImage[2];
+    Rectangle gronkRect = new Rectangle(0, 0, 225, 225);
     
     //projectiles
     BufferedImage mainBullet1 = loadImage("main bullet.png");
@@ -145,6 +146,8 @@ public class dayBreak extends JComponent implements ActionListener {
     int gronkFrame = 0;
     long lastGronkChange = 0;
     int gronkDelay = 250;
+    int gronkJumpAngle = 45;
+    int gronkJumpSpeed = 8;
     
     //projectiles
     boolean BfiredLeft = false;
@@ -152,17 +155,53 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainBulletFrame = 0;
     long lastMainBulletChange = 0;
     int mainBulletDelay = 0;
-    int mainBulletSpeed = 1;
-    Rectangle mainBFired = new Rectangle(0,0,6,3);
+    int mainBulletSpeed = 12;
+    Rectangle mainBFired = new Rectangle(0, 0, 6, 3);
     
-    
-    Camera cam = new Camera(0,0);
+    Camera cam = new Camera(0, 0);
     // player x - camera x
     // platyer y - camera y
     int newCamPositX = 0;
     int newCamPositY = 0;
-   
 
+    //very basics of A* algorithym
+//    [openList add:originalSquare]; // start by adding the original position to the open list
+//do {
+//	currentSquare = [openList squareWithLowestFScore]; // Get the square with the lowest F score
+//	
+//	[closedList add:currentSquare]; // add the current square to the closed list
+//	[openList remove:currentSquare]; // remove it to the open list
+//	
+//	if ([closedList contains:destinationSquare]) { // if we added the destination to the closed list, we've found a path
+//		// PATH FOUND
+//		break; // break the loop
+//	}
+//	
+//	adjacentSquares = [currentSquare walkableAdjacentSquares]; // Retrieve all its walkable adjacent squares
+//	
+//	foreach (aSquare in adjacentSquares) {
+//		
+//		if ([closedList contains:aSquare]) { // if this adjacent square is already in the closed list ignore it
+//			continue; // Go to the next adjacent square
+//		}
+//		
+//		if (![openList contains:aSquare]) { // if its not in the open list
+//			
+//			// compute its score, set the parent
+//			[openList add:aSquare]; // and add it to the open list
+//			
+//		} else { // if its already in the open list
+//			
+//			// test if using the current G score make the aSquare F score lower, if yes update the parent because it means its a better path
+//			
+//		}
+//	}
+//	
+//} while(![openList isEmpty]); // Continue until there is no more available square in the open list (which means there is no path)
+//    
+    
+    
+    
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
     // You will learn more about this in Grade 12 :)
@@ -220,30 +259,30 @@ public class dayBreak extends JComponent implements ActionListener {
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
-        
-        
-        if(Bfired == true){
-            g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(),  mainBFired.y, null);
+
+
+        if (Bfired == true) {
+            g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(), mainBFired.y, null);
         }
-        
+
 
         //main Character
         if (mainJump == true) {
             g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
         } else {
-        if (mainLeft == true) {
-            g.drawImage(mainWalk[mainWalk1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
-        } else if (mainRight == true) {
-            g.drawImage(mainWalk2[mainWalk2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
-        } else {
-            g.drawImage(mainStance2[mainStance2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            if (mainLeft == true) {
+                g.drawImage(mainWalk[mainWalk1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            } else if (mainRight == true) {
+                g.drawImage(mainWalk2[mainWalk2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            } else {
+                g.drawImage(mainStance2[mainStance2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            }
+
+            if (mainJump == true) {
+                g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            }
         }
 
-        if (mainJump == true) {
-            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
-        } 
-        }
-       
 
         //ground enemies
         g.drawImage(bat1[bat1Frame], 0 - cam.getX(), 0, null);
@@ -255,19 +294,18 @@ public class dayBreak extends JComponent implements ActionListener {
         g.drawImage(robotatk1[robotatk1Frame], 210 - cam.getX(), 0, null);
 
         //bosses
-        g.drawImage(gronk[gronkFrame], 650 - cam.getX(), 575, null);
+        g.drawImage(gronk[gronkFrame], gronkRect.x - cam.getX(), gronkRect.y, null);
 
         // GAME DRAWING ENDS HERE
     }
-    
-    
+
     // This method is used to do any pre-setup you might need to do
     // This is run before the game loop begins!
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
 
-        
-        
+
+
         //main character
         int widthMainStance = main1.getWidth() / 3;
         int heightMainStance = main1.getHeight() / 4;
@@ -453,7 +491,7 @@ public class dayBreak extends JComponent implements ActionListener {
                 i++;
             }
         }
-        
+
         //projectiles
         int widthMB = mainBullet1.getWidth() / 1;
         int heightMB = mainBullet1.getHeight() / 1;
@@ -470,12 +508,13 @@ public class dayBreak extends JComponent implements ActionListener {
     // In here is where all the logic for my game will go
 
     public void gameLoop() {
-        
-        cam.x = main1Rect.x - WIDTH/2;
 
+        cam.x = main1Rect.x - WIDTH / 2;
+
+        moveGronk();
         movePlayer();
         bulletFired();
-        
+
         //main character
         if (System.currentTimeMillis() > lastMainStanceChange + mainStanceDelay) {
             mainStanceFrame = (mainStanceFrame + 1) % mainStance.length;
@@ -550,8 +589,8 @@ public class dayBreak extends JComponent implements ActionListener {
             gronkFrame = (gronkFrame + 1) % gronk.length;
             lastGronkChange = System.currentTimeMillis();
         }
-        
-        
+
+
         //projectiles
         if (System.currentTimeMillis() > lastMainBulletChange + mainBulletDelay) {
             mainBulletFrame = (mainBulletFrame + 1) % MB.length;
@@ -564,12 +603,12 @@ public class dayBreak extends JComponent implements ActionListener {
             main1Rect.x = main1Rect.x + mainWalkSpeed;
         } else if (mainLeft) {
             main1Rect.x = main1Rect.x - mainWalkSpeed;
-            
+
         }
 
         if (mainJump) {
             main1Rect.y = main1Rect.y - mainWalkSpeed;
-        } else if (mainFall){
+        } else if (mainFall) {
             main1Rect.y = main1Rect.y + mainWalkSpeed;
         }
 
@@ -579,17 +618,42 @@ public class dayBreak extends JComponent implements ActionListener {
             main1Rect.y = HEIGHT - main1Rect.height;
         }
     }
-    
+
     private void bulletFired() {
-        if (Bfired){
-            mainBFired.x = mainBFired.x + mainBulletSpeed;
-        } 
+        if (Bfired) {
+            if (!BfiredLeft) {
+                mainBFired.x = mainBFired.x + mainBulletSpeed;
+            } else {
+                mainBFired.x = mainBFired.x - mainBulletSpeed;
+            }
+        }
 
 //        if(mainBFired.x < cam.getX()){
 //            break;
 //        }else if(mainBFired.x > cam.getX()){
 //            break;
 //        }
+    }
+    
+    private void moveGronk(){
+        //jumping
+        double newGronkJumpAngle = Math.toRadians(gronkJumpAngle);
+        double moveX = (int) gronkJumpSpeed * Math.cos(newGronkJumpAngle);
+        double moveY = (int) gronkJumpSpeed * Math.sin(newGronkJumpAngle);
+        
+        //makes him travel at different speeds
+        //int randNumGronk = (int) (Math.random() * (1 -1 +1)) +1;
+        
+        gronkRect.x = gronkRect.x - (int) moveX;
+        gronkRect.y = gronkRect.y - (int) moveY;
+        
+        //jumping collison
+        if (gronkRect.y < 0) {
+            gronkJumpAngle = gronkJumpAngle * -1;
+        }
+        if (gronkRect.y + gronkRect.height > HEIGHT) {
+            gronkJumpAngle = gronkJumpAngle * -1;
+        }
     }
 
     // Used to implement any of the Mouse Actions
@@ -630,19 +694,24 @@ public class dayBreak extends JComponent implements ActionListener {
             }
             if (keyCode == KeyEvent.VK_W) {
                 mainJump = true;
-            } 
+            }
             if (keyCode == KeyEvent.VK_W) {
                 mainFall = false;
-            } 
-            if(keyCode == KeyEvent.VK_SPACE) {
-                Bfired = true; 
-                if(Bfired == true){
+            }
+            if (keyCode == KeyEvent.VK_SPACE) {
+                Bfired = true;
+                if (Bfired == true) {
+                    BfiredLeft = false;
                     mainBFired.x = main1Rect.x + 120;
                     mainBFired.y = main1Rect.y + 80;
                 }
+                if (mainLeft == true) {
+                    BfiredLeft = true;
+                    mainBFired.x = main1Rect.x;
+                    mainBFired.y = main1Rect.y + 80;
+                }
             }
-        }     
-        
+        }
 
         // if a key has been released
         @Override
@@ -659,7 +728,7 @@ public class dayBreak extends JComponent implements ActionListener {
             if (keyCode == KeyEvent.VK_W) {
                 mainFall = true;
             }
-            
+
         }
     }
 
