@@ -14,6 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
@@ -152,6 +153,8 @@ public class dayBreak extends JComponent implements ActionListener {
     //projectiles
     boolean BfiredLeft = false;
     boolean Bfired = false;
+    private Timer bulletTimer;
+    int bulletCount = 0;
     int mainBulletFrame = 0;
     long lastMainBulletChange = 0;
     int mainBulletDelay = 0;
@@ -255,7 +258,16 @@ public class dayBreak extends JComponent implements ActionListener {
         g.setColor(skyBox);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-
+        //possible tile drawings?
+//         for (int column = 0; column < bgSheet.getHeight(); column++) {
+//                for (int row = 0; row < bgSheet.getWidth(); row++) {
+//                  Raster tileBG1 = bgSheet.getTile(column, row);
+//                  int x = column * bgSheet.getMinTileX();
+//                  int y = row * bgSheet.getMinTileY();
+//                //g.drawImage(tileBG1, x, y, null);
+//            }  
+//        }
+        
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
@@ -303,8 +315,6 @@ public class dayBreak extends JComponent implements ActionListener {
     // This is run before the game loop begins!
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
-
-
 
         //main character
         int widthMainStance = main1.getWidth() / 3;
