@@ -16,6 +16,9 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
@@ -40,7 +43,10 @@ public class dayBreak extends JComponent implements ActionListener {
     Timer gameTimer;
     // YOUR GAME VARIABLES WOULD GO HERE
     Color skyBox = new Color(79, 182, 223);
-    
+    //tiles
+    BufferedImage tile1 = loadImage("MainTile.png");
+    BufferedImage tile1Under = loadImage("MainTile underside.png");
+    Rectangle tileRect = new Rectangle(0, 0, 28, 28);
     //main character
     BufferedImage main1 = loadImage("Main Character stance.png");
     BufferedImage[] mainStance = new BufferedImage[10];
@@ -111,6 +117,7 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainJump1Delay = 50;
     int mainJump2Delay = 50;
     int mainWalkSpeed = 5;
+    int mainFallSpeed = 10;
     
     //backgrounds
     int bgFrame = 0;
@@ -161,6 +168,12 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainBulletSpeed = 12;
     Rectangle mainBFired = new Rectangle(0, 0, 6, 3);
     
+    //player gravity
+    int gravitySpeed = 5;
+    int velocityY = 300;
+    int vSpeed = 0;
+    int playerVPosit = main1Rect.y;
+    long startGravTimer = System.currentTimeMillis();
     Camera cam = new Camera(0, 0);
     // player x - camera x
     // platyer y - camera y
@@ -202,9 +215,6 @@ public class dayBreak extends JComponent implements ActionListener {
 //	
 //} while(![openList isEmpty]); // Continue until there is no more available square in the open list (which means there is no path)
 //    
-    
-    
-    
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
     // You will learn more about this in Grade 12 :)
@@ -267,11 +277,22 @@ public class dayBreak extends JComponent implements ActionListener {
 //                //g.drawImage(tileBG1, x, y, null);
 //            }  
 //        }
-        
+
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
 
+        for (int row = 0; row < HEIGHT; row = row + tile1Under.getHeight()) {
+            for (int column = 0; column > -WIDTH; column = column - tile1Under.getWidth()) {
+                g.drawImage(tile1Under, column - cam.getX(), row, null);
+
+            }
+        }
+
+        for (int column = 178; column < 400; column = column + tile1.getWidth()-1) {
+                g.drawImage(tile1, column - cam.getX(), 475, null);
+                column++;
+            }
 
         if (Bfired == true) {
             g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(), mainBFired.y, null);
@@ -524,6 +545,7 @@ public class dayBreak extends JComponent implements ActionListener {
         moveGronk();
         movePlayer();
         bulletFired();
+        gravity();
 
         //main character
         if (System.currentTimeMillis() > lastMainStanceChange + mainStanceDelay) {
@@ -619,13 +641,19 @@ public class dayBreak extends JComponent implements ActionListener {
         if (mainJump) {
             main1Rect.y = main1Rect.y - mainWalkSpeed;
         } else if (mainFall) {
-            main1Rect.y = main1Rect.y + mainWalkSpeed;
+            main1Rect.y = main1Rect.y + mainFallSpeed;
         }
 
         if (main1Rect.y < 0) {
             main1Rect.y = 0;
         } else if (main1Rect.y + main1Rect.height > HEIGHT) {
             main1Rect.y = HEIGHT - main1Rect.height;
+        }
+        if (main1Rect.x < 28) {
+            main1Rect.x = tileRect.width;
+        }
+        if(main1Rect.intersects(tileRect)){
+            main1Rect.y = main1Rect.y - tileRect.height;
         }
     }
 
@@ -644,19 +672,19 @@ public class dayBreak extends JComponent implements ActionListener {
 //            break;
 //        }
     }
-    
-    private void moveGronk(){
+
+    private void moveGronk() {
         //jumping
         double newGronkJumpAngle = Math.toRadians(gronkJumpAngle);
         double moveX = (int) gronkJumpSpeed * Math.cos(newGronkJumpAngle);
         double moveY = (int) gronkJumpSpeed * Math.sin(newGronkJumpAngle);
-        
+
         //makes him travel at different speeds
         //int randNumGronk = (int) (Math.random() * (1 -1 +1)) +1;
-        
+
         gronkRect.x = gronkRect.x - (int) moveX;
         gronkRect.y = gronkRect.y - (int) moveY;
-        
+
         //jumping collison
         if (gronkRect.y < 0) {
             gronkJumpAngle = gronkJumpAngle * -1;
@@ -664,6 +692,13 @@ public class dayBreak extends JComponent implements ActionListener {
         if (gronkRect.y + gronkRect.height > HEIGHT) {
             gronkJumpAngle = gronkJumpAngle * -1;
         }
+
+        if (gronkRect.intersects(tileRect)) {
+            gronkJumpAngle = (180 + gronkJumpAngle * -1) % 360;
+        }
+    }
+
+    private void gravity() {
     }
 
     // Used to implement any of the Mouse Actions
