@@ -43,10 +43,12 @@ public class dayBreak extends JComponent implements ActionListener {
     Timer gameTimer;
     // YOUR GAME VARIABLES WOULD GO HERE
     Color skyBox = new Color(79, 182, 223);
+    
     //tiles
     BufferedImage tile1 = loadImage("MainTile.png");
     BufferedImage tile1Under = loadImage("MainTile underside.png");
     Rectangle tileRect = new Rectangle(0, 0, 28, 28);
+    
     //main character
     BufferedImage main1 = loadImage("Main Character stance.png");
     BufferedImage[] mainStance = new BufferedImage[10];
@@ -278,6 +280,8 @@ public class dayBreak extends JComponent implements ActionListener {
 //            }  
 //        }
 
+        
+        
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
@@ -289,11 +293,18 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
-        for (int column = 178; column < 400; column = column + tile1.getWidth()-1) {
-                g.drawImage(tile1, column - cam.getX(), 475, null);
+        for (int column = 500; column < 620; column = column + tileRect.width - 1) {
+                g.drawImage(tile1, column - cam.getX(), 675, null);
                 column++;
             }
-
+        
+        for (int row = 795; row > 675; row = row - tileRect.height) {
+            g.clearRect(500 - cam.getX(), row, 28,28);
+            g.drawImage(tile1, 500 - cam.getX(), row, null);
+            row--;
+        }
+    
+        
         if (Bfired == true) {
             g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(), mainBFired.y, null);
         }
@@ -653,7 +664,8 @@ public class dayBreak extends JComponent implements ActionListener {
             main1Rect.x = tileRect.width;
         }
         if(main1Rect.intersects(tileRect)){
-            main1Rect.y = main1Rect.y - tileRect.height;
+            main1Rect.y = main1Rect.y + tileRect.height;
+            main1Rect.x = main1Rect.x + tileRect.width;
         }
     }
 
