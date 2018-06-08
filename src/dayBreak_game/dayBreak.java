@@ -118,7 +118,7 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainWalk2Delay = 80;
     int mainJump1Delay = 50;
     int mainJump2Delay = 50;
-    int mainWalkSpeed = 5;
+    int mainWalkSpeed = 13;
     int mainFallSpeed = 10;
     
     //backgrounds
@@ -286,6 +286,7 @@ public class dayBreak extends JComponent implements ActionListener {
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
 
+        //drawing the level
         for (int row = 0; row < HEIGHT; row = row + tile1Under.getHeight()) {
             for (int column = 0; column > -WIDTH; column = column - tile1Under.getWidth()) {
                 g.drawImage(tile1Under, column - cam.getX(), row, null);
@@ -294,16 +295,128 @@ public class dayBreak extends JComponent implements ActionListener {
         }
 
         for (int column = 500; column < 620; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 675, 28,28);
                 g.drawImage(tile1, column - cam.getX(), 675, null);
                 column++;
             }
         
-        for (int row = 795; row > 675; row = row - tileRect.height) {
+        for (int row = 795; row > 670; row = row - tileRect.height + 1) {
             g.clearRect(500 - cam.getX(), row, 28,28);
-            g.drawImage(tile1, 500 - cam.getX(), row, null);
+            g.drawImage(tile1Under, 500 - cam.getX(), row, null);
             row--;
         }
-    
+        
+        for (int column = 1020; column < 1360; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 490, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 490, null);
+                column++;
+            }
+        for (int column = 1488; column < 1810; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 405, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 405, null);
+                column++;
+            }
+        for (int column = 1938; column < 2340; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 320, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 320, null);
+                column++;
+            }
+        for (int column = 2838; column < 3540; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 390, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 390, null);
+                column++;
+            }
+        for (int column = 3540; column < 3740; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 590, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 590, null);
+                column++;
+            }
+        for (int column = 2638; column < 2838; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 590, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 590, null);
+                column++;
+            }
+        for (int column = 3038; column < 3340; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 650, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 650, null);
+                column++;
+            }
+        for (int column = 4240; column < 4440; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 640, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 640, null);
+                column++;
+            }
+        for (int row = 795; row > 475; row = row - tileRect.height + 1) {
+            g.clearRect(4440 - cam.getX(), row, 28,28);
+            g.drawImage(tile1Under, 4440 - cam.getX(), row, null);
+            row--;
+        }
+        for (int column = 4590; column < 4990; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 400, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 400, null);
+                column++;
+            }
+        for (int column = 5240; column < 5440; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 640, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 640, null);
+                column++;
+            }
+        for (int row = 795; row > 475; row = row - tileRect.height + 1) {
+            g.clearRect(5440 - cam.getX(), row, 28,28);
+            g.drawImage(tile1Under, 5440 - cam.getX(), row, null);
+            row--;
+        }
+        for (int column = 5440; column < 6440; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 475, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 475, null);
+                column++;
+            }
+        for (int row = 600; row > 200; row = row - tileRect.height + 1) {
+            g.clearRect(7240 - cam.getX(), row, 28,28);
+            g.drawImage(tile1Under, 7240 - cam.getX(), row, null);
+            row--;
+        }
+        for (int column = 7240; column < 7420; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 600, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 600, null);
+                column++;
+            }
+        for (int column = 7240; column < 7420; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 300, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 300, null);
+                column++;
+            }
+         for (int row = 600; row > 200; row = row - tileRect.height + 1) {
+            g.clearRect(7600 - cam.getX(), row, 28,28);
+            g.drawImage(tile1Under, 7600 - cam.getX(), row, null);
+            row--;
+        }
+         for (int column = 7420; column < 7780; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 450, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 450, null);
+                column++;
+            }
+         for (int column = 7420; column < 8420; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 200, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 200, null);
+                column++;
+            }
+         for (int row = 800; row > 475; row = row - tileRect.height + 1) {
+            g.clearRect(7960 - cam.getX(), row, 28,28);
+            g.drawImage(tile1Under, 7960 - cam.getX(), row, null);
+            row--;
+        }
+         for (int column = 7600; column < 7780; column = column + tileRect.width - 1) {
+                g.clearRect(column - cam.getX(), 600, 28,28);
+                g.drawImage(tile1, column - cam.getX(), 600, null);
+                column++;
+            }
+//         for (int row = 10000; row < 11000; row = row + tile1Under.getHeight()) {
+//            for (int column = 0; column < 800; column = column + tile1Under.getWidth()) {
+//                g.drawImage(tile1Under, column - cam.getX(), row, null);
+//
+//            }
+//        }
         
         if (Bfired == true) {
             g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(), mainBFired.y, null);
