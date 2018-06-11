@@ -16,6 +16,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,12 +44,12 @@ public class dayBreak extends JComponent implements ActionListener {
     Timer gameTimer;
     // YOUR GAME VARIABLES WOULD GO HERE
     Color skyBox = new Color(79, 182, 223);
-    
     //tiles
     BufferedImage tile1 = loadImage("MainTile.png");
+    BufferedImage[] tile1A = new BufferedImage[1];
     BufferedImage tile1Under = loadImage("MainTile underside.png");
+    BufferedImage[] tile1B = new BufferedImage[1];
     Rectangle tileRect = new Rectangle(0, 0, 28, 28);
-    
     //main character
     BufferedImage main1 = loadImage("Main Character stance.png");
     BufferedImage[] mainStance = new BufferedImage[10];
@@ -63,13 +64,11 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage main2jmp = loadImage("Main Character jumping clone.png");
     BufferedImage[] mainJump2 = new BufferedImage[15];
     Rectangle main1Rect = new Rectangle(0, 675, 128, 128);
-    
     //backgrounds
     BufferedImage bgSheet = loadImage("Stage1 back1.png");
     BufferedImage[] background = new BufferedImage[8];
     BufferedImage bg2Sheet = loadImage("stage2 back2.png");
     BufferedImage[] background2 = new BufferedImage[60];
-    
     //ground enemies
     BufferedImage enemy1 = loadImage("Bat 1.png");
     BufferedImage[] bat1 = new BufferedImage[4];
@@ -85,16 +84,13 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage[] soldierwk1 = new BufferedImage[10];
     BufferedImage enemy7 = loadImage("Robot1 attack.png");
     BufferedImage[] robotatk1 = new BufferedImage[16];
-    
     //bosses
     BufferedImage boss1 = loadImage("Gronk.png");
     BufferedImage[] gronk = new BufferedImage[2];
     Rectangle gronkRect = new Rectangle(0, 0, 225, 225);
-    
     //projectiles
     BufferedImage mainBullet1 = loadImage("main bullet.png");
     BufferedImage[] MB = new BufferedImage[1];
-    
     //main character
     boolean mainRight = false;
     boolean mainLeft = false;
@@ -120,7 +116,6 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainJump2Delay = 50;
     int mainWalkSpeed = 13;
     int mainFallSpeed = 10;
-    
     //backgrounds
     int bgFrame = 0;
     int bg2Frame = 0;
@@ -128,7 +123,6 @@ public class dayBreak extends JComponent implements ActionListener {
     long lastBG2Change = 0;
     int bgDelay = 83;
     int bg2Delay = 41;
-    
     //ground enemies
     int bat1Frame = 0;
     int soldier1Frame = 0;
@@ -151,14 +145,12 @@ public class dayBreak extends JComponent implements ActionListener {
     int alien1Delay = 120;
     int robot1Delay = 95;
     int robotatk1Delay = 100;
-    
     //bosses
     int gronkFrame = 0;
     long lastGronkChange = 0;
     int gronkDelay = 250;
     int gronkJumpAngle = 45;
     int gronkJumpSpeed = 8;
-    
     //projectiles
     boolean BfiredLeft = false;
     boolean Bfired = false;
@@ -169,7 +161,6 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainBulletDelay = 0;
     int mainBulletSpeed = 12;
     Rectangle mainBFired = new Rectangle(0, 0, 6, 3);
-    
     //player gravity
     int gravitySpeed = 5;
     int velocityY = 300;
@@ -181,6 +172,7 @@ public class dayBreak extends JComponent implements ActionListener {
     // platyer y - camera y
     int newCamPositX = 0;
     int newCamPositY = 0;
+    ArrayList<Rectangle> grassTiles = new ArrayList<>();
 
     //very basics of A* algorithym
 //    [openList add:originalSquare]; // start by adding the original position to the open list
@@ -223,7 +215,7 @@ public class dayBreak extends JComponent implements ActionListener {
     public dayBreak() {
         // creates a windows to show my game
         JFrame frame = new JFrame(title);
-
+        preSetup();
         // sets the size of my game
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // adds the game to the window
@@ -242,7 +234,7 @@ public class dayBreak extends JComponent implements ActionListener {
         this.addMouseMotionListener(m);
         this.addMouseWheelListener(m);
         this.addMouseListener(m);
-        preSetup();
+
         gameTimer = new Timer(desiredTime, this);
         gameTimer.setRepeats(true);
         gameTimer.start();
@@ -280,8 +272,8 @@ public class dayBreak extends JComponent implements ActionListener {
 //            }  
 //        }
 
-        
-        
+
+
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
@@ -294,130 +286,49 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
-        for (int column = 500; column < 620; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 675, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 675, null);
-                column++;
-            }
-        
+
         for (int row = 795; row > 670; row = row - tileRect.height + 1) {
-            g.clearRect(500 - cam.getX(), row, 28,28);
+            g.clearRect(500 - cam.getX(), row, 28, 28);
             g.drawImage(tile1Under, 500 - cam.getX(), row, null);
             row--;
         }
-        
-        for (int column = 1020; column < 1360; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 490, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 490, null);
-                column++;
-            }
-        for (int column = 1488; column < 1810; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 405, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 405, null);
-                column++;
-            }
-        for (int column = 1938; column < 2340; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 320, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 320, null);
-                column++;
-            }
-        for (int column = 2838; column < 3540; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 390, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 390, null);
-                column++;
-            }
-        for (int column = 3540; column < 3740; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 590, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 590, null);
-                column++;
-            }
-        for (int column = 2638; column < 2838; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 590, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 590, null);
-                column++;
-            }
-        for (int column = 3038; column < 3340; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 650, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 650, null);
-                column++;
-            }
-        for (int column = 4240; column < 4440; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 640, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 640, null);
-                column++;
-            }
         for (int row = 795; row > 475; row = row - tileRect.height + 1) {
-            g.clearRect(4440 - cam.getX(), row, 28,28);
+            g.clearRect(4440 - cam.getX(), row, 28, 28);
             g.drawImage(tile1Under, 4440 - cam.getX(), row, null);
             row--;
         }
-        for (int column = 4590; column < 4990; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 400, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 400, null);
-                column++;
-            }
-        for (int column = 5240; column < 5440; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 640, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 640, null);
-                column++;
-            }
         for (int row = 795; row > 475; row = row - tileRect.height + 1) {
-            g.clearRect(5440 - cam.getX(), row, 28,28);
+            g.clearRect(5440 - cam.getX(), row, 28, 28);
             g.drawImage(tile1Under, 5440 - cam.getX(), row, null);
             row--;
         }
-        for (int column = 5440; column < 6440; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 475, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 475, null);
-                column++;
-            }
         for (int row = 600; row > 200; row = row - tileRect.height + 1) {
-            g.clearRect(7240 - cam.getX(), row, 28,28);
+            g.clearRect(7240 - cam.getX(), row, 28, 28);
             g.drawImage(tile1Under, 7240 - cam.getX(), row, null);
             row--;
         }
-        for (int column = 7240; column < 7420; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 600, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 600, null);
-                column++;
-            }
-        for (int column = 7240; column < 7420; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 300, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 300, null);
-                column++;
-            }
-         for (int row = 600; row > 200; row = row - tileRect.height + 1) {
-            g.clearRect(7600 - cam.getX(), row, 28,28);
+        for (int row = 600; row > 200; row = row - tileRect.height + 1) {
+            g.clearRect(7600 - cam.getX(), row, 28, 28);
             g.drawImage(tile1Under, 7600 - cam.getX(), row, null);
             row--;
         }
-         for (int column = 7420; column < 7780; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 450, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 450, null);
-                column++;
-            }
-         for (int column = 7420; column < 8420; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 200, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 200, null);
-                column++;
-            }
-         for (int row = 800; row > 475; row = row - tileRect.height + 1) {
-            g.clearRect(7960 - cam.getX(), row, 28,28);
+        for (int row = 800; row > 475; row = row - tileRect.height + 1) {
+            g.clearRect(7960 - cam.getX(), row, 28, 28);
             g.drawImage(tile1Under, 7960 - cam.getX(), row, null);
             row--;
         }
-         for (int column = 7600; column < 7780; column = column + tileRect.width - 1) {
-                g.clearRect(column - cam.getX(), 600, 28,28);
-                g.drawImage(tile1, column - cam.getX(), 600, null);
-                column++;
-            }
-//         for (int row = 10000; row < 11000; row = row + tile1Under.getHeight()) {
+
+        for (Rectangle tile : grassTiles) {
+            g.drawImage(tile1, tile.x - cam.getX(), tile.y, null);
+        }
+
+//         for (int row = 7900; row < 9000; row = row + tile1Under.getHeight()) {
 //            for (int column = 0; column < 800; column = column + tile1Under.getWidth()) {
 //                g.drawImage(tile1Under, column - cam.getX(), row, null);
 //
 //            }
 //        }
-        
+
         if (Bfired == true) {
             g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(), mainBFired.y, null);
         }
@@ -460,6 +371,7 @@ public class dayBreak extends JComponent implements ActionListener {
     // This is run before the game loop begins!
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
+
 
         //main character
         int widthMainStance = main1.getWidth() / 3;
@@ -658,16 +570,72 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
+
+        // add grass tiles to list
+        for (int column = 500; column < 620; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 675, 28, 28));
+        }
+        for (int column = 1020; column < 1360; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 490, 28, 28));
+        }
+        for (int column = 1488; column < 1810; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 405, 28, 28));
+        }
+        for (int column = 1938; column < 2340; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 320, 28, 28));
+        }
+        for (int column = 2838; column < 3540; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 390, 28, 28));
+        }
+        for (int column = 3540; column < 3740; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 590, 28, 28));
+        }
+        for (int column = 2638; column < 2838; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 590, 28, 28));
+        }
+        for (int column = 3038; column < 3340; column = column + tileRect.width) { 
+            grassTiles.add(new Rectangle(column, 650, 28, 28));
+        }
+        for (int column = 4240; column < 4440; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 640, 28, 28));
+        }
+        for (int column = 4590; column < 4990; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 400, 28, 28));
+        }
+        for (int column = 5240; column < 5440; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 640, 28, 28));
+        }
+        for (int column = 5440; column < 6440; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 475, 28, 28));
+        }
+        for (int column = 7240; column < 7420; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 600, 28, 28));
+        }
+         for (int column = 7240; column < 7420; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 300, 28, 28));
+        }
+         for (int column = 7420; column < 7780; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 450, 28, 28));
+        }
+         for (int column = 7420; column < 8420; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 200, 28, 28));
+        }
+         for (int column = 7600; column < 7780; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 600, 28, 28));
+        }
+        
+
     }
     // The main game loop
     // In here is where all the logic for my game will go
 
     public void gameLoop() {
 
-        cam.x = main1Rect.x - WIDTH / 2;
+        
 
         moveGronk();
         movePlayer();
+        cam.x = main1Rect.x - WIDTH / 2;
         bulletFired();
         gravity();
 
@@ -776,9 +744,12 @@ public class dayBreak extends JComponent implements ActionListener {
         if (main1Rect.x < 28) {
             main1Rect.x = tileRect.width;
         }
-        if(main1Rect.intersects(tileRect)){
-            main1Rect.y = main1Rect.y + tileRect.height;
-            main1Rect.x = main1Rect.x + tileRect.width;
+        for (Rectangle tile : grassTiles) {
+            if (main1Rect.intersects(tile)) {
+                int heightOverlap = Math.min(main1Rect.y + main1Rect.height, tile.y + tile.height) - Math.max(main1Rect.y, tile.y);
+                main1Rect.y = main1Rect.y - heightOverlap;
+                main1Rect.x = main1Rect.x;
+            }
         }
     }
 
