@@ -92,6 +92,7 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage mainBullet1 = loadImage("main bullet.png");
     BufferedImage[] MB = new BufferedImage[1];
     //main character
+    boolean underTiles = false;
     boolean mainRight = false;
     boolean mainLeft = false;
     boolean mainJump = false;
@@ -593,7 +594,7 @@ public class dayBreak extends JComponent implements ActionListener {
         for (int column = 2638; column < 2838; column = column + tileRect.width) {
             grassTiles.add(new Rectangle(column, 590, 28, 28));
         }
-        for (int column = 3038; column < 3340; column = column + tileRect.width) { 
+        for (int column = 3038; column < 3340; column = column + tileRect.width) {
             grassTiles.add(new Rectangle(column, 650, 28, 28));
         }
         for (int column = 4240; column < 4440; column = column + tileRect.width) {
@@ -611,19 +612,19 @@ public class dayBreak extends JComponent implements ActionListener {
         for (int column = 7240; column < 7420; column = column + tileRect.width) {
             grassTiles.add(new Rectangle(column, 600, 28, 28));
         }
-         for (int column = 7240; column < 7420; column = column + tileRect.width) {
+        for (int column = 7240; column < 7420; column = column + tileRect.width) {
             grassTiles.add(new Rectangle(column, 300, 28, 28));
         }
-         for (int column = 7420; column < 7780; column = column + tileRect.width) {
+        for (int column = 7420; column < 7780; column = column + tileRect.width) {
             grassTiles.add(new Rectangle(column, 450, 28, 28));
         }
-         for (int column = 7420; column < 8420; column = column + tileRect.width) {
+        for (int column = 7420; column < 8420; column = column + tileRect.width) {
             grassTiles.add(new Rectangle(column, 200, 28, 28));
         }
-         for (int column = 7600; column < 7780; column = column + tileRect.width) {
+        for (int column = 7600; column < 7780; column = column + tileRect.width) {
             grassTiles.add(new Rectangle(column, 600, 28, 28));
         }
-        
+
 
     }
     // The main game loop
@@ -631,7 +632,7 @@ public class dayBreak extends JComponent implements ActionListener {
 
     public void gameLoop() {
 
-        
+
 
         moveGronk();
         movePlayer();
@@ -747,8 +748,11 @@ public class dayBreak extends JComponent implements ActionListener {
         for (Rectangle tile : grassTiles) {
             if (main1Rect.intersects(tile)) {
                 int heightOverlap = Math.min(main1Rect.y + main1Rect.height, tile.y + tile.height) - Math.max(main1Rect.y, tile.y);
-                main1Rect.y = main1Rect.y - heightOverlap;
-                main1Rect.x = main1Rect.x;
+                if (main1Rect.y < tile.y ) {
+                    main1Rect.y = tile.y - main1Rect.height;
+                } else {
+                    main1Rect.y = tile.y + tile.height;
+                }
             }
         }
     }
