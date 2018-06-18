@@ -44,12 +44,14 @@ public class dayBreak extends JComponent implements ActionListener {
     Timer gameTimer;
     // YOUR GAME VARIABLES WOULD GO HERE
     Color skyBox = new Color(79, 182, 223);
+    
     //tiles
     BufferedImage tile1 = loadImage("MainTile.png");
     BufferedImage[] tile1A = new BufferedImage[1];
     BufferedImage tile1Under = loadImage("MainTile underside.png");
     BufferedImage[] tile1B = new BufferedImage[1];
     Rectangle tileRect = new Rectangle(0, 0, 28, 28);
+    
     //main character
     BufferedImage main1 = loadImage("Main Character stance.png");
     BufferedImage[] mainStance = new BufferedImage[10];
@@ -64,18 +66,26 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage main2jmp = loadImage("Main Character jumping clone.png");
     BufferedImage[] mainJump2 = new BufferedImage[15];
     Rectangle main1Rect = new Rectangle(0, 675, 128, 128);
+    
     //backgrounds
     BufferedImage bgSheet = loadImage("Stage1 back1.png");
     BufferedImage[] background = new BufferedImage[8];
     BufferedImage bg2Sheet = loadImage("stage2 back2.png");
     BufferedImage[] background2 = new BufferedImage[60];
+    
     //ground enemies
     BufferedImage enemy1 = loadImage("Bat 1.png");
     BufferedImage[] bat1 = new BufferedImage[4];
+    Rectangle batRect1 = new Rectangle(500, 200, 128,128);
+    
     BufferedImage enemy2 = loadImage("soldier 1.png");
     BufferedImage[] soldier1 = new BufferedImage[2];
+    
+    
     BufferedImage enemy3 = loadImage("Alien 1.png");
     BufferedImage[] alien1 = new BufferedImage[3];
+    Rectangle aleinRect1 = new Rectangle(700, 200, 128,128);
+    
     BufferedImage enemy4 = loadImage("Robot1.png");
     BufferedImage[] robot1 = new BufferedImage[14];
     BufferedImage enemy5 = loadImage("soldier 1 attack.png");
@@ -84,13 +94,16 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage[] soldierwk1 = new BufferedImage[10];
     BufferedImage enemy7 = loadImage("Robot1 attack.png");
     BufferedImage[] robotatk1 = new BufferedImage[16];
+    
     //bosses
     BufferedImage boss1 = loadImage("Gronk.png");
     BufferedImage[] gronk = new BufferedImage[2];
     Rectangle gronkRect = new Rectangle(0, 0, 225, 225);
+    
     //projectiles
     BufferedImage mainBullet1 = loadImage("main bullet.png");
     BufferedImage[] MB = new BufferedImage[1];
+    
     //main character
     boolean underTiles = false;
     boolean mainRight = false;
@@ -117,6 +130,7 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainJump2Delay = 50;
     int mainWalkSpeed = 13;
     int mainFallSpeed = 10;
+    
     //backgrounds
     int bgFrame = 0;
     int bg2Frame = 0;
@@ -124,7 +138,10 @@ public class dayBreak extends JComponent implements ActionListener {
     long lastBG2Change = 0;
     int bgDelay = 83;
     int bg2Delay = 41;
+    
     //ground enemies
+    boolean batDown = false;
+    boolean batUp = false;
     int bat1Frame = 0;
     int soldier1Frame = 0;
     int soldieratk1Frame = 0;
@@ -146,22 +163,25 @@ public class dayBreak extends JComponent implements ActionListener {
     int alien1Delay = 120;
     int robot1Delay = 95;
     int robotatk1Delay = 100;
+    int batSpeed = 2;
+    
     //bosses
     int gronkFrame = 0;
     long lastGronkChange = 0;
     int gronkDelay = 250;
     int gronkJumpAngle = 45;
     int gronkJumpSpeed = 8;
+    
     //projectiles
     boolean BfiredLeft = false;
     boolean Bfired = false;
-    private Timer bulletTimer;
     int bulletCount = 0;
     int mainBulletFrame = 0;
     long lastMainBulletChange = 0;
     int mainBulletDelay = 0;
     int mainBulletSpeed = 12;
     Rectangle mainBFired = new Rectangle(0, 0, 6, 3);
+    
     //player gravity
     int gravitySpeed = 5;
     int velocityY = 300;
@@ -169,47 +189,17 @@ public class dayBreak extends JComponent implements ActionListener {
     int playerVPosit = main1Rect.y;
     long startGravTimer = System.currentTimeMillis();
     Camera cam = new Camera(0, 0);
+    
     // player x - camera x
     // platyer y - camera y
+    
     int newCamPositX = 0;
     int newCamPositY = 0;
+    
     ArrayList<Rectangle> grassTiles = new ArrayList<>();
+    
+    ArrayList<Rectangle> dirtTiles = new ArrayList<>();
 
-    //very basics of A* algorithym
-//    [openList add:originalSquare]; // start by adding the original position to the open list
-//do {
-//	currentSquare = [openList squareWithLowestFScore]; // Get the square with the lowest F score
-//	
-//	[closedList add:currentSquare]; // add the current square to the closed list
-//	[openList remove:currentSquare]; // remove it to the open list
-//	
-//	if ([closedList contains:destinationSquare]) { // if we added the destination to the closed list, we've found a path
-//		// PATH FOUND
-//		break; // break the loop
-//	}
-//	
-//	adjacentSquares = [currentSquare walkableAdjacentSquares]; // Retrieve all its walkable adjacent squares
-//	
-//	foreach (aSquare in adjacentSquares) {
-//		
-//		if ([closedList contains:aSquare]) { // if this adjacent square is already in the closed list ignore it
-//			continue; // Go to the next adjacent square
-//		}
-//		
-//		if (![openList contains:aSquare]) { // if its not in the open list
-//			
-//			// compute its score, set the parent
-//			[openList add:aSquare]; // and add it to the open list
-//			
-//		} else { // if its already in the open list
-//			
-//			// test if using the current G score make the aSquare F score lower, if yes update the parent because it means its a better path
-//			
-//		}
-//	}
-//	
-//} while(![openList isEmpty]); // Continue until there is no more available square in the open list (which means there is no path)
-//    
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
     // You will learn more about this in Grade 12 :)
@@ -263,18 +253,6 @@ public class dayBreak extends JComponent implements ActionListener {
         g.setColor(skyBox);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-        //possible tile drawings?
-//         for (int column = 0; column < bgSheet.getHeight(); column++) {
-//                for (int row = 0; row < bgSheet.getWidth(); row++) {
-//                  Raster tileBG1 = bgSheet.getTile(column, row);
-//                  int x = column * bgSheet.getMinTileX();
-//                  int y = row * bgSheet.getMinTileY();
-//                //g.drawImage(tileBG1, x, y, null);
-//            }  
-//        }
-
-
-
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
@@ -287,38 +265,10 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
-
-        for (int row = 795; row > 670; row = row - tileRect.height + 1) {
-            g.clearRect(500 - cam.getX(), row, 28, 28);
-            g.drawImage(tile1Under, 500 - cam.getX(), row, null);
-            row--;
+        for (Rectangle tile : dirtTiles) {
+            g.drawImage(tile1, tile.x - cam.getX(), tile.y, null);
         }
-        for (int row = 795; row > 475; row = row - tileRect.height + 1) {
-            g.clearRect(4440 - cam.getX(), row, 28, 28);
-            g.drawImage(tile1Under, 4440 - cam.getX(), row, null);
-            row--;
-        }
-        for (int row = 795; row > 475; row = row - tileRect.height + 1) {
-            g.clearRect(5440 - cam.getX(), row, 28, 28);
-            g.drawImage(tile1Under, 5440 - cam.getX(), row, null);
-            row--;
-        }
-        for (int row = 600; row > 200; row = row - tileRect.height + 1) {
-            g.clearRect(7240 - cam.getX(), row, 28, 28);
-            g.drawImage(tile1Under, 7240 - cam.getX(), row, null);
-            row--;
-        }
-        for (int row = 600; row > 200; row = row - tileRect.height + 1) {
-            g.clearRect(7600 - cam.getX(), row, 28, 28);
-            g.drawImage(tile1Under, 7600 - cam.getX(), row, null);
-            row--;
-        }
-        for (int row = 800; row > 475; row = row - tileRect.height + 1) {
-            g.clearRect(7960 - cam.getX(), row, 28, 28);
-            g.drawImage(tile1Under, 7960 - cam.getX(), row, null);
-            row--;
-        }
-
+        
         for (Rectangle tile : grassTiles) {
             g.drawImage(tile1, tile.x - cam.getX(), tile.y, null);
         }
@@ -330,6 +280,9 @@ public class dayBreak extends JComponent implements ActionListener {
 //            }
 //        }
 
+        
+        
+        
         if (Bfired == true) {
             g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(), mainBFired.y, null);
         }
@@ -354,7 +307,7 @@ public class dayBreak extends JComponent implements ActionListener {
 
 
         //ground enemies
-        g.drawImage(bat1[bat1Frame], 0 - cam.getX(), 0, null);
+        g.drawImage(bat1[bat1Frame], batRect1.x - cam.getX(), batRect1.y, null);
         g.drawImage(soldier1[soldier1Frame], 35 - cam.getX(), 0, null);
         g.drawImage(alien1[alien1Frame], 70 - cam.getX(), 0, null);
         g.drawImage(robot1[robot1Frame], 105 - cam.getX(), 0, null);
@@ -571,6 +524,28 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
+        //add dirt tiles to the list
+        for (int row = 795; row > 670; row = row - tileRect.height) {
+            dirtTiles.add(new Rectangle(500, row, 28, 28));
+        }
+        for (int row = 795; row > 475; row = row - tileRect.height) {
+            dirtTiles.add(new Rectangle(4440, row, 28, 28));
+        }
+        for (int row = 795; row > 475; row = row - tileRect.height) {
+            dirtTiles.add(new Rectangle(5440, row, 28, 28));
+        }
+        for (int row = 600; row > 200; row = row - tileRect.height) {
+            dirtTiles.add(new Rectangle(7240, row, 28, 28));
+        }
+         for (int row = 600; row > 200; row = row - tileRect.height) {
+            dirtTiles.add(new Rectangle(7600, row, 28, 28));
+        }
+         for (int row = 800; row > 475; row = row - tileRect.height) {
+            dirtTiles.add(new Rectangle(7960, row, 28, 28));
+        }
+
+        
+         
 
         // add grass tiles to list
         for (int column = 500; column < 620; column = column + tileRect.width) {
@@ -632,8 +607,8 @@ public class dayBreak extends JComponent implements ActionListener {
 
     public void gameLoop() {
 
-
-
+        aleinPath();
+        batPath();
         moveGronk();
         movePlayer();
         cam.x = main1Rect.x - WIDTH / 2;
@@ -773,6 +748,55 @@ public class dayBreak extends JComponent implements ActionListener {
 //        }
     }
 
+    private void batPath() {
+        if(batRect1.y < 575){
+            batRect1.y = batRect1.y + batSpeed;
+        } 
+        if (batRect1.y > 575){
+            batRect1.y = batRect1.y - batSpeed;
+        }
+        
+        if (batRect1.y < 0) {
+            batRect1.y = 0;
+        } else if (batRect1.y + batRect1.height > HEIGHT) {
+            batRect1.y = HEIGHT - batRect1.height;
+        }
+        
+        for (Rectangle tile : grassTiles) {
+            if (batRect1.intersects(tile)) {
+                int heightOverlap = Math.min(batRect1.y + batRect1.height, tile.y + tile.height) - Math.max(batRect1.y, tile.y);
+                if (batRect1.y < tile.y ) {
+                    batRect1.y = tile.y - batRect1.height;
+                } else {
+                    batRect1.y = tile.y + tile.height;
+                }
+            }
+        }
+    }
+    
+    private void aleinPath() {
+        
+        
+        
+        if (aleinRect1.y < 0) {
+            aleinRect1.y = 0;
+        } else if (aleinRect1.y + aleinRect1.height > HEIGHT) {
+            aleinRect1.y = HEIGHT - aleinRect1.height;
+        }
+        
+        for (Rectangle tile : grassTiles) {
+            if (aleinRect1.intersects(tile)) {
+                int heightOverlap = Math.min(aleinRect1.y + aleinRect1.height, tile.y + tile.height) - Math.max(aleinRect1.y, tile.y);
+                if (aleinRect1.y < tile.y ) {
+                    aleinRect1.y = tile.y - aleinRect1.height;
+                } else {
+                    aleinRect1.y = tile.y + tile.height;
+                }
+            }
+        }
+    }
+    
+    
     private void moveGronk() {
         //jumping
         double newGronkJumpAngle = Math.toRadians(gronkJumpAngle);
