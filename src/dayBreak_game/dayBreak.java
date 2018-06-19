@@ -356,12 +356,9 @@ public class dayBreak extends JComponent implements ActionListener {
         int heightMainLife = hearts.getHeight() / 4;
         int i = 0;
         for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 3; col++) {
+            for (int col = 0; col < 1; col++) {
                 mainheart[i] = hearts.getSubimage(col * widthMainLife, row * heightMainLife, widthMainLife, heightMainLife);
                 i++;
-                if (i == 10) {
-                    break;
-                }
             }
         }
 
