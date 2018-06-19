@@ -351,11 +351,24 @@ public class dayBreak extends JComponent implements ActionListener {
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
 
+        //life bar
+        int widthMainLife = hearts.getWidth() / 1;
+        int heightMainLife = hearts.getHeight() / 4;
+        int i = 0;
+        for (int row = 0; row < 4; row++) {
+            for (int col = 0; col < 3; col++) {
+                mainheart[i] = hearts.getSubimage(col * widthMainLife, row * heightMainLife, widthMainLife, heightMainLife);
+                i++;
+                if (i == 10) {
+                    break;
+                }
+            }
+        }
 
         //main character
         int widthMainStance = main1.getWidth() / 3;
         int heightMainStance = main1.getHeight() / 4;
-        int i = 0;
+        i = 0;
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 3; col++) {
                 mainStance[i] = main1.getSubimage(col * widthMainStance, row * heightMainStance, widthMainStance, heightMainStance);
@@ -624,6 +637,9 @@ public class dayBreak extends JComponent implements ActionListener {
         bulletFired();
         gravity();
 
+        //life bar
+        
+        
         //main character
         if (System.currentTimeMillis() > lastMainStanceChange + mainStanceDelay) {
             mainStanceFrame = (mainStanceFrame + 1) % mainStance.length;
