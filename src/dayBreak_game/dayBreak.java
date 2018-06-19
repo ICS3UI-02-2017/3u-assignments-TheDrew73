@@ -14,7 +14,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
@@ -39,8 +44,17 @@ public class dayBreak extends JComponent implements ActionListener {
     Timer gameTimer;
     // YOUR GAME VARIABLES WOULD GO HERE
     
+    int velX = 2;
+    int velY = 2;
     
     Color skyBox = new Color(79, 182, 223);
+    
+    //tiles
+    BufferedImage tile1 = loadImage("MainTile.png");
+    BufferedImage[] tile1A = new BufferedImage[1];
+    BufferedImage tile1Under = loadImage("MainTile underside.png");
+    BufferedImage[] tile1B = new BufferedImage[1];
+    Rectangle tileRect = new Rectangle(0, 0, 28, 28);
     
     //main character
     BufferedImage main1 = loadImage("Main Character Stance.png");
@@ -55,7 +69,7 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage[] mainJump1 = new BufferedImage[15];
     BufferedImage main2jmp = loadImage("Main Character jumping clone.png");
     BufferedImage[] mainJump2 = new BufferedImage[15];
-    Rectangle main1Rect = new Rectangle(35, 660, 128, 128);
+    Rectangle main1Rect = new Rectangle(0, 675, 128, 128);
     
     //backgrounds
     BufferedImage bgSheet = loadImage("Stage1 back1.png");
@@ -66,27 +80,48 @@ public class dayBreak extends JComponent implements ActionListener {
     //ground enemies
     BufferedImage enemy1 = loadImage("Bat 1.png");
     BufferedImage[] bat1 = new BufferedImage[4];
+    Rectangle batRect1 = new Rectangle(500, 200, 128,128);
+    Rectangle batRect2 = new Rectangle(5440, 100, 128,128);
+    Rectangle batRect3 = new Rectangle(6340, 100, 128,128);
+    
     BufferedImage enemy2 = loadImage("soldier 1.png");
     BufferedImage[] soldier1 = new BufferedImage[2];
+    
+    
     BufferedImage enemy3 = loadImage("Alien 1.png");
     BufferedImage[] alien1 = new BufferedImage[3];
+    Rectangle aleinRect1 = new Rectangle(2340, 700, 128,128);
+    Rectangle aleinRect2 = new Rectangle(8320, 90, 128,128);
+    
     BufferedImage enemy4 = loadImage("Robot1.png");
     BufferedImage[] robot1 = new BufferedImage[14];
+    Rectangle robotRect1 = new Rectangle(3400, 230, 192, 192);
+    Rectangle robotRect2 = new Rectangle(6240, 625, 192, 192);
+    
     BufferedImage enemy5 = loadImage("soldier 1 attack.png");
     BufferedImage[] soldieratk1 = new BufferedImage[5];
     BufferedImage enemy6 = loadImage("soldier 1 walk.png");
     BufferedImage[] soldierwk1 = new BufferedImage[10];
     BufferedImage enemy7 = loadImage("Robot1 attack.png");
+    Rectangle soldierRect1 = new Rectangle(4990, 605, 128,128);
+    
     BufferedImage[] robotatk1 = new BufferedImage[16];
     
     //bosses
     BufferedImage boss1 = loadImage("Gronk.png");
     BufferedImage[] gronk = new BufferedImage[2];
+    Rectangle gronkRect = new Rectangle(0, 0, 225, 225);
+    
+    //projectiles
+    BufferedImage mainBullet1 = loadImage("main bullet.png");
+    BufferedImage[] MB = new BufferedImage[1];
     
     //main character
+    boolean underTiles = false;
     boolean mainRight = false;
     boolean mainLeft = false;
     boolean mainJump = false;
+    boolean mainFall = true;
     int mainStanceFrame = 0;
     int mainStance2Frame = 0;
     int mainWalk1Frame = 0;
@@ -105,7 +140,8 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainWalk2Delay = 80;
     int mainJump1Delay = 50;
     int mainJump2Delay = 50;
-    int mainWalkSpeed = 5;
+    int mainWalkSpeed = 13;
+    int mainFallSpeed = 10;
     
     //backgrounds
     int bgFrame = 0;
@@ -116,6 +152,9 @@ public class dayBreak extends JComponent implements ActionListener {
     int bg2Delay = 41;
     
     //ground enemies
+    boolean upDown = false;
+    boolean upDown2 = false;
+    boolean side2side = false;
     int bat1Frame = 0;
     int soldier1Frame = 0;
     int soldieratk1Frame = 0;
@@ -137,11 +176,47 @@ public class dayBreak extends JComponent implements ActionListener {
     int alien1Delay = 120;
     int robot1Delay = 95;
     int robotatk1Delay = 100;
+    int batSpeed = 3;
+    int aleinSpeed = 15;
+    int robotSpeed = 5;
+    int soldierSpeed = 4;
     
     //bosses
     int gronkFrame = 0;
     long lastGronkChange = 0;
     int gronkDelay = 250;
+    int gronkJumpAngle = 45;
+    int gronkJumpSpeed = 8;
+    
+    //projectiles
+    boolean BfiredLeft = false;
+    boolean Bfired = false;
+    int bulletCount = 0;
+    int mainBulletFrame = 0;
+    long lastMainBulletChange = 0;
+    int mainBulletDelay = 0;
+    int mainBulletSpeed = 12;
+    Rectangle mainBFired = new Rectangle(0, 0, 6, 3);
+    
+    //player gravity
+    boolean canJump = false;
+    int gravitySpeed = 5;
+    int velocityY = 300;
+    int vSpeed = 0;
+    int playerVPosit = main1Rect.y;
+    long startGravTimer = System.currentTimeMillis();
+    
+    
+    Camera cam = new Camera(0, 0);
+    
+    // player x - camera x
+    // platyer y - camera y
+    
+    int newCamPositX = 0;
+    int newCamPositY = 0;
+    
+    ArrayList<Rectangle> grassTiles = new ArrayList<>();
+    
 
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
@@ -149,7 +224,7 @@ public class dayBreak extends JComponent implements ActionListener {
     public dayBreak() {
         // creates a windows to show my game
         JFrame frame = new JFrame(title);
-
+        preSetup();
         // sets the size of my game
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         // adds the game to the window
@@ -168,7 +243,7 @@ public class dayBreak extends JComponent implements ActionListener {
         this.addMouseMotionListener(m);
         this.addMouseWheelListener(m);
         this.addMouseListener(m);
-        preSetup();
+
         gameTimer = new Timer(desiredTime, this);
         gameTimer.setRepeats(true);
         gameTimer.start();
@@ -196,71 +271,80 @@ public class dayBreak extends JComponent implements ActionListener {
         g.setColor(skyBox);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
         //g.drawImage(background2[bg2Frame], 0, 0, null);
 
+        //drawing the level
+        for (int row = 0; row < HEIGHT; row = row + tile1Under.getHeight()) {
+            for (int column = 0; column > -WIDTH; column = column - tile1Under.getWidth()) {
+                g.drawImage(tile1Under, column - cam.getX(), row, null);
+
+            }
+        }
+
+        
+        for (Rectangle tile : grassTiles) {
+            g.drawImage(tile1, tile.x - cam.getX(), tile.y, null);
+        }
+
+//         for (int row = 7900; row < 9000; row = row + tile1Under.getHeight()) {
+//            for (int column = 0; column < 800; column = column + tile1Under.getWidth()) {
+//                g.drawImage(tile1Under, column - cam.getX(), row, null);
+//
+//            }
+//        }
+
+        
+        
+        
+        if (Bfired == true) {
+            g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(), mainBFired.y, null);
+        }
+
+
         //main Character
         if (mainJump == true) {
-            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x, main1Rect.y, null);
+            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
         } else {
-        if (mainLeft == true) {
-            g.drawImage(mainWalk[mainWalk1Frame], main1Rect.x, main1Rect.y, null);
-        } else if (mainRight == true) {
-            g.drawImage(mainWalk2[mainWalk2Frame], main1Rect.x, main1Rect.y, null);
-        } else {
-            g.drawImage(mainStance2[mainStance2Frame], main1Rect.x, main1Rect.y, null);
+            if (mainLeft == true) {
+                g.drawImage(mainWalk[mainWalk1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            } else if (mainRight == true) {
+                g.drawImage(mainWalk2[mainWalk2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            } else {
+                g.drawImage(mainStance2[mainStance2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            }
+
+            if (mainJump == true) {
+                g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            }
         }
-        }
-       
+
+        
+            g.drawImage(robot1[robot1Frame], robotRect1.x - cam.getX(), robotRect1.y, null);
+            g.drawImage(robot1[robot1Frame], robotRect2.x - cam.getX(), robotRect2.y, null);
+        
 
         //ground enemies
-        g.drawImage(bat1[bat1Frame], 0, 0, null);
-        g.drawImage(soldier1[soldier1Frame], 35, 0, null);
-        g.drawImage(alien1[alien1Frame], 70, 0, null);
-        g.drawImage(robot1[robot1Frame], 105, 0, null);
-        g.drawImage(soldieratk1[soldieratk1Frame], 140, 0, null);
-        g.drawImage(soldierwk1[soldierwk1Frame], 175, 0, null);
-        g.drawImage(robotatk1[robotatk1Frame], 210, 0, null);
+        g.drawImage(bat1[bat1Frame], batRect1.x - cam.getX(), batRect1.y, null);
+        g.drawImage(bat1[bat1Frame], batRect2.x - cam.getX(), batRect2.y, null);
+        g.drawImage(bat1[bat1Frame], batRect3.x - cam.getX(), batRect3.y, null);
+        g.drawImage(alien1[alien1Frame], aleinRect1.x - cam.getX(), aleinRect1.y, null);
+        g.drawImage(alien1[alien1Frame], aleinRect2.x - cam.getX(), aleinRect2.y, null);
+        g.drawImage(soldierwk1[soldierwk1Frame], soldierRect1.x - cam.getX(), soldierRect1.y, null);
 
         //bosses
-        g.drawImage(gronk[gronkFrame], 650, 575, null);
+        g.drawImage(gronk[gronkFrame], gronkRect.x - cam.getX(), gronkRect.y, null);
 
         // GAME DRAWING ENDS HERE
     }
-
-     private int x, y;
-     
-     public void Camera(float x, float y){
-            this.x = (int) x;
-            this.y = (int) y;
-     }
-     
-            public void setX(float x){
-                this.x = (int) x;
-            }
-            public void setY(float y){
-                this.y = (int) y;
-            }
-
-    @Override
-            public int getX(){
-                return x;
-            }
-            
-    @Override
-            public int getY(){
-                return y;
-            }
-            
 
     // This method is used to do any pre-setup you might need to do
     // This is run before the game loop begins!
     public void preSetup() {
         // Any of your pre setup before the loop starts should go here
-        
-        
+
+
         //main character
         int widthMainStance = main1.getWidth() / 3;
         int heightMainStance = main1.getHeight() / 4;
@@ -447,13 +531,90 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
+        //projectiles
+        int widthMB = mainBullet1.getWidth() / 1;
+        int heightMB = mainBullet1.getHeight() / 1;
+        i = 0;
+        for (int row = 0; row < 1; row++) {
+            for (int col = 0; col < 1; col++) {
+                MB[i] = mainBullet1.getSubimage(col * widthMB, row * heightMB, widthMB, heightMB);
+                i++;
+            }
+        }
+
+        // add grass tiles to list
+        for (int column = 500; column < 620; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 675, 28, 28));
+        }
+        for (int column = 1020; column < 1360; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 490, 28, 28));
+        }
+        for (int column = 1488; column < 1810; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 405, 28, 28));
+        }
+        for (int column = 1938; column < 2340; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 320, 28, 28));
+        }
+        for (int column = 2838; column < 3540; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 390, 28, 28));
+        }
+        for (int column = 3540; column < 3740; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 590, 28, 28));
+        }
+        for (int column = 2638; column < 2838; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 590, 28, 28));
+        }
+        for (int column = 3038; column < 3340; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 650, 28, 28));
+        }
+        for (int column = 4240; column < 4440; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 640, 28, 28));
+        }
+        for (int column = 4590; column < 4990; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 400, 28, 28));
+        }
+        for (int column = 5240; column < 5440; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 640, 28, 28));
+        }
+        for (int column = 5440; column < 6440; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 475, 28, 28));
+        }
+        for (int column = 7240; column < 7420; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 600, 28, 28));
+        }
+        for (int column = 7240; column < 7420; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 300, 28, 28));
+        }
+        for (int column = 7420; column < 7780; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 450, 28, 28));
+        }
+        for (int column = 7420; column < 8420; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 200, 28, 28));
+        }
+        for (int column = 7600; column < 7780; column = column + tileRect.width) {
+            grassTiles.add(new Rectangle(column, 600, 28, 28));
+        }
+
+
     }
     // The main game loop
     // In here is where all the logic for my game will go
 
     public void gameLoop() {
 
+        soldierPath();
+        robotPath2();
+        robotPath();
+        aleinPath2();
+        aleinPath();
+        batPath3();
+        batPath2();
+        batPath();
+        moveGronk();
         movePlayer();
+        cam.x = main1Rect.x - WIDTH / 2;
+        bulletFired();
+        gravity();
 
         //main character
         if (System.currentTimeMillis() > lastMainStanceChange + mainStanceDelay) {
@@ -529,6 +690,13 @@ public class dayBreak extends JComponent implements ActionListener {
             gronkFrame = (gronkFrame + 1) % gronk.length;
             lastGronkChange = System.currentTimeMillis();
         }
+
+
+        //projectiles
+        if (System.currentTimeMillis() > lastMainBulletChange + mainBulletDelay) {
+            mainBulletFrame = (mainBulletFrame + 1) % MB.length;
+            lastMainBulletChange = System.currentTimeMillis();
+        }
     }
 
     private void movePlayer() {
@@ -536,17 +704,250 @@ public class dayBreak extends JComponent implements ActionListener {
             main1Rect.x = main1Rect.x + mainWalkSpeed;
         } else if (mainLeft) {
             main1Rect.x = main1Rect.x - mainWalkSpeed;
+
         }
 
         if (mainJump) {
-            main1Rect.y = main1Rect.y - 7;
+            main1Rect.y = main1Rect.y - mainWalkSpeed;
+        } else if (mainFall) {
+            main1Rect.y = main1Rect.y + mainFallSpeed;
         }
 
         if (main1Rect.y < 0) {
             main1Rect.y = 0;
-        } else if (main1Rect.y + main1Rect.height > HEIGHT + 35) {
+        } else if (main1Rect.y + main1Rect.height > HEIGHT) {
             main1Rect.y = HEIGHT - main1Rect.height;
         }
+        if (main1Rect.x < 28) {
+            main1Rect.x = tileRect.width;
+        }
+        for (Rectangle tile : grassTiles) {
+            if (main1Rect.intersects(tile)) {
+                int heightOverlap = Math.min(main1Rect.y + main1Rect.height, tile.y + tile.height) - Math.max(main1Rect.y, tile.y);
+                if (main1Rect.y < tile.y ) {
+                    main1Rect.y = tile.y - main1Rect.height;
+                } else {
+                    main1Rect.y = tile.y + tile.height;
+                }
+            }
+        }
+    }
+
+    private void bulletFired() {
+        if (Bfired) {
+            if (!BfiredLeft) {
+                mainBFired.x = mainBFired.x + mainBulletSpeed;
+            } else {
+                mainBFired.x = mainBFired.x - mainBulletSpeed;
+            }
+        }
+    }
+    
+    private void batPath3() {
+        if(batRect3.y <= 300 && upDown == false){
+            batRect3.y = batRect3.y + batSpeed;
+            if(batRect3.y == 300){
+                upDown = true;
+            }
+        } 
+        else if (batRect3.y >= 100 && upDown == true){
+            batRect3.y = batRect3.y - batSpeed;
+            if(batRect3.y == 100) {
+                upDown = false;
+            }
+        }
+
+        if (batRect3.y < 0) {
+            batRect3.y = 0;
+        } else if (batRect3.y + batRect3.height > HEIGHT) {
+            batRect3.y = HEIGHT - batRect3.height;
+        }
+        
+    }
+
+    private void batPath2() {
+        if(batRect2.y <= 300 && upDown == false){
+            batRect2.y = batRect2.y + batSpeed;
+            if(batRect2.y == 300){
+                upDown = true;
+            }
+        } 
+        else if (batRect2.y >= 100 && upDown == true){
+            batRect2.y = batRect2.y - batSpeed;
+            if(batRect2.y == 100) {
+                upDown = false;
+            }
+        }
+        
+        if (batRect2.y < 0) {
+            batRect2.y = 0;
+        } else if (batRect2.y + batRect2.height > HEIGHT) {
+            batRect2.y = HEIGHT - batRect2.height;
+        }
+        
+    }
+    
+    private void batPath() {
+        if(batRect1.y <= 550 && upDown == false){
+            batRect1.y = batRect1.y + batSpeed;
+            if(batRect1.y == 550){
+                upDown = true;
+            }
+        } 
+        else if (batRect1.y >= 199 && upDown == true){
+            batRect1.y = batRect1.y - batSpeed;
+            if(batRect1.y == 199) {
+                upDown = false;
+            }
+        }
+        
+        if (batRect1.y < 0) {
+            batRect1.y = 0;
+        } else if (batRect1.y + batRect1.height > HEIGHT) {
+            batRect1.y = HEIGHT - batRect1.height;
+        }
+        
+        for (Rectangle tile : grassTiles) {
+            if (batRect1.intersects(tile)) {
+                int heightOverlap = Math.min(batRect1.y + batRect1.height, tile.y + tile.height) - Math.max(batRect1.y, tile.y);
+                if (batRect1.y < tile.y ) {
+                    batRect1.y = tile.y - batRect1.height;
+                } else {
+                    batRect1.y = tile.y + tile.height;
+                }
+            }
+        }
+    }
+    
+    private void aleinPath2() {
+        if(aleinRect1.x <= 8320 && side2side == false){
+            aleinRect1.x = aleinRect1.x - aleinSpeed;
+            if(aleinRect1.x == 7500){
+                side2side = true;
+            }
+        } 
+        else if (aleinRect1.x >= 7500 && side2side == true){
+            aleinRect1.x = aleinRect1.x + aleinSpeed;
+            if(aleinRect1.x == 8320) {
+                side2side = false;
+            }
+        }
+    }
+    
+    private void aleinPath() {
+        if(aleinRect1.x <= 2340 && side2side == false){
+            aleinRect1.x = aleinRect1.x - aleinSpeed;
+            if(aleinRect1.x == 1020){
+                side2side = true;
+            }
+        } 
+        else if (aleinRect1.x >= 1020 && side2side == true){
+            aleinRect1.x = aleinRect1.x + aleinSpeed;
+            if(aleinRect1.x == 2340) {
+                side2side = false;
+            }
+        }
+        
+        
+        if (aleinRect1.y < 0) {
+            aleinRect1.y = 0;
+        } else if (aleinRect1.y + aleinRect1.height > HEIGHT) {
+            aleinRect1.y = HEIGHT - aleinRect1.height;
+        }
+        
+        for (Rectangle tile : grassTiles) {
+            if (aleinRect1.intersects(tile)) {
+                int heightOverlap = Math.min(aleinRect1.y + aleinRect1.height, tile.y + tile.height) - Math.max(aleinRect1.y, tile.y);
+                if (aleinRect1.y < tile.y ) {
+                    aleinRect1.y = tile.y - aleinRect1.height;
+                } else {
+                    aleinRect1.y = tile.y + tile.height;
+                }
+            }
+        }
+    }
+    
+    private void robotPath2() {
+        
+        if(robotRect2.x <= 6240 && side2side == false){
+            robotRect2.x = robotRect2.x - robotSpeed;
+            if(robotRect2.x == 5540){
+                side2side = true;
+            }
+        } 
+        else if (robotRect2.x >= 5240 && side2side == true){
+            robotRect2.x = robotRect2.x + robotSpeed;
+            if(robotRect2.x == 6240) {
+                side2side = false;
+            }
+        }
+        
+    }
+    
+    private void robotPath() {
+        
+        if(robotRect1.x <= 3400 && side2side == false){
+            robotRect1.x = robotRect1.x - robotSpeed;
+            if(robotRect1.x == 2400){
+                side2side = true;
+            }
+        } 
+        else if (robotRect1.x >= 2400 && side2side == true){
+            robotRect1.x = robotRect1.x + robotSpeed;
+            if(robotRect1.x == 3400) {
+                side2side = false;
+            }
+        }
+        
+        if (robotRect1.y < 0) {
+            robotRect1.y = 0;
+        } else if (robotRect1.y + robotRect1.height > HEIGHT) {
+            robotRect1.y = HEIGHT - robotRect1.height;
+        }
+        
+    }
+    
+    private void soldierPath() {
+        if(soldierRect1.x <= 4990 && side2side == false){
+            soldierRect1.x = soldierRect1.x - soldierSpeed;
+            if(soldierRect1.x == 4290){
+                side2side = true;
+            }
+        } 
+        else if (soldierRect1.x >= 4290 && side2side == true){
+            soldierRect1.x = soldierRect1.x + soldierSpeed;
+            if(soldierRect1.x == 4990) {
+                side2side = false;
+            }
+        }
+    }
+    
+    private void moveGronk() {
+        //jumping
+        double newGronkJumpAngle = Math.toRadians(gronkJumpAngle);
+        double moveX = (int) gronkJumpSpeed * Math.cos(newGronkJumpAngle);
+        double moveY = (int) gronkJumpSpeed * Math.sin(newGronkJumpAngle);
+
+        //makes him travel at different speeds
+        //int randNumGronk = (int) (Math.random() * (1 -1 +1)) +1;
+
+        gronkRect.x = gronkRect.x - (int) moveX;
+        gronkRect.y = gronkRect.y - (int) moveY;
+
+        //jumping collison
+        if (gronkRect.y < 0) {
+            gronkJumpAngle = gronkJumpAngle * -1;
+        }
+        if (gronkRect.y + gronkRect.height > HEIGHT) {
+            gronkJumpAngle = gronkJumpAngle * -1;
+        }
+
+        if (gronkRect.intersects(tileRect)) {
+            gronkJumpAngle = (180 + gronkJumpAngle * -1) % 360;
+        }
+    }
+
+    private void gravity() {
     }
 
     // Used to implement any of the Mouse Actions
@@ -588,6 +989,22 @@ public class dayBreak extends JComponent implements ActionListener {
             if (keyCode == KeyEvent.VK_W) {
                 mainJump = true;
             }
+            if (keyCode == KeyEvent.VK_W) {
+                mainFall = false;
+            }
+            if (keyCode == KeyEvent.VK_SPACE) {
+                Bfired = true;
+                if (Bfired == true) {
+                    BfiredLeft = false;
+                    mainBFired.x = main1Rect.x + 120;
+                    mainBFired.y = main1Rect.y + 80;
+                }
+                if (mainLeft == true) {
+                    BfiredLeft = true;
+                    mainBFired.x = main1Rect.x;
+                    mainBFired.y = main1Rect.y + 80;
+                }
+            }
         }
 
         // if a key has been released
@@ -602,6 +1019,10 @@ public class dayBreak extends JComponent implements ActionListener {
             if (keyCode == KeyEvent.VK_W) {
                 mainJump = false;
             }
+            if (keyCode == KeyEvent.VK_W) {
+                mainFall = true;
+            }
+
         }
     }
 
