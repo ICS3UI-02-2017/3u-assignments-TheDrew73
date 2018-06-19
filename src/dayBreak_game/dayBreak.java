@@ -49,6 +49,10 @@ public class dayBreak extends JComponent implements ActionListener {
     
     Color skyBox = new Color(79, 182, 223);
     
+    //lifebar
+    BufferedImage hearts = loadImage("MainLife.png");
+    BufferedImage[] mainheart = new BufferedImage[4];
+    
     //tiles
     BufferedImage tile1 = loadImage("MainTile.png");
     BufferedImage[] tile1A = new BufferedImage[1];
@@ -104,6 +108,7 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage[] soldierwk1 = new BufferedImage[10];
     BufferedImage enemy7 = loadImage("Robot1 attack.png");
     Rectangle soldierRect1 = new Rectangle(4990, 605, 128,128);
+    Rectangle soldierRect2 = new Rectangle(8320, 605, 128,128);
     
     BufferedImage[] robotatk1 = new BufferedImage[16];
     
@@ -140,7 +145,7 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainWalk2Delay = 80;
     int mainJump1Delay = 50;
     int mainJump2Delay = 50;
-    int mainWalkSpeed = 13;
+    int mainWalkSpeed = 7;
     int mainFallSpeed = 10;
     
     //backgrounds
@@ -332,10 +337,12 @@ public class dayBreak extends JComponent implements ActionListener {
         g.drawImage(alien1[alien1Frame], aleinRect1.x - cam.getX(), aleinRect1.y, null);
         g.drawImage(alien1[alien1Frame], aleinRect2.x - cam.getX(), aleinRect2.y, null);
         g.drawImage(soldierwk1[soldierwk1Frame], soldierRect1.x - cam.getX(), soldierRect1.y, null);
-
+        g.drawImage(soldierwk1[soldierwk1Frame], soldierRect2.x - cam.getX(), soldierRect2.y, null);
+        
         //bosses
+        if(main1Rect.x >= 9200){
         g.drawImage(gronk[gronkFrame], gronkRect.x - cam.getX(), gronkRect.y, null);
-
+        }
         // GAME DRAWING ENDS HERE
     }
 
@@ -602,6 +609,7 @@ public class dayBreak extends JComponent implements ActionListener {
 
     public void gameLoop() {
 
+        soldierPath2();
         soldierPath();
         robotPath2();
         robotPath();
@@ -820,15 +828,15 @@ public class dayBreak extends JComponent implements ActionListener {
     }
     
     private void aleinPath2() {
-        if(aleinRect1.x <= 8320 && side2side == false){
-            aleinRect1.x = aleinRect1.x - aleinSpeed;
-            if(aleinRect1.x == 7500){
+        if(aleinRect2.x <= 8320 && side2side == false){
+            aleinRect2.x = aleinRect2.x - aleinSpeed;
+            if(aleinRect2.x == 7500){
                 side2side = true;
             }
         } 
-        else if (aleinRect1.x >= 7500 && side2side == true){
-            aleinRect1.x = aleinRect1.x + aleinSpeed;
-            if(aleinRect1.x == 8320) {
+        else if (aleinRect2.x >= 7500 && side2side == true){
+            aleinRect2.x = aleinRect2.x + aleinSpeed;
+            if(aleinRect2.x == 8320) {
                 side2side = false;
             }
         }
@@ -855,16 +863,6 @@ public class dayBreak extends JComponent implements ActionListener {
             aleinRect1.y = HEIGHT - aleinRect1.height;
         }
         
-        for (Rectangle tile : grassTiles) {
-            if (aleinRect1.intersects(tile)) {
-                int heightOverlap = Math.min(aleinRect1.y + aleinRect1.height, tile.y + tile.height) - Math.max(aleinRect1.y, tile.y);
-                if (aleinRect1.y < tile.y ) {
-                    aleinRect1.y = tile.y - aleinRect1.height;
-                } else {
-                    aleinRect1.y = tile.y + tile.height;
-                }
-            }
-        }
     }
     
     private void robotPath2() {
@@ -905,6 +903,21 @@ public class dayBreak extends JComponent implements ActionListener {
             robotRect1.y = HEIGHT - robotRect1.height;
         }
         
+    }
+    
+    private void soldierPath2() {
+        if(soldierRect1.x <= 8320 && side2side == false){
+            soldierRect1.x = soldierRect1.x - soldierSpeed;
+            if(soldierRect1.x == 8000){
+                side2side = true;
+            }
+        } 
+        else if (soldierRect1.x >= 8000 && side2side == true){
+            soldierRect1.x = soldierRect1.x + soldierSpeed;
+            if(soldierRect1.x == 8320) {
+                side2side = false;
+            }
+        }
     }
     
     private void soldierPath() {
