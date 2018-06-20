@@ -43,23 +43,36 @@ public class dayBreak extends JComponent implements ActionListener {
     // this is what keeps our time running smoothly :)
     Timer gameTimer;
     // YOUR GAME VARIABLES WOULD GO HERE
-    
+
     int velX = 2;
     int velY = 2;
-    
+
     Color skyBox = new Color(79, 182, 223);
+
+    //alive booleans
+    boolean soldierAlive1 = true;
+    boolean soldierAlive2 = true;
+    boolean aleinAlive1 = true;
+    boolean aleinAlive2 = true;
+    boolean batAlive1 = true;
+    boolean batAlive2 = true;
+    boolean batAlive3 = true;
+    boolean robotAlive1 = true;
+    boolean robotAlive2 = true;
+    boolean gronkAlive = true;
+    boolean mainAlive = true;
     
     //lifebar
     BufferedImage hearts = loadImage("MainLife.png");
     BufferedImage[] mainheart = new BufferedImage[4];
-    
+
     //tiles
     BufferedImage tile1 = loadImage("MainTile.png");
     BufferedImage[] tile1A = new BufferedImage[1];
     BufferedImage tile1Under = loadImage("MainTile underside.png");
     BufferedImage[] tile1B = new BufferedImage[1];
     Rectangle tileRect = new Rectangle(0, 0, 28, 28);
-    
+
     //main character
     BufferedImage main1 = loadImage("Main Character Stance.png");
     BufferedImage[] mainStance = new BufferedImage[10];
@@ -74,53 +87,57 @@ public class dayBreak extends JComponent implements ActionListener {
     BufferedImage main2jmp = loadImage("Main Character jumping clone.png");
     BufferedImage[] mainJump2 = new BufferedImage[15];
     Rectangle main1Rect = new Rectangle(0, 675, 128, 128);
-    
+
     //backgrounds
     BufferedImage bgSheet = loadImage("Stage1 back1.png");
     BufferedImage[] background = new BufferedImage[8];
     BufferedImage bg2Sheet = loadImage("stage2 back2.png");
     BufferedImage[] background2 = new BufferedImage[60];
-    
+
     //ground enemies
     BufferedImage enemy1 = loadImage("Bat 1.png");
     BufferedImage[] bat1 = new BufferedImage[4];
-    Rectangle batRect1 = new Rectangle(500, 200, 128,128);
-    Rectangle batRect2 = new Rectangle(5440, 100, 128,128);
-    Rectangle batRect3 = new Rectangle(6340, 100, 128,128);
-    
+    Rectangle batRect1 = new Rectangle(500, 200, 128, 128);
+    Rectangle batRect2 = new Rectangle(5440, 100, 128, 128);
+    Rectangle batRect3 = new Rectangle(6340, 100, 128, 128);
+
     BufferedImage enemy2 = loadImage("soldier 1.png");
     BufferedImage[] soldier1 = new BufferedImage[2];
-    
-    
+
     BufferedImage enemy3 = loadImage("Alien 1.png");
     BufferedImage[] alien1 = new BufferedImage[3];
-    Rectangle aleinRect1 = new Rectangle(2340, 700, 128,128);
-    Rectangle aleinRect2 = new Rectangle(8320, 90, 128,128);
-    
+    Rectangle aleinRect1 = new Rectangle(2340, 700, 128, 128);
+    Rectangle aleinRect2 = new Rectangle(8320, 90, 128, 128);
+
     BufferedImage enemy4 = loadImage("Robot1.png");
     BufferedImage[] robot1 = new BufferedImage[14];
     Rectangle robotRect1 = new Rectangle(3400, 230, 192, 192);
     Rectangle robotRect2 = new Rectangle(6240, 625, 192, 192);
-    
+
     BufferedImage enemy5 = loadImage("soldier 1 attack.png");
     BufferedImage[] soldieratk1 = new BufferedImage[5];
     BufferedImage enemy6 = loadImage("soldier 1 walk.png");
     BufferedImage[] soldierwk1 = new BufferedImage[10];
     BufferedImage enemy7 = loadImage("Robot1 attack.png");
-    Rectangle soldierRect1 = new Rectangle(4990, 605, 128,128);
-    Rectangle soldierRect2 = new Rectangle(8320, 605, 128,128);
-    
+    Rectangle soldierRect1 = new Rectangle(4990, 605, 128, 128);
+    Rectangle soldierRect2 = new Rectangle(8320, 605, 128, 128);
+
     BufferedImage[] robotatk1 = new BufferedImage[16];
-    
+
     //bosses
     BufferedImage boss1 = loadImage("Gronk.png");
     BufferedImage[] gronk = new BufferedImage[2];
-    Rectangle gronkRect = new Rectangle(0, 0, 225, 225);
-    
+    Rectangle gronkRect = new Rectangle(9000, 0, 225, 225);
+
     //projectiles
     BufferedImage mainBullet1 = loadImage("main bullet.png");
     BufferedImage[] MB = new BufferedImage[1];
-    
+
+    //life bar
+    int mainHeartFrame = 0;
+    long lastMainHeartChange = 0;
+    int mainHeartDelay = 100;
+
     //main character
     boolean underTiles = false;
     boolean mainRight = false;
@@ -147,7 +164,7 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainJump2Delay = 50;
     int mainWalkSpeed = 7;
     int mainFallSpeed = 10;
-    
+
     //backgrounds
     int bgFrame = 0;
     int bg2Frame = 0;
@@ -155,7 +172,7 @@ public class dayBreak extends JComponent implements ActionListener {
     long lastBG2Change = 0;
     int bgDelay = 83;
     int bg2Delay = 41;
-    
+
     //ground enemies
     boolean upDown = false;
     boolean upDown2 = false;
@@ -182,17 +199,17 @@ public class dayBreak extends JComponent implements ActionListener {
     int robot1Delay = 95;
     int robotatk1Delay = 100;
     int batSpeed = 3;
-    int aleinSpeed = 15;
+    int aleinSpeed = 10;
     int robotSpeed = 5;
     int soldierSpeed = 4;
-    
+
     //bosses
     int gronkFrame = 0;
     long lastGronkChange = 0;
     int gronkDelay = 250;
     int gronkJumpAngle = 45;
     int gronkJumpSpeed = 8;
-    
+
     //projectiles
     boolean BfiredLeft = false;
     boolean Bfired = false;
@@ -202,7 +219,7 @@ public class dayBreak extends JComponent implements ActionListener {
     int mainBulletDelay = 0;
     int mainBulletSpeed = 12;
     Rectangle mainBFired = new Rectangle(0, 0, 6, 3);
-    
+
     //player gravity
     boolean canJump = false;
     int gravitySpeed = 5;
@@ -210,18 +227,29 @@ public class dayBreak extends JComponent implements ActionListener {
     int vSpeed = 0;
     int playerVPosit = main1Rect.y;
     long startGravTimer = System.currentTimeMillis();
-    
-    
+
+
     Camera cam = new Camera(0, 0);
-    
+
     // player x - camera x
     // platyer y - camera y
-    
     int newCamPositX = 0;
     int newCamPositY = 0;
-    
+
     ArrayList<Rectangle> grassTiles = new ArrayList<>();
-    
+
+    //death counters
+    int deathCounterMain = 0;
+    int deathCounterGronk = 0;
+    int deathCounterRobot1 = 0;
+    int deathCounterRobot2 = 0;
+    int deathCounterBat1 = 0;
+    int deathCounterBat2 = 0;
+    int deathCounterBat3 = 0;
+    int deathCounterAlein1 = 0;
+    int deathCounterAlein2 = 0;
+    int deathCounterSoldier1 = 0;
+    int deathCounterSoldier2 = 0;
 
     // GAME VARIABLES END HERE    
     // Constructor to create the Frame and place the panel in
@@ -278,7 +306,6 @@ public class dayBreak extends JComponent implements ActionListener {
 
         //backgrounds
         g.drawImage(background[bgFrame], 0, HEIGHT / 2 - 75, null);
-        //g.drawImage(background2[bg2Frame], 0, 0, null);
 
         //drawing the level
         for (int row = 0; row < HEIGHT; row = row + tile1Under.getHeight()) {
@@ -288,7 +315,6 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
-        
         for (Rectangle tile : grassTiles) {
             g.drawImage(tile1, tile.x - cam.getX(), tile.y, null);
         }
@@ -299,50 +325,159 @@ public class dayBreak extends JComponent implements ActionListener {
 //
 //            }
 //        }
-
-        
-        
-        
         if (Bfired == true) {
             g.drawImage(MB[mainBulletFrame], mainBFired.x - cam.getX(), mainBFired.y, null);
         }
 
-
         //main Character
-        if (mainJump == true) {
-            g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
-        } else {
-            if (mainLeft == true) {
-                g.drawImage(mainWalk[mainWalk1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
-            } else if (mainRight == true) {
-                g.drawImage(mainWalk2[mainWalk2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
-            } else {
-                g.drawImage(mainStance2[mainStance2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
-            }
-
+        if (mainAlive == true) {
             if (mainJump == true) {
                 g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+            } else {
+                if (mainLeft == true) {
+                    g.drawImage(mainWalk[mainWalk1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+                } else if (mainRight == true) {
+                    g.drawImage(mainWalk2[mainWalk2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+                } else {
+                    g.drawImage(mainStance2[mainStance2Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+                }
+
+                if (mainJump == true) {
+                    g.drawImage(mainJump1[mainJump1Frame], main1Rect.x - cam.getX(), main1Rect.y, null);
+                }
             }
         }
+        if (main1Rect.intersects(robotRect1) 
+                || main1Rect.intersects(robotRect2)
+                || main1Rect.intersects(batRect1)
+                || main1Rect.intersects(batRect2)
+                || main1Rect.intersects(batRect3)
+                || main1Rect.intersects(aleinRect1)
+                || main1Rect.intersects(aleinRect2)
+                || main1Rect.intersects(soldierRect1)
+                || main1Rect.intersects(soldierRect2)
+                || main1Rect.intersects(gronkRect)) {
+            deathCounterMain++;
+        }
 
-        
+        if (deathCounterMain == 50) {
+            mainAlive = false;
+        }
+
+        if (robotAlive1 == true) {
             g.drawImage(robot1[robot1Frame], robotRect1.x - cam.getX(), robotRect1.y, null);
+        }
+        if (mainBFired.intersects(robotRect1)) {
+            deathCounterRobot1++;
+        }
+        if (deathCounterRobot1 == 50) {
+            robotAlive1 = false;
+            robotRect1.setRect(0,0,0,0);
+        }
+
+        if (robotAlive2 == true) {
             g.drawImage(robot1[robot1Frame], robotRect2.x - cam.getX(), robotRect2.y, null);
-        
+        }
+        if (mainBFired.intersects(robotRect2)) {
+            deathCounterRobot2++;
+        }
+        if (deathCounterRobot2 == 50) {
+            robotAlive2 = false;
+            robotRect2.setRect(0,0,0,0);
+        }
 
         //ground enemies
-        g.drawImage(bat1[bat1Frame], batRect1.x - cam.getX(), batRect1.y, null);
-        g.drawImage(bat1[bat1Frame], batRect2.x - cam.getX(), batRect2.y, null);
-        g.drawImage(bat1[bat1Frame], batRect3.x - cam.getX(), batRect3.y, null);
-        g.drawImage(alien1[alien1Frame], aleinRect1.x - cam.getX(), aleinRect1.y, null);
-        g.drawImage(alien1[alien1Frame], aleinRect2.x - cam.getX(), aleinRect2.y, null);
-        g.drawImage(soldierwk1[soldierwk1Frame], soldierRect1.x - cam.getX(), soldierRect1.y, null);
-        g.drawImage(soldierwk1[soldierwk1Frame], soldierRect2.x - cam.getX(), soldierRect2.y, null);
-        
-        //bosses
-        if(main1Rect.x >= 9200){
-        g.drawImage(gronk[gronkFrame], gronkRect.x - cam.getX(), gronkRect.y, null);
+        if (batAlive1 == true) {
+            g.drawImage(bat1[bat1Frame], batRect1.x - cam.getX(), batRect1.y, null);
         }
+        if (mainBFired.intersects(batRect1)) {
+            deathCounterBat1++;
+        }
+        if (deathCounterBat1 == 25) {
+            batAlive1 = false;
+            batRect1.setRect(0, 0, 0, 0);
+        }
+
+        if (batAlive2 == true) {
+            g.drawImage(bat1[bat1Frame], batRect2.x - cam.getX(), batRect2.y, null);
+        }
+        if (mainBFired.intersects(batRect2)) {
+            deathCounterBat2++;
+        }
+        if (deathCounterBat2 == 25) {
+            batAlive2 = false;
+            batRect2.setRect(0, 0, 0, 0);
+        }
+
+        if (batAlive3 == true) {
+            g.drawImage(bat1[bat1Frame], batRect3.x - cam.getX(), batRect3.y, null);
+        }
+        if (mainBFired.intersects(batRect3)) {
+            deathCounterBat3++;
+        }
+        if (deathCounterBat3 == 25) {
+            batAlive3 = false;
+            batRect3.setRect(0, 0, 0, 0);
+        }
+
+        if (aleinAlive1 == true) {
+            g.drawImage(alien1[alien1Frame], aleinRect1.x - cam.getX(), aleinRect1.y, null);
+        }
+        if (mainBFired.intersects(aleinRect1)) {
+            deathCounterAlein1++;
+        }
+        if (deathCounterAlein1 == 30) {
+            aleinAlive1 = false;
+            aleinRect1.setRect(0,0,0,0);
+        }
+
+        if (aleinAlive2 == true) {
+            g.drawImage(alien1[alien1Frame], aleinRect2.x - cam.getX(), aleinRect2.y, null);
+        }
+        if (mainBFired.intersects(aleinRect2)) {
+            deathCounterAlein2++;
+        }
+        if (deathCounterAlein2 == 30) {
+            aleinAlive2 = false;
+            aleinRect1.setRect(0,0,0,0);
+        }
+
+        if (soldierAlive1 == true) {
+            g.drawImage(soldierwk1[soldierwk1Frame], soldierRect1.x - cam.getX(), soldierRect1.y, null);
+        }
+        if (mainBFired.intersects(soldierRect1)) {
+            deathCounterSoldier1++;
+        }
+        if (deathCounterSoldier1 == 10) {
+            soldierAlive1 = false;
+            soldierRect1.setRect(0,0,0,0);
+        }
+
+        if (soldierAlive2 == true) {
+            g.drawImage(soldierwk1[soldierwk1Frame], soldierRect2.x - cam.getX(), soldierRect2.y, null);
+        }
+        if (mainBFired.intersects(soldierRect2)) {
+            deathCounterSoldier2++;
+        }
+        if (deathCounterSoldier2 == 10) {
+            soldierAlive2 = false;
+            soldierRect1.setRect(0,0,0,0);
+        }
+
+        //bosses
+        if (main1Rect.x >= 9000) {
+            if(gronkAlive == true){
+            g.drawImage(gronk[gronkFrame], gronkRect.x - cam.getX(), gronkRect.y, null);
+        }
+            if (mainBFired.intersects(gronkRect)) {
+            deathCounterGronk++;
+        }
+        if (deathCounterGronk == 250) {
+            gronkAlive = false;
+            gronkRect.setRect(0,0,0,0);
+        }
+        }
+
         // GAME DRAWING ENDS HERE
     }
 
@@ -436,7 +571,6 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
-
         //backgrounds
         // splitting up the image spritesheet
         int width = bgSheet.getWidth() / 2;
@@ -457,7 +591,6 @@ public class dayBreak extends JComponent implements ActionListener {
                 i++;
             }
         }
-
 
         //ground enemies
         int widthbat1 = enemy1.getWidth() / 2;
@@ -536,7 +669,6 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
 
-
         //bosses
         int widthGronk = boss1.getWidth() / 1;
         int heightGronk = boss1.getHeight() / 2;
@@ -612,7 +744,6 @@ public class dayBreak extends JComponent implements ActionListener {
             grassTiles.add(new Rectangle(column, 600, 28, 28));
         }
 
-
     }
     // The main game loop
     // In here is where all the logic for my game will go
@@ -626,17 +757,16 @@ public class dayBreak extends JComponent implements ActionListener {
         aleinPath2();
         aleinPath();
         batPath3();
-        batPath2();
+        batPath2();        
         batPath();
+        if(main1Rect.x >= 9000){
         moveGronk();
+        }
         movePlayer();
         cam.x = main1Rect.x - WIDTH / 2;
         bulletFired();
         gravity();
 
-        //life bar
-        
-        
         //main character
         if (System.currentTimeMillis() > lastMainStanceChange + mainStanceDelay) {
             mainStanceFrame = (mainStanceFrame + 1) % mainStance.length;
@@ -663,7 +793,6 @@ public class dayBreak extends JComponent implements ActionListener {
             lastMainJump2Change = System.currentTimeMillis();
         }
 
-
         //backgrounds
         if (System.currentTimeMillis() > lastBGChange + bgDelay) {
             bgFrame = (bgFrame + 1) % background.length;
@@ -673,7 +802,6 @@ public class dayBreak extends JComponent implements ActionListener {
             bg2Frame = (bg2Frame + 1) % background2.length;
             lastBG2Change = System.currentTimeMillis();
         }
-
 
         //ground enemies
         if (System.currentTimeMillis() > lastBat1Change + bat1Delay) {
@@ -705,13 +833,11 @@ public class dayBreak extends JComponent implements ActionListener {
             lastRobotatk1Change = System.currentTimeMillis();
         }
 
-
         //bosses
         if (System.currentTimeMillis() > lastGronkChange + gronkDelay) {
             gronkFrame = (gronkFrame + 1) % gronk.length;
             lastGronkChange = System.currentTimeMillis();
         }
-
 
         //projectiles
         if (System.currentTimeMillis() > lastMainBulletChange + mainBulletDelay) {
@@ -745,7 +871,7 @@ public class dayBreak extends JComponent implements ActionListener {
         for (Rectangle tile : grassTiles) {
             if (main1Rect.intersects(tile)) {
                 int heightOverlap = Math.min(main1Rect.y + main1Rect.height, tile.y + tile.height) - Math.max(main1Rect.y, tile.y);
-                if (main1Rect.y < tile.y ) {
+                if (main1Rect.y < tile.y) {
                     main1Rect.y = tile.y - main1Rect.height;
                 } else {
                     main1Rect.y = tile.y + tile.height;
@@ -763,17 +889,16 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
     }
-    
+
     private void batPath3() {
-        if(batRect3.y <= 300 && upDown == false){
+        if (batRect3.y <= 300 && upDown == false) {
             batRect3.y = batRect3.y + batSpeed;
-            if(batRect3.y == 300){
+            if (batRect3.y == 300) {
                 upDown = true;
             }
-        } 
-        else if (batRect3.y >= 100 && upDown == true){
+        } else if (batRect3.y >= 100 && upDown == true) {
             batRect3.y = batRect3.y - batSpeed;
-            if(batRect3.y == 100) {
+            if (batRect3.y == 100) {
                 upDown = false;
             }
         }
@@ -783,55 +908,53 @@ public class dayBreak extends JComponent implements ActionListener {
         } else if (batRect3.y + batRect3.height > HEIGHT) {
             batRect3.y = HEIGHT - batRect3.height;
         }
-        
+
     }
 
     private void batPath2() {
-        if(batRect2.y <= 300 && upDown == false){
+        if (batRect2.y <= 300 && upDown == false) {
             batRect2.y = batRect2.y + batSpeed;
-            if(batRect2.y == 300){
+            if (batRect2.y == 300) {
                 upDown = true;
             }
-        } 
-        else if (batRect2.y >= 100 && upDown == true){
+        } else if (batRect2.y >= 100 && upDown == true) {
             batRect2.y = batRect2.y - batSpeed;
-            if(batRect2.y == 100) {
+            if (batRect2.y == 100) {
                 upDown = false;
             }
         }
-        
+
         if (batRect2.y < 0) {
             batRect2.y = 0;
         } else if (batRect2.y + batRect2.height > HEIGHT) {
             batRect2.y = HEIGHT - batRect2.height;
         }
-        
+
     }
-    
+
     private void batPath() {
-        if(batRect1.y <= 550 && upDown == false){
+        if (batRect1.y <= 550 && upDown == false) {
             batRect1.y = batRect1.y + batSpeed;
-            if(batRect1.y == 550){
+            if (batRect1.y == 550) {
                 upDown = true;
             }
-        } 
-        else if (batRect1.y >= 199 && upDown == true){
+        } else if (batRect1.y >= 199 && upDown == true) {
             batRect1.y = batRect1.y - batSpeed;
-            if(batRect1.y == 199) {
+            if (batRect1.y == 199) {
                 upDown = false;
             }
         }
-        
+
         if (batRect1.y < 0) {
             batRect1.y = 0;
         } else if (batRect1.y + batRect1.height > HEIGHT) {
             batRect1.y = HEIGHT - batRect1.height;
         }
-        
+
         for (Rectangle tile : grassTiles) {
             if (batRect1.intersects(tile)) {
                 int heightOverlap = Math.min(batRect1.y + batRect1.height, tile.y + tile.height) - Math.max(batRect1.y, tile.y);
-                if (batRect1.y < tile.y ) {
+                if (batRect1.y < tile.y) {
                     batRect1.y = tile.y - batRect1.height;
                 } else {
                     batRect1.y = tile.y + tile.height;
@@ -839,115 +962,108 @@ public class dayBreak extends JComponent implements ActionListener {
             }
         }
     }
-    
+
     private void aleinPath2() {
-        if(aleinRect2.x <= 8320 && side2side == false){
+        if (aleinRect2.x <= 8320 && side2side == false) {
             aleinRect2.x = aleinRect2.x - aleinSpeed;
-            if(aleinRect2.x == 7500){
+            if (aleinRect2.x == 7510) {
                 side2side = true;
             }
-        } 
-        else if (aleinRect2.x >= 7500 && side2side == true){
+        } else if (aleinRect2.x >= 7510 && side2side == true) {
             aleinRect2.x = aleinRect2.x + aleinSpeed;
-            if(aleinRect2.x == 8320) {
+            if (aleinRect2.x == 8320) {
                 side2side = false;
             }
         }
     }
     
     private void aleinPath() {
-        if(aleinRect1.x <= 2340 && side2side == false){
+        if (aleinRect1.x <= 2340 && side2side == false) {
             aleinRect1.x = aleinRect1.x - aleinSpeed;
-            if(aleinRect1.x == 1020){
+            if (aleinRect1.x == 1020) {
                 side2side = true;
             }
-        } 
-        else if (aleinRect1.x >= 1020 && side2side == true){
+        } else if (aleinRect1.x >= 1020 && side2side == true) {
             aleinRect1.x = aleinRect1.x + aleinSpeed;
-            if(aleinRect1.x == 2340) {
+            if (aleinRect1.x == 2340) {
                 side2side = false;
             }
         }
-        
-        
+
         if (aleinRect1.y < 0) {
             aleinRect1.y = 0;
         } else if (aleinRect1.y + aleinRect1.height > HEIGHT) {
             aleinRect1.y = HEIGHT - aleinRect1.height;
         }
-        
     }
-    
+
     private void robotPath2() {
-        
-        if(robotRect2.x <= 6240 && side2side == false){
+
+        if (robotRect2.x <= 6240 && side2side == false) {
             robotRect2.x = robotRect2.x - robotSpeed;
-            if(robotRect2.x == 5540){
+            if (robotRect2.x == 5540) {
                 side2side = true;
             }
-        } 
-        else if (robotRect2.x >= 5240 && side2side == true){
+        } else if (robotRect2.x >= 5240 && side2side == true) {
             robotRect2.x = robotRect2.x + robotSpeed;
-            if(robotRect2.x == 6240) {
+            if (robotRect2.x == 6240) {
                 side2side = false;
             }
         }
-        
+
     }
-    
+
     private void robotPath() {
-        
-        if(robotRect1.x <= 3400 && side2side == false){
+
+        if (robotRect1.x <= 3400 && side2side == false) {
             robotRect1.x = robotRect1.x - robotSpeed;
-            if(robotRect1.x == 2400){
+            if (robotRect1.x == 2400) {
                 side2side = true;
             }
-        } 
-        else if (robotRect1.x >= 2400 && side2side == true){
+        } else if (robotRect1.x >= 2400 && side2side == true) {
             robotRect1.x = robotRect1.x + robotSpeed;
-            if(robotRect1.x == 3400) {
+            if (robotRect1.x == 3400) {
                 side2side = false;
             }
         }
-        
+
         if (robotRect1.y < 0) {
             robotRect1.y = 0;
         } else if (robotRect1.y + robotRect1.height > HEIGHT) {
             robotRect1.y = HEIGHT - robotRect1.height;
         }
-        
+
     }
-    
+
     private void soldierPath2() {
-        if(soldierRect1.x <= 8320 && side2side == false){
-            soldierRect1.x = soldierRect1.x - soldierSpeed;
-            if(soldierRect1.x == 8000){
+        
+        if (soldierRect2.x <= 8320 && side2side == false) {
+            soldierRect2.x = soldierRect2.x - soldierSpeed;
+            if (soldierRect2.x == 7600) {
                 side2side = true;
             }
-        } 
-        else if (soldierRect1.x >= 8000 && side2side == true){
-            soldierRect1.x = soldierRect1.x + soldierSpeed;
-            if(soldierRect1.x == 8320) {
+        } else if (soldierRect2.x >= 7600 && side2side == true) {
+            soldierRect2.x = soldierRect2.x + soldierSpeed;
+            if (soldierRect2.x == 8320) {
                 side2side = false;
             }
         }
     }
-    
+
     private void soldierPath() {
-        if(soldierRect1.x <= 4990 && side2side == false){
+        if (soldierRect1.x <= 4990 && side2side == false) {
             soldierRect1.x = soldierRect1.x - soldierSpeed;
-            if(soldierRect1.x == 4290){
+            if (soldierRect1.x == 4290) {
                 side2side = true;
             }
-        } 
-        else if (soldierRect1.x >= 4290 && side2side == true){
+        } else if (soldierRect1.x >= 4290 && side2side == true) {
             soldierRect1.x = soldierRect1.x + soldierSpeed;
-            if(soldierRect1.x == 4990) {
+            if (soldierRect1.x == 4990) {
                 side2side = false;
             }
         }
     }
-    
+
     private void moveGronk() {
         //jumping
         double newGronkJumpAngle = Math.toRadians(gronkJumpAngle);
@@ -956,9 +1072,8 @@ public class dayBreak extends JComponent implements ActionListener {
 
         //makes him travel at different speeds
         //int randNumGronk = (int) (Math.random() * (1 -1 +1)) +1;
-
-        gronkRect.x = gronkRect.x - (int) moveX;
-        gronkRect.y = gronkRect.y - (int) moveY;
+        gronkRect.x = gronkRect.x + (int) moveX;
+        gronkRect.y = gronkRect.y + (int) moveY;
 
         //jumping collison
         if (gronkRect.y < 0) {
